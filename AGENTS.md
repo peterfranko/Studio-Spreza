@@ -2,7 +2,7 @@
 
 Before working on the `Studio Spreza` site, read Compass:
 
-`/Users/peter/Documents/00-AGENTS-READ-FIRST__COMPASS__CANONICAL-STUDIO-SPREZA-PRODUCT-LANDSCAPE.md`
+`/Users/peter/Documents/Projects/00-AGENTS-READ-FIRST__COMPASS__CANONICAL-STUDIO-SPREZA-PRODUCT-LANDSCAPE.md`
 
 Compass defines the app source hierarchy, product guardrails, Studio positioning, and the rule that this site is downstream of `Kiwido`, `Breadfare`, and `Upkeeper`.
 
