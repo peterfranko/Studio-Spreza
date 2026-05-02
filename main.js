@@ -73,8 +73,6 @@
 
   function updateScrollCue() {
     if (!scrollCue) return;
-    var pos = window.getComputedStyle(scrollCue).position;
-    if (pos !== "fixed") return;
     var y = window.scrollY || document.documentElement.scrollTop;
     var opacity;
     if (scrollCueReduced) {

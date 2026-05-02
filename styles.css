@@ -1021,6 +1021,10 @@ button:focus-visible {
   margin-inline: auto;
 }
 
+.work-bento--tri {
+  max-width: 100%;
+}
+
 @media (min-width: 900px) {
   .work-bento--tri {
     grid-template-columns: repeat(3, 1fr);
@@ -1035,18 +1039,25 @@ button:focus-visible {
   padding: clamp(1.25rem, 2.5vw, 1.65rem);
   border-radius: var(--radius-lg);
   border: 1px solid var(--line-strong);
-  background: var(--bg-elevated);
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(255, 251, 245, 0.72)),
+    var(--bg-elevated);
   box-shadow: var(--shadow-inset), var(--shadow-sm);
+  transition:
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    border-color 0.25s var(--ease-out);
 }
 
 .work-tile--app .work-visual {
-  min-height: 13rem;
+  min-height: clamp(12rem, 24vw, 14.5rem);
 }
 
 @media (hover: hover) {
   .work-tile--app:hover {
+    transform: translateY(-3px);
     border-color: color-mix(in srgb, var(--accent-mid) 22%, var(--line-strong));
-    box-shadow: var(--shadow-inset), var(--shadow-md);
+    box-shadow: var(--shadow-inset), var(--shadow-lg);
   }
 }
 
@@ -1059,9 +1070,9 @@ button:focus-visible {
   font-family: var(--font-chapter);
   font-size: 0.8125rem;
   font-weight: 600;
-  font-style: italic;
-  letter-spacing: 0.02em;
-  color: var(--ink-soft);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--accent-mid);
 }
 
 .work-tile--lead,
