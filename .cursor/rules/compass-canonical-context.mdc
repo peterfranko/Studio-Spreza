@@ -1,12 +1,14 @@
 ---
-description: Read and maintain Compass for Studio Spreza site context
+description: Compass Tier 1 for Studio Spreza site — claims from app truth
 alwaysApply: true
 ---
 
-# Compass Required
+# Compass (studio-spreza site)
 
-Before working in this project, read Compass:
+**Tier 0:** Workspace `/Users/peter/Developer/.cursor/rules/compass-core.mdc` and `compass-sites.mdc` when editing site files.
 
-`/Users/peter/Documents/Projects/00-AGENTS-READ-FIRST__COMPASS__CANONICAL-STUDIO-SPREZA-PRODUCT-LANDSCAPE.md`
+**Tier 1:** [COMPASS.md](/Users/peter/Developer/COMPASS.md) — Website Strategy summary, Guardrails (Studio Spreza), Update Protocol.
 
-Run a Compass update check before finishing durable changes. Update Compass if work changes public claims, app cards, app status/platform language, website strategy, metadata, visuals that imply product behavior, or future-agent orientation.
+**Tier 2:** [COMPASS-assessment.md](/Users/peter/Developer/COMPASS-assessment.md) — site assessment, recommended copy, “what not to say” for public claims.
+
+**Before done:** `@compass-update-check` and claim audit against app sources.
