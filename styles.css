@@ -534,19 +534,6 @@
     margin-bottom: 0;
   }
 
-  .hero-split {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(2.5rem, 6vw, 4.5rem);
-  }
-
-  @media (min-width: 960px) {
-    .hero-split {
-      grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
-      align-items: end;
-    }
-  }
-
   .hero-copy {
     max-width: var(--layout-measure);
   }
@@ -646,51 +633,12 @@
     border-color: var(--color-text-primary);
   }
 
-  /* ─── Hero panel (bare list with left hairline) ─── */
-  .hero-panel {
-    border-left: 1px solid var(--color-border-strong);
-    padding: var(--space-3) 0 var(--space-3) clamp(1.25rem, 2.5vw, 2rem);
-  }
-
-  .hero-device {
-    display: none;
-  }
-
-  .hero-panel-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-7);
-  }
-
-  .hero-panel-list li {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .hero-panel-k {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-regular);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-
-  .hero-panel-v {
-    font-family: var(--font-serif);
-    font-size: var(--text-body);
-    line-height: var(--leading-snug);
-    color: var(--color-text-secondary);
-  }
-
   /* ─── Scroll cue ─── */
   .scroll-cue {
-    position: absolute;
-    left: 50%;
-    bottom: var(--space-8);
-    transform: translateX(-50%);
-    display: inline-flex;
+    margin-top: var(--space-9);
+    margin-inline: auto;
+    width: fit-content;
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-3);
@@ -871,47 +819,6 @@
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
     max-width: 34rem;
-  }
-
-  /* ─── Principles (single-line propositions, editorial register) ─── */
-  .principle-lines {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .principle-lines li {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2);
-    padding-block: clamp(1.5rem, 3.5vw, 2.5rem);
-    border-top: 1px solid var(--color-border-strong);
-    font-family: var(--font-serif);
-    font-size: clamp(1.35rem, 2.6vw, 2rem);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .principle-lines li:last-child {
-    border-bottom: 1px solid var(--color-border-strong);
-  }
-
-  @media (min-width: 720px) {
-    .principle-lines li {
-      grid-template-columns: clamp(10rem, 18%, 14rem) minmax(0, 1fr);
-      gap: clamp(1.5rem, 4vw, 3rem);
-      align-items: baseline;
-    }
-  }
-
-  .principle-name {
-    color: var(--color-text-primary);
-    font-weight: var(--font-weight-regular);
-    font-style: italic;
-  }
-
-  .principle-claim {
-    color: var(--color-text-secondary);
-    font-weight: var(--font-weight-light);
   }
 
   /* ─── Contact (cream, bare; family-coherent coda) ─── */
