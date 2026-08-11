@@ -8,6 +8,19 @@
    and Peter Franko's site share one design language; only content differs.
    If a token name changes here, mirror it in pf-portfolio/style.css.
 
+   Deliberate divergence (2026-08-11): the type system is now single-family
+   Geist, driven by weight, size and case. pf-portfolio still runs Cormorant
+   Garamond + JetBrains Mono. These token names no longer exist there:
+     --font-serif, --font-mono            -> --font-sans
+     --font-weight-light/regular/medium   -> --font-weight-regular/medium/semibold
+     --text-sm                            -> --text-label
+     --tracking-label/eyebrow/wide/caps   -> --tracking-caps, --tracking-caps-wide
+     --tracking-lede                      -> --tracking-snug
+   Do not "resync" by copying either direction. The two sites now share colour,
+   space and motion but not type; porting Geist across is its own decision and
+   its own pass, and the size steps below are tuned to Geist's x-height, so
+   they would be wrong under a serif.
+
    Deliberate divergence (2026-08-10): --color-text-muted was retuned for
    contrast (3.2:1 -> 5.0:1 light, 3.4:1 -> 5.0:1 dark) so 11px mono labels
    clear WCAG AA. pf-portfolio still carries the old failing values. Do not
@@ -35,39 +48,67 @@
        3:1 WCAG 1.4.11 floor for non-text indicators. */
     --color-focus-ring: rgba(92, 83, 68, 0.8);
 
-    /* ─── Typography ─── */
-    --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
-    --font-weight-light: 400;
-    --font-weight-regular: 500;
-    --font-weight-medium: 600;
+    /* ─── Typography ───────────────────────────────────────────────────────
+       One family, Geist, doing every job. The old system leaned on family
+       contrast: Cormorant Garamond for headings, JetBrains Mono for labels.
+       Both are gone. Hierarchy is now built from three levers only, so if a
+       distinction cannot be made with weight, size, or case, it does not
+       belong in the system.
 
-    /* Six steps, smallest ratio 1.22. Removed: --text-xs/--base/--md, which sat
-       at 9.9/11.2/11.5px alongside --sm's 11px (four sizes inside 1.6px, noise
-       rather than a scale), and --text-lede at 33.6px, which was 7% off
-       --work-title's 36px and so read as the same size doing a different job.
-       The single label step is 12px: --xs was 9.9px on the scroll cue, too
-       small to work as an affordance. */
-    --text-sm: 0.75rem;
-    --text-body: clamp(1rem, 1.05vw, 1.125rem);
-    --text-body-lg: clamp(1.1875rem, 1.35vw, 1.38rem);
-    --text-work-title: clamp(1.6rem, 2.8vw, 2.25rem);
-    --text-chapter: clamp(2rem, 4.5vw, 3.25rem);
-    --text-display: clamp(2.45rem, 7vw, 5.15rem);
+         WEIGHT  400 body · 500 headings and labels · 600 wordmark and <strong>
+         SIZE    one label step, two body steps, three heading steps
+         CASE    uppercase + positive tracking is the label voice; it does
+                 the job the monospace used to do
 
-    --leading-none: 1.02;
-    --leading-tight: 1.08;
-    --leading-snug: 1.28;
-    --leading-body: 1.52;
-    --leading-relaxed: 1.58;
+       Headings sit at 500, not 600. At 600 the display line reads as a
+       product landing page; the guardrail here is calm surfaces and useful
+       restraint, and at 70px the size already establishes the hierarchy
+       without the extra weight. Weight is the smallest of the three levers
+       on purpose.
 
-    --tracking-label: 0.12em;
-    --tracking-eyebrow: 0.18em;
-    --tracking-wide: 0.15em;
-    --tracking-caps: 0.08em;
-    --tracking-tight: -0.028em;
-    --tracking-display: -0.028em;
-    --tracking-lede: -0.015em;
+       Sizes came down roughly 12–15% from the Cormorant values across the
+       heading steps. Geist has a much larger x-height, so it renders visibly
+       bigger and heavier at an identical font-size; keeping the old numbers
+       made every headline shout. */
+    --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Renamed from --font-weight-light/regular/medium, which mapped to
+       400/500/600 and so described every weight one step lighter than it was.
+       pf-portfolio still carries the old names; see the divergence note above. */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+
+    /* Six steps. --text-sm became --text-label: the step exists only for
+       uppercase labels, and naming it by size invited it into body contexts
+       where 12px is too small to read. */
+    --text-label: 0.75rem;
+    --text-body: clamp(1rem, 1.02vw, 1.0625rem);
+    --text-body-lg: clamp(1.125rem, 1.25vw, 1.3rem);
+    --text-work-title: clamp(1.4rem, 2.4vw, 1.95rem);
+    --text-chapter: clamp(1.75rem, 3.9vw, 2.8rem);
+    --text-display: clamp(2.15rem, 6vw, 4.4rem);
+
+    /* Loosened a little at the top. Cormorant's small x-height let display
+       lines sit at 1.02 without touching; Geist's ascenders and descenders
+       collide there, and the hero stacks three lines. */
+    --leading-none: 1.05;
+    --leading-tight: 1.12;
+    --leading-snug: 1.3;
+    --leading-body: 1.55;
+    --leading-relaxed: 1.6;
+
+    /* Two uppercase steps, not four. --tracking-label/eyebrow/wide/caps sat at
+       0.12/0.18/0.15/0.08em doing one job between them. Values also came down:
+       those numbers were tuned for a monospace, whose uniform advance widths
+       need extra tracking to look airy. Geist is proportional and does not. */
+    --tracking-caps: 0.1em;
+    --tracking-caps-wide: 0.15em;
+
+    /* Three negative steps, biggest type tightest. */
+    --tracking-display: -0.034em;
+    --tracking-tight: -0.022em;
+    --tracking-snug: -0.01em;
 
     /* ─── Space scale ─── */
     --space-1: 0.2rem;
@@ -183,11 +224,13 @@
     position: relative;
     background: var(--color-surface-base);
     color: var(--color-text-primary);
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-light);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
     font-size: var(--text-body);
     line-height: var(--leading-relaxed);
-    font-feature-settings: 'kern' 1, 'liga' 1, 'onum' 1;
+    /* 'onum' dropped with Cormorant. Geist is a grotesque with lining figures;
+       oldstyle numerals were a serif-era setting and have nothing to select. */
+    font-feature-settings: 'kern' 1, 'liga' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -259,10 +302,9 @@
     height: 1px;
     overflow: hidden;
     padding: var(--space-3) var(--space-5);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-regular);
-    letter-spacing: var(--tracking-label);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     color: var(--color-text-primary);
     background: var(--color-surface-elevated);
@@ -361,10 +403,9 @@
   }
 
   .logo {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--font-weight-semibold);
     font-size: var(--text-body);
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: var(--tracking-snug);
     color: var(--color-text-primary);
   }
 
@@ -448,10 +489,9 @@
   }
 
   .site-menu-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-regular);
-    letter-spacing: var(--tracking-eyebrow);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps-wide);
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin-bottom: var(--space-5);
@@ -467,9 +507,8 @@
     display: inline-flex;
     align-items: baseline;
     gap: var(--space-4);
-    font-family: var(--font-serif);
     font-size: var(--text-work-title);
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--font-weight-medium);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
     width: fit-content;
@@ -521,10 +560,9 @@
     }
 
     .site-menu-nav a {
-      font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      font-weight: var(--font-weight-regular);
-      letter-spacing: var(--tracking-eyebrow);
+      font-size: var(--text-label);
+      font-weight: var(--font-weight-medium);
+      letter-spacing: var(--tracking-caps-wide);
       text-transform: uppercase;
       color: var(--color-text-secondary);
       transition: color var(--duration-fast) var(--ease-out);
@@ -623,8 +661,7 @@
   }
 
   .hero-title {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-medium);
     font-size: var(--text-display);
     line-height: var(--leading-none);
     letter-spacing: var(--tracking-display);
@@ -655,7 +692,8 @@
     color: var(--color-text-secondary);
     max-width: var(--layout-measure-narrow);
     margin-bottom: var(--space-10);
-    font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--tracking-snug);
   }
 
   .hero-actions {
@@ -671,10 +709,9 @@
     align-items: center;
     gap: var(--space-3);
     padding: 0.6rem var(--space-6);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-regular);
-    letter-spacing: var(--tracking-wide);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     border-radius: var(--radius-pill);
     border: 1px solid transparent;
@@ -712,9 +749,9 @@
     flex-direction: column;
     align-items: center;
     gap: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-eyebrow);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps-wide);
     text-transform: uppercase;
     color: var(--color-text-muted);
     transition: opacity var(--duration-medium) ease;
@@ -776,8 +813,7 @@
   }
 
   .chapter-title {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-medium);
     font-size: var(--text-chapter);
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
@@ -841,7 +877,7 @@
     font-size: var(--text-body);
     line-height: var(--leading-body);
     color: var(--color-text-primary);
-    font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-regular);
   }
 
   .belief-prose p + p {
@@ -855,7 +891,7 @@
 
   .belief-prose strong {
     color: var(--color-text-primary);
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--font-weight-semibold);
   }
 
   /* ─── Work catalog (editorial rows) ─── */
@@ -945,9 +981,9 @@
   }
 
   .work-shot-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-eyebrow);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps-wide);
     text-transform: uppercase;
     line-height: var(--leading-snug);
     color: var(--color-text-muted);
@@ -986,8 +1022,7 @@
   }
 
   .work-title {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--font-weight-medium);
     font-size: var(--text-work-title);
     line-height: var(--leading-none);
     letter-spacing: var(--tracking-tight);
@@ -995,9 +1030,8 @@
   }
 
   .work-subtitle {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-light);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     color: var(--color-text-muted);
@@ -1038,8 +1072,7 @@
   }
 
   .contact-title {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-medium);
     font-size: var(--text-chapter);
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
@@ -1052,7 +1085,8 @@
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
     max-width: 32rem;
-    font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--tracking-snug);
   }
 
   .contact-panel {
@@ -1066,11 +1100,14 @@
   .contact-email {
     position: relative;
     display: inline-block;
-    font-family: var(--font-serif);
-    font-style: italic;
+    /* Was serif italic. Geist's italic is a near-upright grotesque slant, and
+       on an address it reads as a rendering fault rather than a flourish. The
+       animated underline was always the affordance here; weight carries the
+       rest. */
+    font-weight: var(--font-weight-medium);
     font-size: var(--text-work-title);
     line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-lede);
+    letter-spacing: var(--tracking-snug);
     color: var(--color-text-primary);
     width: fit-content;
     padding-bottom: 0.08em;
@@ -1125,10 +1162,9 @@
     align-items: baseline;
     flex-wrap: wrap;
     gap: var(--space-4) var(--space-6);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-light);
-    letter-spacing: var(--tracking-label);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     color: var(--color-text-muted);
   }
