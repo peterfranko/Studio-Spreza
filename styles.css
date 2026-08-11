@@ -1061,21 +1061,30 @@
     border-radius: var(--radius-xs);
   }
 
-  /* PLACEHOLDER — replace each .work-shot with an <img> at 4:5 and delete the
-     placeholder-only label rules below. Keep aspect-ratio on the image so the
-     strip reserves its height while the files load. The six labels are the
-     asset brief for the pre-launch product shelf. */
+  /* Horizontal showcase media. Real frames and placeholders share the same 4:5
+     slot so the strip keeps its rhythm while each app's artwork lands. */
   .work-shot {
     flex: 0 0 auto;
     inline-size: min(21rem, 72vw);
     aspect-ratio: 4 / 5;
     scroll-snap-align: start;
+    border-radius: var(--radius-xs);
+  }
+
+  .work-shot:not(img) {
     display: grid;
     place-items: center;
     padding: var(--space-6);
     text-align: center;
     border: 1px dashed var(--color-border-strong);
-    border-radius: var(--radius-xs);
+    background: color-mix(in oklab, var(--color-text-primary) 3%, transparent);
+  }
+
+  .work-shot-image {
+    display: block;
+    block-size: auto;
+    object-fit: cover;
+    border: 1px solid var(--color-border-subtle);
     background: color-mix(in oklab, var(--color-text-primary) 3%, transparent);
   }
 
