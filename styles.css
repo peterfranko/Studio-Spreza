@@ -265,7 +265,7 @@
 
     --read-progress: 0%;
 
-    /* App icons: squircle-masked exports of the shipping AppIcon assets */
+    /* App icons: 144px transparent exports from the shared appicon masters */
     --app-icon-kiwido: url('assets/kiwido-icon-light.png');
     --app-icon-upkeeper: url('assets/upkeeper-icon-light.png');
 
@@ -1061,9 +1061,10 @@
     border-radius: var(--radius-xs);
   }
 
-  /* PLACEHOLDER — replace each .work-shot with an <img> at 4:5 and delete these
-     two rules. Keep aspect-ratio on the image so the strip reserves its height
-     while the files load. */
+  /* PLACEHOLDER — replace each .work-shot with an <img> at 4:5 and delete the
+     placeholder-only label rules below. Keep aspect-ratio on the image so the
+     strip reserves its height while the files load. The six labels are the
+     asset brief for the pre-launch product shelf. */
   .work-shot {
     flex: 0 0 auto;
     inline-size: min(21rem, 72vw);
@@ -1079,12 +1080,32 @@
   }
 
   .work-shot-label {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 17rem;
     font-size: var(--text-label);
     font-weight: var(--font-weight-medium);
-    letter-spacing: var(--tracking-caps-wide);
-    text-transform: uppercase;
     line-height: var(--leading-snug);
     color: var(--color-text-muted);
+  }
+
+  .work-shot-kicker,
+  .work-shot-title {
+    letter-spacing: var(--tracking-caps-wide);
+    text-transform: uppercase;
+  }
+
+  .work-shot-title {
+    color: var(--color-text-primary);
+  }
+
+  .work-shot-note {
+    font-size: 0.82rem;
+    font-weight: var(--font-weight-regular);
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
   }
 
   /* Icon sits with the name, not in its own track. Alone in a column it read as
