@@ -1061,17 +1061,17 @@
     border-radius: var(--radius-xs);
   }
 
-  /* Horizontal showcase media. Real frames and placeholders share the same 4:5
-     slot so the strip keeps its rhythm while each app's artwork lands. */
+  /* Horizontal showcase media. Real frames use the tall phone export ratio;
+     placeholders keep their compact pre-artwork cards. */
   .work-shot {
     flex: 0 0 auto;
-    inline-size: min(21rem, 72vw);
-    aspect-ratio: 4 / 5;
     scroll-snap-align: start;
     border-radius: var(--radius-xs);
   }
 
   .work-shot:not(img) {
+    inline-size: min(21rem, 72vw);
+    aspect-ratio: 4 / 5;
     display: grid;
     place-items: center;
     padding: var(--space-6);
@@ -1081,11 +1081,12 @@
   }
 
   .work-shot-image {
+    inline-size: min(24rem, 88vw);
+    aspect-ratio: 1608 / 3496;
     display: block;
     block-size: auto;
-    object-fit: cover;
-    border: 1px solid var(--color-border-subtle);
-    background: color-mix(in oklab, var(--color-text-primary) 3%, transparent);
+    object-fit: contain;
+    background: transparent;
   }
 
   .work-shot-label {
