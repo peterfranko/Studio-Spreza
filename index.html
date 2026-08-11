@@ -30,6 +30,14 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1;
+          transform: none;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
@@ -39,7 +47,7 @@
     <header class="site-header">
       <div class="header-inner">
         <a class="logo" href="#">Studio Spreza</a>
-        <div id="site-menu" class="site-menu" hidden>
+        <div id="site-menu" class="site-menu">
           <div class="site-menu-inner wrap">
             <p class="site-menu-eyebrow">On this page</p>
             <nav class="site-menu-nav" aria-label="Primary">
@@ -126,34 +134,44 @@
 
           <ul class="work-list">
             <li class="work-row" data-reveal>
-              <div class="work-meta">
+              <div class="work-lede">
                 <span class="work-icon" data-app="kiwido" aria-hidden="true"></span>
-                <span class="work-tag">Planning</span>
-              </div>
-              <div class="work-row-body">
-                <h3 class="work-title">Kiwido</h3>
-                <p class="work-subtitle">Week planning</p>
+                <div class="work-row-body">
+                  <h3 class="work-title">Kiwido</h3>
+                  <p class="work-subtitle">Week planning</p>
+                </div>
               </div>
               <p class="work-blurb">
                 A weekly view that pulls your tasks, calendar, and reminders into one
                 board, then quietly surfaces what’s closest. Built to feel less like a
                 to-do app and more like seeing the shape of the week at a glance.
               </p>
+              <div class="work-gallery" role="region" aria-label="Kiwido screens" tabindex="0">
+                <div class="work-shot"><span class="work-shot-label">Screen 01 · 4:5</span></div>
+                <div class="work-shot"><span class="work-shot-label">Screen 02 · 4:5</span></div>
+                <div class="work-shot"><span class="work-shot-label">Screen 03 · 4:5</span></div>
+                <div class="work-shot"><span class="work-shot-label">Screen 04 · 4:5</span></div>
+              </div>
             </li>
             <li class="work-row" data-reveal>
-              <div class="work-meta">
+              <div class="work-lede">
                 <span class="work-icon" data-app="upkeeper" aria-hidden="true"></span>
-                <span class="work-tag">Memory</span>
-              </div>
-              <div class="work-row-body">
-                <h3 class="work-title">Upkeeper</h3>
-                <p class="work-subtitle">Recurring care</p>
+                <div class="work-row-body">
+                  <h3 class="work-title">Upkeeper</h3>
+                  <p class="work-subtitle">Recurring care</p>
+                </div>
               </div>
               <p class="work-blurb">
                 A quiet way to keep track of the small recurring things: plants
                 watered, filters changed, pets cared for. Note the days it happens,
                 and Upkeeper learns the pattern and nudges gently, not sternly.
               </p>
+              <div class="work-gallery" role="region" aria-label="Upkeeper screens" tabindex="0">
+                <div class="work-shot"><span class="work-shot-label">Screen 01 · 4:5</span></div>
+                <div class="work-shot"><span class="work-shot-label">Screen 02 · 4:5</span></div>
+                <div class="work-shot"><span class="work-shot-label">Screen 03 · 4:5</span></div>
+                <div class="work-shot"><span class="work-shot-label">Screen 04 · 4:5</span></div>
+              </div>
             </li>
           </ul>
         </div>

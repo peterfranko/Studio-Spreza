@@ -31,7 +31,9 @@
     --color-accent: #5c5344;
     --color-border-subtle: rgba(22, 20, 16, 0.1);
     --color-border-strong: rgba(22, 20, 16, 0.18);
-    --color-focus-ring: rgba(92, 83, 68, 0.45);
+    /* Alpha raised from 0.45: the ring blended to ~2.05:1 on paper, under the
+       3:1 WCAG 1.4.11 floor for non-text indicators. */
+    --color-focus-ring: rgba(92, 83, 68, 0.8);
 
     /* ─── Typography ─── */
     --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
@@ -140,7 +142,7 @@
     --color-accent: #c9bca8;
     --color-border-subtle: rgba(242, 235, 224, 0.09);
     --color-border-strong: rgba(242, 235, 224, 0.16);
-    --color-focus-ring: rgba(201, 188, 168, 0.5);
+    --color-focus-ring: rgba(201, 188, 168, 0.7);
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
     --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
     color-scheme: dark;
@@ -156,7 +158,7 @@
       --color-accent: #c9bca8;
       --color-border-subtle: rgba(242, 235, 224, 0.09);
       --color-border-strong: rgba(242, 235, 224, 0.16);
-      --color-focus-ring: rgba(201, 188, 168, 0.5);
+      --color-focus-ring: rgba(201, 188, 168, 0.7);
       --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
       --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
       color-scheme: dark;
@@ -292,6 +294,13 @@
     z-index: var(--z-raised);
   }
 
+  /* Clears the sticky header on anchor jumps. Section padding used to absorb
+     the overlap by accident; it no longer has the depth to spare. */
+  .section,
+  main#main {
+    scroll-margin-top: 5rem;
+  }
+
   .section {
     padding-block: var(--space-section-lg);
   }
@@ -318,6 +327,16 @@
   [data-reveal].is-visible {
     opacity: 1;
     transform: none;
+  }
+
+  /* The reveal hides content until main.js marks it visible, so without
+     scripting everything below the hero stays at opacity 0. Paired with a
+     <noscript> block in the head for engines that do not support this query. */
+  @media (scripting: none) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   /* ─── Site header ─── */
@@ -408,16 +427,20 @@
     transform: translateY(-5px) rotate(-45deg);
   }
 
+  /* Open state is a class, not the [hidden] attribute. The desktop rule below
+     needs the panel shown, and overriding [hidden] with display left the nav
+     declared irrelevant and rendered at the same time. */
   .site-menu {
     position: absolute;
     inset: 100% 0 auto 0;
     background: var(--color-surface-base);
     border-bottom: 1px solid var(--color-border-subtle);
     z-index: var(--z-menu);
+    display: none;
   }
 
-  .site-menu[hidden] {
-    display: none;
+  .site-menu.is-open {
+    display: block;
   }
 
   .site-menu-inner {
@@ -465,15 +488,15 @@
   }
 
   /* From 820px the three links sit in the header row and the disclosure button
-     retires. Overrides [hidden] so a menu left open on a narrow viewport does
-     not vanish when the window widens. */
+     retires. Matches .is-open as well as the base state, so a menu toggled on a
+     narrow viewport stays correct when the window widens. */
   @media (min-width: 820px) {
     .menu-toggle {
       display: none;
     }
 
     .site-menu,
-    .site-menu[hidden] {
+    .site-menu.is-open {
       display: block;
       position: static;
       background: transparent;
@@ -593,12 +616,6 @@
   .hero-content {
     position: relative;
     z-index: var(--z-raised);
-  }
-
-  .hero-header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-9);
   }
 
   .hero-copy {
@@ -859,25 +876,95 @@
     border-bottom: 1px solid var(--color-border-subtle);
   }
 
+  /* Same span-1-2 / track-3 shape as belief, the chapter heads and contact, so
+     the blurb stays in the page-wide right column. Source order is name, blurb,
+     shot (best for narrow screens); the grid re-places them when there is room. */
   @media (min-width: 820px) {
     .work-row {
       grid-template-columns: var(--grid-columns);
-      gap: var(--grid-gap);
-      align-items: baseline;
+      column-gap: var(--grid-gap);
+      row-gap: var(--space-9);
+      align-items: start;
+    }
+
+    .work-lede {
+      grid-column: 1 / 3;
+      grid-row: 1;
+    }
+
+    .work-blurb {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    /* Gallery breaks the 3-track grid and spans the full content width: an
+       h-scroll needs the room, and the strip reads as its own band under the
+       name and copy, the way a store listing does. */
+    .work-gallery {
+      grid-column: 1 / -1;
+      grid-row: 2;
     }
   }
 
-  /* Icon + category share the 9rem column: side by side stacked, stacked wide. */
-  .work-meta {
+  /* Horizontal showcase strip. This part stays when the real frames land.
+     min-inline-size: 0 stops the flex row forcing the grid track wider than
+     the page; tabindex on the container makes it arrow-key scrollable. */
+  .work-gallery {
     display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    align-self: start;
+    gap: var(--grid-gap);
+    min-inline-size: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding-block-end: var(--space-4);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
   }
 
+  .work-gallery:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* PLACEHOLDER — replace each .work-shot with an <img> at 4:5 and delete these
+     two rules. Keep aspect-ratio on the image so the strip reserves its height
+     while the files load. */
+  .work-shot {
+    flex: 0 0 auto;
+    inline-size: min(21rem, 72vw);
+    aspect-ratio: 4 / 5;
+    scroll-snap-align: start;
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+    text-align: center;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    background: color-mix(in oklab, var(--color-text-primary) 3%, transparent);
+  }
+
+  .work-shot-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    line-height: var(--leading-snug);
+    color: var(--color-text-muted);
+  }
+
+  /* Icon sits with the name, not in its own track. Alone in a column it read as
+     a third island with a void either side; paired, it reads as one object. */
+  .work-lede {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  /* 72px is exactly 2x the 144px source, so it stays crisp without new exports. */
   .work-icon {
-    inline-size: 3rem;
-    block-size: 3rem;
+    inline-size: 4.5rem;
+    block-size: 4.5rem;
     flex: none;
     background-repeat: no-repeat;
     background-position: center;
@@ -890,24 +977,6 @@
 
   .work-icon[data-app='upkeeper'] {
     background-image: var(--app-icon-upkeeper);
-  }
-
-  @media (min-width: 820px) {
-    .work-meta {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-4);
-    }
-  }
-
-  .work-tag {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-regular);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    align-self: start;
   }
 
   .work-row-body {
@@ -1023,9 +1092,10 @@
       0 calc(100% - 0.06em),
       0 calc(100% - 0.06em);
     background-repeat: no-repeat;
+    /* No letter-spacing here: animating it relayouts the text on every hover,
+       and the underline's background-size then chases a moving width. */
     transition:
       background-size var(--duration-slow) var(--ease-default),
-      letter-spacing var(--duration-slow) var(--ease-default),
       transform var(--duration-medium) var(--ease-default);
   }
 
@@ -1034,7 +1104,6 @@
     background-size:
       100% 1px,
       100% 2px;
-    letter-spacing: calc(var(--tracking-lede) + 0.018em);
     transform: translateY(-0.06em);
   }
 
@@ -1053,7 +1122,6 @@
 
   .footer-inner {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
     flex-wrap: wrap;
     gap: var(--space-4) var(--space-6);
@@ -1076,6 +1144,12 @@
     *::after {
       animation: none !important;
       transition: none !important;
+    }
+
+    /* Killing transitions left scroll-behavior: smooth intact, so nav clicks
+       still animated for users who asked for less motion. */
+    html {
+      scroll-behavior: auto;
     }
 
     [data-reveal] {

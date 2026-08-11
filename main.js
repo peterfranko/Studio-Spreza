@@ -7,18 +7,14 @@
       var open = toggle.getAttribute("aria-expanded") === "true";
       toggle.setAttribute("aria-expanded", String(!open));
       toggle.setAttribute("aria-label", open ? "Open menu" : "Close menu");
-      if (open) {
-        panel.setAttribute("hidden", "");
-      } else {
-        panel.removeAttribute("hidden");
-      }
+      panel.classList.toggle("is-open", !open);
     });
 
     panel.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
         toggle.setAttribute("aria-expanded", "false");
         toggle.setAttribute("aria-label", "Open menu");
-        panel.setAttribute("hidden", "");
+        panel.classList.remove("is-open");
       });
     });
   }
