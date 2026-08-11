@@ -22,7 +22,7 @@
       name="twitter:description"
       content="A small app studio shaping calm native tools for planning and everyday memory."
     />
-    <title>Studio Spreza — Boutique App Studio</title>
+    <title>Studio Spreza</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -39,6 +39,16 @@
     <header class="site-header">
       <div class="header-inner">
         <a class="logo" href="#">Studio Spreza</a>
+        <div id="site-menu" class="site-menu" hidden>
+          <div class="site-menu-inner wrap">
+            <p class="site-menu-eyebrow">On this page</p>
+            <nav class="site-menu-nav" aria-label="Primary">
+              <a href="#belief">Story</a>
+              <a href="#work">Apps</a>
+              <a class="site-menu-cta" href="#contact">Contact</a>
+            </nav>
+          </div>
+        </div>
         <button
           class="menu-toggle"
           type="button"
@@ -48,16 +58,6 @@
         >
           <span class="menu-toggle-lines" aria-hidden="true"></span>
         </button>
-      </div>
-      <div id="site-menu" class="site-menu" hidden>
-        <div class="site-menu-inner wrap">
-          <p class="site-menu-eyebrow">On this page</p>
-          <nav class="site-menu-nav" aria-label="Primary">
-            <a href="#belief">Story</a>
-            <a href="#work">Apps</a>
-            <a class="site-menu-cta" href="#contact">Contact</a>
-          </nav>
-        </div>
       </div>
     </header>
 
@@ -78,7 +78,7 @@
               <h1 id="hero-title" class="hero-title" data-reveal>
                 <span class="hero-title-line">Design</span>
                 <span class="hero-title-line hero-title-line--mid">that earns</span>
-                <span class="hero-title-line hero-title-line--sub">the next <em class="hero-em">tap</em></span>
+                <span class="hero-title-line hero-title-line--sub">the next <em class="title-em">tap</em></span>
               </h1>
               <p class="hero-lede" data-reveal>
                 We shape small native tools for planning and everyday memory. Each
@@ -101,7 +101,7 @@
         <div class="wrap narrative-layout">
           <header class="chapter-head" data-reveal>
             <h2 id="belief-title" class="chapter-title">
-              Software should feel like a <span class="title-shade">good host</span>, not a puzzle.
+              Software should feel like a <em class="title-em">good host</em>, not a puzzle.
             </h2>
           </header>
           <div class="belief-prose belief-prose--solo" data-reveal>
@@ -127,7 +127,10 @@
 
           <ul class="work-list">
             <li class="work-row" data-reveal>
-              <span class="work-tag">Planning</span>
+              <div class="work-meta">
+                <span class="work-icon" data-app="kiwido" aria-hidden="true"></span>
+                <span class="work-tag">Planning</span>
+              </div>
               <div class="work-row-body">
                 <h3 class="work-title">Kiwido</h3>
                 <p class="work-subtitle">Week planning</p>
@@ -139,7 +142,10 @@
               </p>
             </li>
             <li class="work-row" data-reveal>
-              <span class="work-tag">Memory</span>
+              <div class="work-meta">
+                <span class="work-icon" data-app="upkeeper" aria-hidden="true"></span>
+                <span class="work-tag">Memory</span>
+              </div>
               <div class="work-row-body">
                 <h3 class="work-title">Upkeeper</h3>
                 <p class="work-subtitle">Recurring care</p>
@@ -164,7 +170,7 @@
             </p>
           </div>
           <div class="contact-panel" data-reveal>
-            <a class="contact-email" href="mailto:hello@studiospreza.com">hello@studiospreza.com</a>
+            <a class="contact-email" href="mailto:hey@studiospreza.com">hey@studiospreza.com</a>
             <p class="contact-note">
               Prefer a call? Mention your timezone and a few windows. We’ll suggest
               something that works for both sides.
