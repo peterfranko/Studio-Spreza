@@ -32,6 +32,101 @@
    Reveal hook: [data-reveal] → .is-visible (set by main.js).
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   METRIC-MATCHED FALLBACK  (2026-08-11)
+
+   Geist arrives from Google Fonts with display=swap, so every first visit
+   paints in a system sans and then swaps. These faces reshape local Arial to
+   occupy Geist's exact box — same line box, same advance widths — so the swap
+   changes glyphs and nothing else. Nothing is downloaded; local() only ever
+   matches an already-installed font.
+
+   What this actually buys, measured rather than assumed. Sweeping every body
+   paragraph across viewport widths 320-760px (315 combinations), the number
+   that wrap to a different line count than Geist:
+
+     unmatched system stack / plain Arial ....  25  (7.9%)
+     metric-matched fallback ................    3  (1.0%)
+
+   Every one of those rewraps is a whole line of shift that cascades down the
+   page, and they cluster at 320-360px: phone widths, where the measure is
+   narrowest and paragraphs sit closest to a wrap boundary. This is a mobile
+   fix far more than a desktop one.
+
+   The vertical half of the override earns nothing on this site today, because
+   every text rule sets an explicit unitless line-height, so the line box comes
+   from font-size x ratio and never from the font's own ascent and descent. It
+   is still correct to declare: it costs nothing and it covers any element that
+   later inherits a normal line-height.
+
+   Deliberately one face per weight. size-adjust runs 102.81% at 400 to
+   107.63% at 600 (a 4.82pt spread), because Geist gets wider as it gets
+   heavier while the Arial standing in for it does not. A single shared
+   fallback would leave headings measurably wrong.
+
+   size-adjust is measured in the browser against this site's own copy, not
+   derived from OS/2 tables. The offline frequency-weighted estimate came out
+   ~3% wide on every face: it averages lowercase only, and the real mix of
+   capitals, digits and punctuation moves the ratio. Vertical overrides do
+   come from the font tables (Geist sets USE_TYPO_METRICS, so its OS/2 typo
+   ascent 1.005 / descent 0.295 / lineGap 0 are what browsers read) divided
+   by the measured size-adjust.
+
+   src stays Arial Regular on every face on purpose. The font-weight
+   descriptor tells the browser this face *is* that weight, so it will not
+   synthesise bold, and each size-adjust above was measured against Arial
+   Regular's advance widths. Fallback text looks slightly light for the swap
+   interval and occupies the right box, which is the trade we want.
+
+   REGENERATE after any change to the family, the weights used, or the
+   fallback stack — the numbers are specific to Geist v5 vs Arial:
+     .font-lab/metrics.py  (needs fonttools + brotli)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Geist Fallback';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  ascent-override: 97.76%;
+  descent-override: 28.69%;
+  line-gap-override: 0%;
+  size-adjust: 102.81%;
+}
+
+@font-face {
+  font-family: 'Geist Fallback';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  ascent-override: 95.51%;
+  descent-override: 28.04%;
+  line-gap-override: 0%;
+  size-adjust: 105.22%;
+}
+
+@font-face {
+  font-family: 'Geist Fallback';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  ascent-override: 93.37%;
+  descent-override: 27.41%;
+  line-gap-override: 0%;
+  size-adjust: 107.63%;
+}
+
+@font-face {
+  font-family: 'Geist Fallback';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  ascent-override: 99.57%;
+  descent-override: 29.23%;
+  line-gap-override: 0%;
+  size-adjust: 100.94%;
+}
+
 @layer tokens {
   :root {
     /* ─── Color (semantic) ─── */
@@ -70,7 +165,10 @@
        heading steps. Geist has a much larger x-height, so it renders visibly
        bigger and heavier at an identical font-size; keeping the old numbers
        made every headline shout. */
-    --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* 'Geist Fallback' must sit directly behind Geist: it is the metric-matched
+       stand-in declared above, and everything after it is an unmatched last
+       resort for platforms with no Arial-compatible face installed. */
+    --font-sans: 'Geist', 'Geist Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
     /* Renamed from --font-weight-light/regular/medium, which mapped to
        400/500/600 and so described every weight one step lighter than it was.
@@ -991,9 +1089,12 @@
 
   /* Icon sits with the name, not in its own track. Alone in a column it read as
      a third island with a void either side; paired, it reads as one object. */
+  /* Top-aligned, not centred. Centring worked when the body was two short
+     lines; with the store badge below them the icon drifted down beside the
+     subtitle and read as detached from the name it belongs to. */
   .work-lede {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-6);
   }
 
@@ -1034,6 +1135,32 @@
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* PLACEHOLDER — replace each .work-store with Apple's official "Download on
+     the App Store" badge wrapped in an <a> to the listing, then delete these
+     two rules. The box is Apple's standard 156x52 badge size, held here so the
+     row does not reflow when the real artwork lands. Neither app has a listing
+     yet, so this reserves the slot without making a launch claim. */
+  .work-store {
+    inline-size: 9.75rem;
+    block-size: 3.25rem;
+    margin-top: var(--space-4);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    background: color-mix(in oklab, var(--color-text-primary) 3%, transparent);
+  }
+
+  .work-store-label {
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps-wide);
+    text-transform: uppercase;
+    line-height: var(--leading-snug);
     color: var(--color-text-muted);
   }
 
