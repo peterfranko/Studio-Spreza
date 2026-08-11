@@ -458,15 +458,6 @@
     transform: translateX(0.35rem);
   }
 
-  .site-menu-link-num {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-light);
-    letter-spacing: var(--tracking-caps);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-  }
-
   .site-menu-cta {
     border-top: 1px solid var(--color-border-subtle);
     padding-top: var(--space-5);
@@ -599,10 +590,6 @@
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
   }
 
-  .hero-mesh {
-    display: none;
-  }
-
   .hero-content {
     position: relative;
     z-index: var(--z-raised);
@@ -612,10 +599,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-9);
-  }
-
-  .hero-eyebrow {
-    margin-bottom: 0;
   }
 
   .hero-copy {
@@ -703,17 +686,6 @@
     border-color: var(--color-accent);
   }
 
-  .btn-ghost {
-    background: transparent;
-    color: var(--color-text-primary);
-    border-color: var(--color-border-strong);
-  }
-
-  .btn-ghost:hover,
-  .btn-ghost:focus-visible {
-    border-color: var(--color-text-primary);
-  }
-
   /* ─── Scroll cue ─── */
   .scroll-cue {
     margin-top: var(--space-9);
@@ -786,24 +758,6 @@
     }
   }
 
-  .chapter-label {
-    display: inline-flex;
-    align-items: baseline;
-    gap: var(--space-4);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-regular);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-6);
-  }
-
-  .chapter-num {
-    color: var(--color-text-primary);
-    font-weight: var(--font-weight-medium);
-  }
-
   .chapter-title {
     font-family: var(--font-serif);
     font-weight: var(--font-weight-light);
@@ -829,11 +783,7 @@
     margin-top: var(--space-5);
   }
 
-  .chapter-dek--narrow {
-    max-width: 34rem;
-  }
-
-  /* ─── Belief / thesis (single column, prose-led) ─── */
+  /* ─── Belief / thesis ─── */
   .narrative-layout {
     display: flex;
     flex-direction: column;
@@ -1040,7 +990,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
-    padding-top: var(--space-3);
     border-top: 1px solid var(--color-border-strong);
     padding-block: var(--space-7) 0;
   }
