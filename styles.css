@@ -479,13 +479,22 @@
 
   /* ─── Site header ─── */
   .site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    inset-inline: 0;
     z-index: var(--z-header);
-    background: color-mix(in oklab, var(--color-surface-base) 86%, transparent);
-    backdrop-filter: saturate(140%) blur(10px);
-    -webkit-backdrop-filter: saturate(140%) blur(10px);
-    border-bottom: 1px solid var(--color-border-subtle);
+    background: color-mix(
+      in oklab,
+      var(--color-surface-base) var(--header-surface-alpha, 0%),
+      transparent
+    );
+    backdrop-filter: saturate(140%) blur(var(--header-blur, 0px));
+    -webkit-backdrop-filter: saturate(140%) blur(var(--header-blur, 0px));
+    border-bottom: 1px solid color-mix(
+      in oklab,
+      var(--color-border-subtle) var(--header-border-alpha, 0%),
+      transparent
+    );
   }
 
   .header-inner {
@@ -494,8 +503,6 @@
     padding: var(--space-4) var(--space-gutter-x);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-5);
   }
 
   .logo {
@@ -503,39 +510,24 @@
     font-size: var(--text-body);
     letter-spacing: var(--tracking-snug);
     color: var(--color-text-primary);
-  }
-
-  .header-contact {
-    min-block-size: 2.75rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding-inline: var(--space-4);
-    border: 1px solid transparent;
-    border-radius: var(--radius-pill);
-    font-size: var(--text-label);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-    line-height: var(--leading-snug);
-    color: var(--color-text-secondary);
+    opacity: var(--brand-progress, 0);
+    filter: blur(var(--brand-inverse-blur, 10px));
+    transform: translateY(var(--brand-settle-offset, 0.5rem));
     transition:
-      color var(--duration-fast) var(--ease-out),
-      border-color var(--duration-fast) var(--ease-out),
-      background var(--duration-fast) var(--ease-out);
+      opacity var(--duration-fast) var(--ease-out),
+      filter var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+    pointer-events: none;
   }
 
-  .header-contact:hover,
-  .header-contact:focus-visible {
-    color: var(--color-text-primary);
-    border-color: var(--color-border-strong);
-    background: color-mix(in oklab, var(--color-text-primary) 3%, transparent);
+  .has-compact-brand .logo {
+    pointer-events: auto;
   }
 
   /* ─── Hero ─── */
   .hero {
     position: relative;
-    padding-block: clamp(3.25rem, 7vw, 5.5rem) clamp(2rem, 4vw, 3.5rem);
+    padding-block: clamp(7.5rem, 15vw, 12rem) clamp(3rem, 7vw, 5.5rem);
     overflow: hidden;
     isolation: isolate;
   }
@@ -575,71 +567,25 @@
     max-width: 56rem;
   }
 
+  .brand-wordmark {
+    font-family: var(--font-sans);
+  }
+
   .hero-title {
     font-weight: var(--font-weight-medium);
     font-size: var(--text-display);
     line-height: var(--leading-none);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
-    margin-bottom: var(--space-7);
-  }
-
-  .hero-title-line {
-    display: block;
-  }
-
-  .hero-lede {
-    font-size: var(--text-body-lg);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-    max-width: var(--layout-measure-narrow);
-    margin-bottom: var(--space-9);
-    font-weight: var(--font-weight-regular);
-    letter-spacing: var(--tracking-snug);
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    align-items: center;
-  }
-
-  /* ─── Buttons ─── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: 0.6rem var(--space-6);
-    font-size: var(--text-label);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-    border-radius: var(--radius-pill);
-    border: 1px solid transparent;
+    opacity: var(--hero-brand-opacity, 1);
+    filter: blur(var(--brand-blur, 0px));
+    transform: translateY(var(--hero-brand-offset, 0)) scale(var(--hero-brand-scale, 1));
+    transform-origin: left top;
+    will-change: opacity, filter, transform;
     transition:
-      color var(--duration-fast) var(--ease-out),
-      background var(--duration-fast) var(--ease-out),
-      border-color var(--duration-fast) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-out),
+      filter var(--duration-fast) var(--ease-out),
       transform var(--duration-medium) var(--ease-default);
-    width: fit-content;
-  }
-
-  .btn:hover,
-  .btn:focus-visible {
-    transform: translateY(-0.08rem);
-  }
-
-  .btn-primary {
-    background: var(--color-text-primary);
-    color: var(--color-surface-base);
-    border-color: var(--color-text-primary);
-  }
-
-  .btn-primary:hover,
-  .btn-primary:focus-visible {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
   }
 
   /* ─── Chapter heads ─── */
@@ -678,13 +624,6 @@
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
     max-width: var(--layout-measure);
-  }
-
-  /* One emphasis device for every headline: italic, at full strength. Replaces
-     .title-shade (italic + dimmed) and .hero-em (italic + brightened), which
-     were two contradictory treatments for the same job. */
-  .title-em {
-    font-style: italic;
   }
 
   .chapter-dek {
