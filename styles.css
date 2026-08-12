@@ -678,21 +678,23 @@
     }
   }
 
-  /* Horizontal showcase strip. This part stays when the real frames land.
-     min-inline-size: 0 stops the flex row forcing the grid track wider than
-     the page; tabindex on the container makes it arrow-key scrollable. */
+  /* Horizontal showcase strip. The scrollport reaches the viewport edges while
+     edge margins preserve the first screen's content-column start position. */
   .work-gallery {
+    --gallery-edge-inset: max(var(--space-gutter-x), calc((100vw - var(--layout-measure-wide)) / 2));
+
     display: flex;
     gap: var(--grid-gap);
+    inline-size: 100vw;
+    margin-inline-start: calc(-1 * var(--gallery-edge-inset));
     min-inline-size: 0;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gallery-edge-inset);
     padding-block-end: var(--space-4);
     scrollbar-width: thin;
     scrollbar-color: var(--color-border-strong) transparent;
-    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 3.5rem), transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 3.5rem), transparent 100%);
   }
 
   .work-gallery:focus-visible {
@@ -715,6 +717,14 @@
     border-radius: clamp(1.9rem, 8.5vw, 3.15rem);
     background: var(--color-surface-elevated);
     isolation: isolate;
+  }
+
+  .work-shot:first-child {
+    margin-inline-start: var(--gallery-edge-inset);
+  }
+
+  .work-shot:last-child {
+    margin-inline-end: var(--gallery-edge-inset);
   }
 
   .work-shot-image {
