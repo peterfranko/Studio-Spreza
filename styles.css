@@ -701,30 +701,27 @@
     border-radius: var(--radius-xs);
   }
 
-  /* Horizontal showcase media. Real frames use the tall phone export ratio. */
+  /* Horizontal showcase media. Frames use the iPhone 17 Pro display ratio
+     (1206 x 2622), so future rectangular exports inherit the same screen mask. */
   .work-shot {
     flex: 0 0 auto;
+    inline-size: min(24rem, 88vw);
+    aspect-ratio: 1206 / 2622;
     scroll-snap-align: start;
-    border-radius: var(--radius-xs);
-  }
-
-  .work-shot:not(img) {
-    inline-size: min(21rem, 72vw);
-    aspect-ratio: 4 / 5;
-    display: grid;
-    place-items: center;
-    padding: var(--space-6);
-    text-align: center;
-    border: 1px dashed var(--color-border-strong);
-    background: color-mix(in oklab, var(--color-text-primary) 3%, transparent);
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklab, var(--color-text-primary) 16%, transparent);
+    border-radius: clamp(1.9rem, 8.5vw, 3.15rem);
+    background: var(--color-surface-elevated);
+    isolation: isolate;
   }
 
   .work-shot-image {
-    inline-size: min(24rem, 88vw);
-    aspect-ratio: 1608 / 3496;
+    inline-size: 100%;
+    block-size: 100%;
     display: block;
-    block-size: auto;
-    object-fit: contain;
+    object-fit: cover;
     background: transparent;
   }
 
