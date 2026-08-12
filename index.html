@@ -23,6 +23,7 @@
       content="A small app studio shaping calm native tools for planning and everyday memory."
     />
     <title>Studio Spreza</title>
+    <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -46,7 +47,7 @@
 
     <header class="site-header">
       <div class="header-inner">
-        <a class="logo" href="#">Studio Spreza</a>
+        <a class="logo" href="/">Studio Spreza</a>
         <div id="site-menu" class="site-menu">
           <div class="site-menu-inner wrap">
             <p class="site-menu-eyebrow">On this page</p>
@@ -139,16 +140,21 @@
                 <div class="work-row-body">
                   <h3 class="work-title">Kiwido</h3>
                   <p class="work-subtitle">Week planning</p>
-                  <div class="work-store">
-                    <span class="work-store-label">Launch badge slot</span>
-                  </div>
+                  <p class="work-meta">Native week board · iPhone and Mac</p>
+                  <p class="work-status">In development</p>
                 </div>
               </div>
               <p class="work-blurb">
-                A weekly view that pulls your tasks, calendar, and reminders into one
-                board, then quietly surfaces what’s closest. Built to feel less like a
-                to-do app and more like seeing the shape of the week at a glance.
+                A weekly surface that brings local tasks together with Calendar
+                events and Reminders, then quietly surfaces what’s closest. Built to
+                feel less like a to-do app and more like seeing the shape of the week
+                at a glance.
               </p>
+              <ul class="work-proof-list" aria-label="Kiwido product details">
+                <li>Calendar and Reminders integration</li>
+                <li>Next Up agenda</li>
+                <li>Weather context</li>
+              </ul>
               <div class="work-gallery" role="region" aria-label="Kiwido screens" tabindex="0">
                 <img class="work-shot work-shot-image" src="assets/kiwido-h-scroll/Kiwi-01.png" width="1608" height="3496" loading="lazy" decoding="async" alt="Kiwido week board with tasks, calendar items, reminders, and weather context." />
                 <img class="work-shot work-shot-image" src="assets/kiwido-h-scroll/Kiwi-02.png" width="1608" height="3496" loading="lazy" decoding="async" alt="Kiwido Perfect Days stats showing a completion streak and activity heatmap." />
@@ -164,9 +170,8 @@
                 <div class="work-row-body">
                   <h3 class="work-title">Upkeeper</h3>
                   <p class="work-subtitle">Recurring care</p>
-                  <div class="work-store">
-                    <span class="work-store-label">Launch badge slot</span>
-                  </div>
+                  <p class="work-meta">Recurring upkeep ledger · iPhone, iPad, Mac</p>
+                  <p class="work-status">Private preview</p>
                 </div>
               </div>
               <p class="work-blurb">
@@ -174,49 +179,16 @@
                 watered, filters changed, pets cared for. Note the days it happens,
                 and Upkeeper learns the pattern and nudges gently, not sternly.
               </p>
+              <ul class="work-proof-list" aria-label="Upkeeper product details">
+                <li>One-tap logs</li>
+                <li>Learned rhythm</li>
+                <li>Gentle nudges</li>
+              </ul>
               <div class="work-gallery" role="region" aria-label="Upkeeper screens" tabindex="0">
-                <div class="work-shot">
-                  <span class="work-shot-label">
-                    <span class="work-shot-kicker">Raw screenshot 01</span>
-                    <span class="work-shot-title">Home status</span>
-                    <span class="work-shot-note">Dashboard plus Next, Needs Care, Coming Up, Learning, or All Good sections.</span>
-                  </span>
-                </div>
-                <div class="work-shot">
-                  <span class="work-shot-label">
-                    <span class="work-shot-kicker">Raw screenshot 02</span>
-                    <span class="work-shot-title">Add Action</span>
-                    <span class="work-shot-note">The once-per-item capture flow with name and curated icon choice.</span>
-                  </span>
-                </div>
-                <div class="work-shot">
-                  <span class="work-shot-label">
-                    <span class="work-shot-kicker">Cropped detail 03</span>
-                    <span class="work-shot-title">Log Today</span>
-                    <span class="work-shot-note">A just-logged Action, filled check affordance, snackbar, or Done Today move.</span>
-                  </span>
-                </div>
-                <div class="work-shot">
-                  <span class="work-shot-label">
-                    <span class="work-shot-kicker">Raw screenshot 04</span>
-                    <span class="work-shot-title">Detail and history</span>
-                    <span class="work-shot-note">Rhythm, editable log days, archive controls, and history as context.</span>
-                  </span>
-                </div>
-                <div class="work-shot">
-                  <span class="work-shot-label">
-                    <span class="work-shot-kicker">Cropped detail 05</span>
-                    <span class="work-shot-title">Gentle nudges</span>
-                    <span class="work-shot-note">Reminder readiness, learned cadence, target rate, or next check-in copy.</span>
-                  </span>
-                </div>
-                <div class="work-shot">
-                  <span class="work-shot-label">
-                    <span class="work-shot-kicker">Raw screenshot 06</span>
-                    <span class="work-shot-title">Status overview</span>
-                    <span class="work-shot-note">Full Stats surface with distribution, upcoming windows, logs, and insights.</span>
-                  </span>
-                </div>
+                <img class="work-shot work-shot-image" src="assets/upkeeper-screens/upkeeper-home.png" width="1206" height="2346" loading="lazy" decoding="async" alt="Upkeeper Home showing due now, next, and coming up upkeep actions with rhythm bars." />
+                <img class="work-shot work-shot-image" src="assets/upkeeper-screens/upkeeper-status.png" width="1206" height="2346" loading="lazy" decoding="async" alt="Upkeeper Status sheet showing needs-care actions, distribution, and next two weeks overview." />
+                <img class="work-shot work-shot-image" src="assets/upkeeper-screens/upkeeper-add-action.png" width="1206" height="2346" loading="lazy" decoding="async" alt="Upkeeper Add Action sheet with a single action name field and create action button." />
+                <img class="work-shot work-shot-image" src="assets/upkeeper-screens/upkeeper-detail.png" width="1206" height="2346" loading="lazy" decoding="async" alt="Upkeeper Detail sheet showing last logged date, icon, rhythm, reminders, and log controls." />
               </div>
             </li>
           </ul>
@@ -228,8 +200,8 @@
           <div class="contact-preamble" data-reveal>
             <h2 id="contact-title" class="contact-title">Say hello</h2>
             <p class="contact-lede">
-              Press, odd ideas, or a note about the studio. We read everything and
-              usually reply within a few business days.
+              Press, beta interest, odd ideas, or a note about the studio. We read
+              everything and usually reply within a few business days.
             </p>
           </div>
           <div class="contact-panel" data-reveal>
