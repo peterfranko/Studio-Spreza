@@ -964,9 +964,10 @@
     align-items: baseline;
     flex-wrap: wrap;
     gap: var(--space-4) var(--space-6);
-    font-size: var(--text-body);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--leading-body);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0;
+    text-transform: none;
     color: var(--color-text-muted);
   }
 
