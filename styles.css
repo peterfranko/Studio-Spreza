@@ -988,6 +988,27 @@
     color: var(--color-text-muted);
   }
 
+  /* Sits to the right of the brand on wide viewports and wraps under it on
+     narrow ones, which is what footer-inner's flex-wrap already does. */
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-6);
+    margin-inline-start: auto;
+  }
+
+  .footer-links a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .footer-links a:hover,
+  .footer-links a:focus-visible {
+    color: var(--color-text-primary);
+    border-bottom-color: currentColor;
+  }
+
   /* ─── Reduced motion ─── */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -1007,5 +1028,102 @@
       opacity: 1;
       transform: none;
     }
+  }
+
+  /* ─── Legal pages (/privacy/*) ─── */
+  /* Deliberately not using [data-reveal]: a policy has to be readable with
+     JavaScript off, and these pages do not load main.js. */
+  .legal {
+    max-width: var(--layout-measure);
+    padding-block: var(--space-section-lg);
+  }
+
+  .legal-back {
+    display: inline-block;
+    margin-block-end: var(--space-10);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .legal-back:hover,
+  .legal-back:focus-visible {
+    color: var(--color-text-primary);
+    border-bottom-color: currentColor;
+  }
+
+  .legal-title {
+    font-size: var(--text-chapter);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-block-end: var(--space-4);
+  }
+
+  .legal-meta {
+    font-size: var(--text-label);
+    color: var(--color-text-muted);
+    margin-block-end: var(--space-12);
+  }
+
+  .legal-lede {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-body);
+    margin-block-end: var(--space-12);
+  }
+
+  .legal h2 {
+    font-size: var(--text-work-title);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-snug);
+    margin-block: var(--space-12) var(--space-5);
+    padding-block-start: var(--space-10);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .legal h2:first-of-type {
+    margin-block-start: 0;
+  }
+
+  .legal p,
+  .legal li {
+    line-height: var(--leading-relaxed);
+  }
+
+  .legal p + p,
+  .legal ul + p {
+    margin-block-start: var(--space-5);
+  }
+
+  /* The base reset strips list markers site-wide, which is right for the nav
+     and card lists but wrong here: these are read as lists, not as layout. */
+  .legal ul {
+    margin-block-start: var(--space-5);
+    padding-inline-start: var(--space-6);
+    list-style: disc outside;
+  }
+
+  .legal li::marker {
+    color: var(--color-text-muted);
+  }
+
+  .legal li + li {
+    margin-block-start: var(--space-4);
+  }
+
+  .legal a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  .legal a:hover,
+  .legal a:focus-visible {
+    color: var(--color-text-muted);
   }
 }
