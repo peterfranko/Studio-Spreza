@@ -588,6 +588,15 @@
       transform var(--duration-medium) var(--ease-default);
   }
 
+  .hero-subtitle {
+    max-width: 26rem;
+    margin-top: var(--space-6);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text-secondary);
+  }
+
   /* ─── Chapter heads ─── */
   .chapter-head {
     max-width: var(--layout-measure);
@@ -703,28 +712,44 @@
     border-radius: var(--radius-xs);
   }
 
+  .work-showcase-item {
+    flex: 0 0 auto;
+    inline-size: min(24rem, 88vw);
+    display: grid;
+    gap: var(--space-4);
+    scroll-snap-align: start;
+  }
+
+  .work-showcase-item:first-child {
+    margin-inline-start: var(--gallery-edge-inset);
+  }
+
+  .work-showcase-item:last-child {
+    margin-inline-end: var(--gallery-edge-inset);
+  }
+
+  .work-shot-label {
+    text-align: center;
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-caps-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
   /* Horizontal showcase media. Frames use the iPhone 17 Pro display ratio
      (1206 x 2622), so future rectangular exports inherit the same screen mask. */
   .work-shot {
-    flex: 0 0 auto;
-    inline-size: min(24rem, 88vw);
-    aspect-ratio: 1206 / 2622;
-    scroll-snap-align: start;
-    position: relative;
     display: block;
+    inline-size: 100%;
+    aspect-ratio: 1206 / 2622;
+    position: relative;
     overflow: hidden;
     border: 1px solid color-mix(in oklab, var(--color-text-primary) 16%, transparent);
     border-radius: clamp(1.9rem, 8.5vw, 3.15rem);
     background: var(--color-surface-elevated);
     isolation: isolate;
-  }
-
-  .work-shot:first-child {
-    margin-inline-start: var(--gallery-edge-inset);
-  }
-
-  .work-shot:last-child {
-    margin-inline-end: var(--gallery-edge-inset);
   }
 
   .work-shot-image {
@@ -733,16 +758,6 @@
     display: block;
     object-fit: cover;
     background: transparent;
-  }
-
-  .work-shot-label {
-    display: grid;
-    gap: var(--space-3);
-    max-width: 17rem;
-    font-size: var(--text-label);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--leading-snug);
-    color: var(--color-text-muted);
   }
 
   .work-shot-kicker,
