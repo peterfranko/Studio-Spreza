@@ -800,6 +800,54 @@
     background: transparent;
   }
 
+  /* Light and dark captures of the same screen, stacked and cross-faded.
+     The shot shows the app in the scheme the reader is already in.
+
+     Two stacked <img> rather than <picture> with a media source, because the
+     site carries an explicit `data-theme` attribute and <picture> can only see
+     `prefers-color-scheme`. Stacked images also fade; a <picture> swap cuts.
+
+     Both frames are lazy-loaded, so a slot costs two requests. That is the
+     price of the effect and it is why the exports are WebP at 768px: about
+     45KB each rather than 260KB as PNG. See Scripts/publish-showcase-to-site.sh.
+
+     The global prefers-reduced-motion rule below already kills every
+     transition, so the swap becomes an instant cut for anyone who asked for
+     less motion. Nothing extra is needed here. */
+  .work-shot-image[data-scheme] {
+    position: absolute;
+    inset: 0;
+    transition: opacity var(--duration-medium) var(--ease-out);
+  }
+
+  .work-shot-image[data-scheme='light'] {
+    opacity: 1;
+  }
+
+  .work-shot-image[data-scheme='dark'] {
+    opacity: 0;
+  }
+
+  html[data-theme='dark'] .work-shot-image[data-scheme='light'] {
+    opacity: 0;
+  }
+
+  html[data-theme='dark'] .work-shot-image[data-scheme='dark'] {
+    opacity: 1;
+  }
+
+  /* `:not([data-theme])` so an explicit light choice still wins on a machine
+     whose system is dark. Same three-state shape as the colour tokens. */
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme]) .work-shot-image[data-scheme='light'] {
+      opacity: 0;
+    }
+
+    html:not([data-theme]) .work-shot-image[data-scheme='dark'] {
+      opacity: 1;
+    }
+  }
+
   .work-shot-kicker,
   .work-shot-title {
     letter-spacing: var(--tracking-caps-wide);
@@ -819,17 +867,22 @@
     color: var(--color-text-secondary);
   }
 
+  /* `center`, not `flex-start`, and at every width.
+     The icon is 4.5rem and the two-line name-and-tagline block is about 3.4rem,
+     so top-aligning them hung the icon 8.5px below the text's centre — visible
+     on all three rows, and the reason the shelf looked off. The wide layout had
+     always centred; only the narrow one did not, so this is the narrow case
+     catching up rather than a new decision. */
   .work-lede {
     display: grid;
     grid-template-columns: 4.5rem minmax(0, 1fr);
-    align-items: flex-start;
+    align-items: center;
     gap: var(--space-6);
   }
 
   @media (min-width: 820px) {
     .work-lede {
       grid-template-columns: 4.5rem minmax(0, 1fr) auto;
-      align-items: center;
       grid-column: 1 / -1;
     }
   }

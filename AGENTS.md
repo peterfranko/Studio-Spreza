@@ -25,3 +25,65 @@ Apps are upstream truth; this site is downstream. Keep local site docs lean. Rou
 **Before done:** `@compass-update-check` — verify claims against app source; update assessment or COMPASS if public story changed.
 
 Do not invent app claims from marketing copy alone.
+
+## The showcase shelves carry both schemes (added 2026-09-08)
+
+Peter: *"showcase screenshots showing light and dark mode UI variations dependent on whether the site
+is being shown in light / dark mode, with a seamless fade transition."*
+
+**Each slot holds two images, stacked and cross-faded on opacity.** The one matching the reader's
+scheme is at full opacity and the other at zero, and the swap rides a 0.35s ease-out.
+
+**Not `<picture>` with a `media` source**, which is the obvious answer and the wrong one here. The
+site carries an explicit `data-theme` attribute and `<picture>` can only see `prefers-color-scheme`,
+so a reader who ever gets a theme toggle would see the wrong screenshots. Stacked images also fade;
+a `<picture>` source swap cuts.
+
+**Three states, the same shape as the colour tokens:** bare `:root` for light, `html[data-theme]`
+for an explicit choice, and `prefers-color-scheme` guarded by `html:not([data-theme])` so an explicit
+light choice still wins on a dark machine.
+
+**Reduced motion needs nothing.** The global rule already kills every transition, so the swap becomes
+an instant cut.
+
+### Accessibility: one name for the pair
+
+The `.work-shot` span carries `role="img"` and the `aria-label`; **both images carry `alt=""`**. A
+screen reader announcing two alt texts for one screenshot, one of them invisible, is worse than none.
+
+### The pipeline
+
+| Step | Command |
+| --- | --- |
+| Photograph the apps | `Scripts/capture-showcase.sh --app <name>` |
+| Install into this site | `Scripts/publish-showcase-to-site.sh [app...]` |
+
+The publisher writes **stable names** — `assets/<app>-h-scroll/<app>-0N-{light,dark}.webp` — so the
+markup never changes and a re-shoot is two commands with no HTML edit. It picks which capture lands
+in which slot; the labels live here in `index.html`.
+
+**WebP at 768px**, because `.work-showcase-item` is at most 24rem and there are thirty of these. A
+frame is roughly 45KB as WebP against 260KB as PNG, and every slot loads two.
+
+**Labels changed with the images**, since a slot cannot be called *Rhythm setup* while showing the
+status page. *Month view* went with them: the Month tier was shelved, so the slot is *Weeks*. Five
+slots per app now rather than six, because five is what there are real captures for, and a shelf of
+five real screens beats six with a placeholder in it.
+
+## The app rows centre their icon, at every width (fixed 2026-09-08)
+
+Peter, on a screenshot of the Damson row: *"fix this icon to text alignment."*
+
+**`.work-lede` used `align-items: flex-start` below 820px** and `center` above it. The icon is
+`4.5rem` and the name-plus-tagline block is about `3.4rem`, so top-aligning them left the icon
+hanging **8.5px below the text's centre**. Measured, not eyeballed: the same 8.5px on all three rows.
+
+It looked like a Damson problem because that is the row Peter happened to be looking at. It was the
+shelf.
+
+**The fix is one word.** `center` at every width, and the redundant declaration dropped from the
+820px block. That is the narrow layout catching up with the wide one rather than a new decision.
+
+**Verified at three widths** — 375, 610 and 1000 — with the icon-to-text centre delta measured at
+each. Zero everywhere, including at 375 where Kiwido's tagline wraps to two lines and the text block
+becomes *taller* than the icon.
