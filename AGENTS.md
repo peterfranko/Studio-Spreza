@@ -72,13 +72,13 @@ five real screens beats six with a placeholder in it.
 
 ## The app rows centre their icon, at every width (fixed 2026-09-08)
 
-Peter, on a screenshot of the Damson row: *"fix this icon to text alignment."*
+Peter, on a screenshot of the Bountiful row: *"fix this icon to text alignment."*
 
 **`.work-lede` used `align-items: flex-start` below 820px** and `center` above it. The icon is
 `4.5rem` and the name-plus-tagline block is about `3.4rem`, so top-aligning them left the icon
 hanging **8.5px below the text's centre**. Measured, not eyeballed: the same 8.5px on all three rows.
 
-It looked like a Damson problem because that is the row Peter happened to be looking at. It was the
+It looked like a Bountiful problem because that is the row Peter happened to be looking at. It was the
 shelf.
 
 **The fix is one word.** `center` at every width, and the redundant declaration dropped from the
