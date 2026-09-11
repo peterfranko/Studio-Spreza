@@ -31,7 +31,7 @@
         <a class="legal-back" href="/">Studio Spreza</a>
 
         <h1 class="legal-title">Kiwido Privacy Policy</h1>
-        <p class="legal-meta">Last updated August 12, 2026. Developer: Studio Spreza.</p>
+        <p class="legal-meta">Last updated September 9, 2026. Developer: Studio Spreza.</p>
 
         <p class="legal-lede">
           This policy explains how the Kiwido app handles information on your device and when it
@@ -58,8 +58,10 @@
           <li>
             <strong>Local storage.</strong> Older versions of Kiwido kept their own task board on
             your device. If you used one of those versions, the app moves those entries into your
-            Apple Calendar and Reminders the first time you open this version, and keeps nothing of
-            them afterwards. Deleting the app may remove any remaining local data according to iOS
+            Apple Calendar and Reminders the first time you open this version. A small local store
+            remains for one case: if your device has no calendar or list the app can write to, an
+            item you create is kept on the Kiwido board instead of being lost, and the app tells you
+            where it went. Deleting the app may remove any remaining local data according to iOS
             behavior.
           </li>
           <li>
@@ -105,6 +107,21 @@
           </li>
         </ul>
 
+        <h2>Optional notifications</h2>
+        <p>
+          Kiwido can alert you about your own events and tasks, and send a short summary of the day
+          each morning. These are off until you turn them on in the app, and they are local
+          notifications scheduled on your device by Apple's notification system. They are built from
+          calendar and reminder data that is already on the device. No notification content is sent
+          off your device, and there is no push server.
+        </p>
+        <p>
+          Because iOS limits how many notifications an app may have waiting at one time, Kiwido uses
+          Background App Refresh to top that queue up as alerts are delivered. That refresh reads
+          only your on-device calendar and reminder data and sends nothing anywhere. You can turn
+          notifications off in the app or in Settings, and Background App Refresh off in Settings.
+        </p>
+
         <h2>What Studio Spreza does not do</h2>
         <ul>
           <li>No Studio Spreza account. No sign-up, no login, no profile.</li>
@@ -133,6 +150,10 @@
             instead of sharing your precise location.
           </li>
           <li><strong>Weather.</strong> You can turn weather off during setup or later in settings.</li>
+          <li>
+            <strong>Notifications.</strong> Off until you turn them on. Turn them off again in the
+            app or in Settings, where you can also turn off Background App Refresh.
+          </li>
         </ul>
 
         <h2>Children's privacy</h2>
