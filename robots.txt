@@ -1,0 +1,5 @@
+# Studio Spreza — studiospreza.com
+User-agent: *
+Allow: /
+
+Sitemap: https://www.studiospreza.com/sitemap.xml

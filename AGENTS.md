@@ -87,3 +87,78 @@ shelf.
 **Verified at three widths** — 375, 610 and 1000 — with the icon-to-text centre delta measured at
 each. Zero everywhere, including at 375 where Kiwido's tagline wraps to two lines and the text block
 becomes *taller* than the icon.
+
+## The full-bleed shelf measures itself in cqw, not vw (fixed 2026-09-20)
+
+`.work-gallery` reached the viewport edges with `inline-size: 100vw` and a negative
+start margin derived from `(100vw - 64rem) / 2`. **`100vw` counts the classic
+scrollbar and the content column does not**, so on any desktop with a non-overlay
+scrollbar the shelf overhung the layout viewport on the right by exactly the
+scrollbar width and fell short of its own gutter on the left by the same amount.
+Measured: `documentElement.scrollWidth` 1432 against `clientWidth` 1425 at a 1440
+viewport, and the first screen started 7.5px left of where the comment said it did.
+
+`body { overflow-x: hidden }` was hiding it. That is the tell: a clip on the body of
+a page with no intentional horizontal scroll is almost always covering a vw
+miscalculation.
+
+**The fix is `100cqw` against `main#main`**, which now carries
+`container-type: inline-size`. A container query length resolves against the
+container's content box, which is the same box the column is centred in, so both
+edges agree at every width. The body clip is gone with it.
+
+Verified at 375, 600, 820, 1024, 1280, 1440 and 1920: zero horizontal overflow, the
+scrollport's left edge at 0 and its right edge exactly at `clientWidth`, and the
+first `.work-showcase-item` starting on the content column to the tenth of a pixel.
+
+## One rule closes the app list, not two (fixed 2026-09-20)
+
+`.work-row:last-child` drew an inset `border-bottom` and the `.section + .section`
+band rule drew a full-bleed one 85px later, with nothing between them. Two hairlines
+of the same colour that close to each other read as a mistake rather than a
+hierarchy.
+
+**The row rule went.** Each row's `border-top` is what separates one app from the
+one above it; closing the *section* is the band rule's job, and it was already doing
+it. Dropping the row's rule also moves the air to *before* the band rule rather than
+after it, so the rule groups with the statement it introduces instead of trailing the
+shelf it followed.
+
+## The share card is authored as HTML (added 2026-09-20)
+
+No page on this site carried an `og:image`, so every share of studiospreza.com
+rendered a blank card. `og-image.png` at the site root now fills it, and all four
+pages point at it with an absolute URL and `twitter:card` raised to
+`summary_large_image`.
+
+| Step | Command |
+| --- | --- |
+| Rebuild the card | `Scripts/make-studio-og-card.sh` |
+| Edit the design | `Scripts/lib/og-card-studio.html` |
+
+**HTML photographed headless, not drawn in PIL** like the pf-portfolio card, so the
+card uses this site's own family, weights, tracking and colour tokens rather than a
+second copy of them. Rendered at 2x and downsampled, because scrapers serve the PNG
+at whatever size they like. The template is copied into the site root for the render
+so its relative `assets/` paths resolve, and removed afterwards.
+
+## Smaller, same day
+
+- **`theme-color` has a dark value.** It carried only `#f4f0e8`, so browser chrome
+  stayed paper-coloured against a near-black page. Both values are now `media`-scoped,
+  on all four pages.
+- **The font request stopped asking for what the site does not set.** It was
+  `Geist:ital,wght@0,300..700;1,300..700`; the site uses 400, 500 and 600 and no
+  italic anywhere. Now `Geist:wght@400..600`.
+- **Kiwido's slot 4 and 5 labels were off by one against their captures.** Slot 4 read
+  *Quick add* over the Perfect Days sheet, with an `aria-label` describing the
+  composer; slot 5 read *Perfect days* over the Rank sheet. Now *Perfect days* and
+  *Rank*, with matching `aria-label`s. The composer is not on the shelf at all.
+  Upkeeper's *History* and Bountiful's *Patterns* were checked and are accurate: they
+  describe the content, even though the screen's own nav title still reads *Detail*
+  and *Over time*, because each is the previous slot's screen scrolled down.
+- **Footer legal links are a 28px target**, up from 20px, which clears the 24px WCAG
+  2.2 floor. The hit area is an absolutely positioned `::after` rather than padding,
+  because padding would carry the hover underline away from the text.
+- **`robots.txt` and `sitemap.xml`** added. The sitemap carries no `<lastmod>` on
+  purpose: a hand-maintained date rots and a missing one is never wrong.

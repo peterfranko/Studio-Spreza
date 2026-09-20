@@ -335,7 +335,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
   }
 
   ::selection {
@@ -432,9 +431,13 @@
     padding-inline: var(--space-gutter-x);
   }
 
+  /* The inline-size container the full-bleed shelf measures itself against. 100cqw
+     is main's content width, which excludes the classic scrollbar that 100vw counts;
+     see the note on .work-gallery. */
   main#main {
     position: relative;
     z-index: var(--z-raised);
+    container-type: inline-size;
   }
 
   /* Clears the sticky header on anchor jumps. Section padding used to absorb
@@ -658,16 +661,17 @@
     flex-direction: column;
   }
 
+  /* No :last-child border-bottom. Each row's border-top separates it from the row
+     above; closing the list is the section band rule's job, and carrying both left
+     two hairlines 85px apart with nothing between them. Dropping the row's rule also
+     puts the air before the band rule rather than after it, so the rule groups with
+     the statement it introduces. */
   .work-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: calc(var(--space-5) * 2);
     padding-block: calc(var(--space-9) * 2) var(--space-9);
     border-top: 1px solid var(--color-border-subtle);
-  }
-
-  .work-row:last-child {
-    border-bottom: 1px solid var(--color-border-subtle);
   }
 
   @media (min-width: 820px) {
@@ -693,13 +697,19 @@
   }
 
   /* Horizontal showcase strip. The scrollport reaches the viewport edges while
-     edge margins preserve the first screen's content-column start position. */
+     edge margins preserve the first screen's content-column start position.
+
+     cqw, not vw. 100vw counts the classic scrollbar and the content column does not,
+     so the vw version overhung the layout viewport by exactly the scrollbar width
+     (measured: 7px at 1440 in Chromium) and body needed overflow-x: hidden to hide
+     it. 100cqw resolves against main#main's content box, which is what the column is
+     centred in, so the two edges agree and the clip is no longer needed. */
   .work-gallery {
-    --gallery-edge-inset: max(var(--space-gutter-x), calc((100vw - var(--layout-measure-wide)) / 2));
+    --gallery-edge-inset: max(var(--space-gutter-x), calc((100cqw - var(--layout-measure-wide)) / 2));
 
     display: flex;
     gap: var(--grid-gap);
-    inline-size: 100vw;
+    inline-size: 100cqw;
     margin-inline-start: calc(-1 * var(--gallery-edge-inset));
     min-inline-size: 0;
     overflow-x: auto;
@@ -1069,9 +1079,20 @@
   }
 
   .footer-links a {
+    position: relative;
     color: var(--color-text-muted);
     text-decoration: none;
     border-bottom: 1px solid transparent;
+  }
+
+  /* 20px of type, 39px of target. An overlay rather than padding: padding would carry
+     the hover underline down with it. 0.3rem each side keeps 4px of clearance from the
+     row above when the footer wraps at phone widths. */
+  .footer-links a::after {
+    content: '';
+    position: absolute;
+    inset-block: -0.3rem;
+    inset-inline: 0;
   }
 
   .footer-links a:hover,

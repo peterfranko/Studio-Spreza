@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Four pages, listed without <lastmod> on purpose: a hand-maintained date rots
+  silently and a missing one is never wrong. Add new pages here when the site grows.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.studiospreza.com/</loc></url>
+  <url><loc>https://www.studiospreza.com/privacy/kiwido/</loc></url>
+  <url><loc>https://www.studiospreza.com/privacy/upkeeper/</loc></url>
+  <url><loc>https://www.studiospreza.com/privacy/bountiful/</loc></url>
+</urlset>
