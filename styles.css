@@ -33,6 +33,51 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   GEIST, SELF-HOSTED  (2026-09-21)
+
+   The family used to arrive from fonts.googleapis.com. That stylesheet is
+   render-blocking (the browser reports it as such) and it costs two origins
+   before a glyph is drawn: a DNS and TLS handshake to googleapis for the CSS,
+   then another to gstatic for the file. preconnect hides some of it and cannot
+   remove it.
+
+   Two subsets, both variable across the weights this site actually sets:
+   latin (29KB) and latin-ext (16KB). The other three Google serves, cyrillic,
+   cyrillic-ext and vietnamese, are not downloaded and not declared. The italic
+   axis was dropped in an earlier pass; nothing here sets font-style: italic.
+
+   unicode-range is copied verbatim from the Google stylesheet so the split
+   between the two files behaves exactly as it did.
+
+   The metric-matched Arial fallback below is now belt and braces rather than
+   load-bearing: index.html preloads the latin file, so the swap window is a few
+   milliseconds on a warm connection instead of two handshakes. It stays because
+   it still covers a cold cache, a slow link and a failed font fetch, and it
+   costs nothing.
+
+   Licence: SIL Open Font License 1.1, assets/fonts/OFL.txt, kept next to the
+   files because redistributing them requires it.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('assets/fonts/geist-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('assets/fonts/geist-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    METRIC-MATCHED FALLBACK  (2026-08-11)
 
    Geist arrives from Google Fonts with display=swap, so every first visit
@@ -263,12 +308,39 @@
     --z-menu: 20;
     --z-skip: 100;
 
+
+    /* ─── Shelf ────────────────────────────────────────────────────────────
+       The app screens are near-white and the paper is #f4f0e8: measured, 1 L*
+       apart. With only a hairline between them a frame read as a window cut into
+       the page rather than a device resting on it. The shadow supplies the
+       separation the colours cannot, and it is mixed from --color-accent rather
+       than black so it stays in the paper world instead of going cool and grey.
+
+       The three app accents are the icons' own hues, taken from the 144px
+       masters and then normalised to a single OKLCH lightness and chroma so the
+       set reads as one ramp rather than three intensities. Only H differs:
+       Kiwido 129.5, Upkeeper 92.3, Bountiful 28.3. */
+    --shadow-shot:
+      0 1px 3px color-mix(in oklab, var(--color-accent) 22%, transparent),
+      0 10px 20px -4px color-mix(in oklab, var(--color-accent) 20%, transparent),
+      0 30px 56px -14px color-mix(in oklab, var(--color-accent) 30%, transparent);
+    --border-shot: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
+    --rail-track: color-mix(in oklab, var(--color-text-primary) 5%, transparent);
+    --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 11%, transparent);
+    --accent-kiwido: #5f8136;
+    --accent-upkeeper: #8b7210;
+    --accent-bountiful: #ac594f;
+
     /* App icons: 144px transparent exports from the shared appicon masters.
        Bountiful ships one universal mark rather than a light/dark pair: it has a
        single master, so both schemes point at the same file. */
     --app-icon-kiwido: url('assets/kiwido-icon-light.png');
     --app-icon-upkeeper: url('assets/upkeeper-icon-light.png');
     --app-icon-bountiful: url('assets/bountiful-icon.png');
+    /* Was <picture> with a media source. That can only see prefers-color-scheme, so
+       an explicit data-theme showed the wrong badge: the same reason the showcase
+       shelves are stacked images rather than <picture>. */
+    --appstore-badge: url('assets/appstore-light.svg');
 
     color-scheme: light;
   }
@@ -283,9 +355,26 @@
     --color-border-subtle: rgba(242, 235, 224, 0.09);
     --color-border-strong: rgba(242, 235, 224, 0.16);
     --color-focus-ring: rgba(201, 188, 168, 0.7);
+    /* A shadow cast on #141210 is very nearly invisible: rendered side by side at
+       four strengths, every dark variant looked the same and only the border weight
+       changed anything. So the dark scheme separates with the edge (26% against
+       light's 15%) and keeps the shadow only for where the frame meets a lighter
+       surface. An inset top rim was tried and dropped: .work-shot clips to the image,
+       which paints over any inset shadow, so it drew nothing at all. */
+    --shadow-shot:
+      0 1px 3px rgba(0, 0, 0, 0.6),
+      0 10px 22px -4px rgba(0, 0, 0, 0.55),
+      0 30px 56px -14px rgba(0, 0, 0, 0.7);
+    --border-shot: color-mix(in oklab, var(--color-text-primary) 26%, transparent);
+    --rail-track: color-mix(in oklab, var(--color-text-primary) 7%, transparent);
+    --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
+    --accent-kiwido: #6c8c46;
+    --accent-upkeeper: #967e2a;
+    --accent-bountiful: #b7665c;
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
     --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
     --app-icon-bountiful: url('assets/bountiful-icon.png');
+    --appstore-badge: url('assets/appstore-dark.svg');
     color-scheme: dark;
   }
 
@@ -300,10 +389,64 @@
       --color-border-subtle: rgba(242, 235, 224, 0.09);
       --color-border-strong: rgba(242, 235, 224, 0.16);
       --color-focus-ring: rgba(201, 188, 168, 0.7);
-      --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
+      /* A shadow cast on #141210 is very nearly invisible: rendered side by side at
+       four strengths, every dark variant looked the same and only the border weight
+       changed anything. So the dark scheme separates with the edge (26% against
+       light's 15%) and keeps the shadow only for where the frame meets a lighter
+       surface. An inset top rim was tried and dropped: .work-shot clips to the image,
+       which paints over any inset shadow, so it drew nothing at all. */
+    --shadow-shot:
+      0 1px 3px rgba(0, 0, 0, 0.6),
+      0 10px 22px -4px rgba(0, 0, 0, 0.55),
+      0 30px 56px -14px rgba(0, 0, 0, 0.7);
+    --border-shot: color-mix(in oklab, var(--color-text-primary) 26%, transparent);
+    --rail-track: color-mix(in oklab, var(--color-text-primary) 7%, transparent);
+    --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
+    --accent-kiwido: #6c8c46;
+    --accent-upkeeper: #967e2a;
+    --accent-bountiful: #b7665c;
+    --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
       --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
       --app-icon-bountiful: url('assets/bountiful-icon.png');
       color-scheme: dark;
+    }
+  }
+
+  /* ─── Accent ramp, in OKLCH where it parses ──────────────────────────────
+     The three app hues are meant to share one lightness and chroma, which only
+     OKLCH says out loud; the hex above is exactly what each one resolves to.
+
+     It has to be declared this way round rather than `oklch()` with a var()
+     fallback. A declaration that references a custom property holding an
+     unparseable value is invalid at computed-value time, and IACVT resets the
+     property to its initial value: it does NOT fall back to an earlier
+     declaration, and `var(--row-accent, ...)`'s fallback only fires when the
+     property is unset, never when it is invalid. Measured: with the accent made
+     unparseable, .work-rail-thumb's background computed to rgba(0, 0, 0, 0) and
+     the rail became a control you could not see.
+
+     Every other modern-colour feature here degrades to something visible when it
+     is unsupported (a failed color-mix() border falls back to currentColor), so
+     this is the one place the pattern needed guarding. */
+  @supports (color: oklch(0.5 0.1 100)) {
+    :root {
+      --accent-kiwido: oklch(0.56 0.11 129.5);
+      --accent-upkeeper: oklch(0.56 0.11 92.3);
+      --accent-bountiful: oklch(0.56 0.11 28.3);
+    }
+
+    html[data-theme='dark'] {
+      --accent-kiwido: oklch(0.6 0.105 129.5);
+      --accent-upkeeper: oklch(0.6 0.105 92.3);
+      --accent-bountiful: oklch(0.6 0.105 28.3);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --accent-kiwido: oklch(0.6 0.105 129.5);
+        --accent-upkeeper: oklch(0.6 0.105 92.3);
+        --accent-bountiful: oklch(0.6 0.105 28.3);
+      }
     }
   }
 }
@@ -475,11 +618,59 @@
     transform: none;
   }
 
+  /* The shelf reveals its frames rather than itself.
+
+     Measured at 1440x900: a .work-row is 1175px tall, and observing it as one unit
+     fired the reveal 1085px before its shelf reached the screen. The animation was
+     always finished long before the frames arrived, so the only thing that ever
+     visibly revealed was the app's name. The row is no longer a reveal unit at all;
+     .work-lede and .work-shelf are.
+
+     The scrollport itself stays put and the frames come up in sequence. That is the
+     one piece of motion here that explains something rather than decorating: a strip
+     whose contents arrive one after another reads as a strip you can keep going
+     along. The stagger is capped by there being five frames, and the last one is in
+     at 0.65s. */
+  .work-shelf[data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .work-shelf[data-reveal] .work-showcase-item {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--duration-slow) ease,
+      transform var(--duration-slow) var(--ease-default);
+  }
+
+  .work-shelf[data-reveal].is-visible .work-showcase-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .work-shelf .work-showcase-item:nth-child(2) {
+    transition-delay: 0.05s;
+  }
+
+  .work-shelf .work-showcase-item:nth-child(3) {
+    transition-delay: 0.1s;
+  }
+
+  .work-shelf .work-showcase-item:nth-child(4) {
+    transition-delay: 0.15s;
+  }
+
+  .work-shelf .work-showcase-item:nth-child(5) {
+    transition-delay: 0.2s;
+  }
+
   /* The reveal hides content until main.js marks it visible, so without
      scripting everything below the hero stays at opacity 0. Paired with a
      <noscript> block in the head for engines that do not support this query. */
   @media (scripting: none) {
-    [data-reveal] {
+    [data-reveal],
+    .work-shelf[data-reveal] .work-showcase-item {
       opacity: 1;
       transform: none;
     }
@@ -511,6 +702,95 @@
     padding: var(--space-4) var(--space-gutter-x);
     display: flex;
     align-items: center;
+    gap: var(--space-5);
+  }
+
+  /* ─── Theme toggle ────────────────────────────────────────────────────────
+     Three states, cycling auto -> light -> dark. Two would be simpler, and would
+     throw away the third state the colour tokens were built around: a reader whose
+     machine turns dark at sunset can keep that behaviour, and can get back to it
+     after trying the others.
+
+     Ships `hidden` and main.js reveals it, like .work-rail. Without scripting it
+     would be a control that changes nothing. */
+  .theme-toggle {
+    margin-inline-start: auto;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    margin-block: -0.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    color: var(--color-text-secondary);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible {
+    color: var(--color-text-primary);
+    background: color-mix(in oklab, var(--color-text-primary) 6%, transparent);
+  }
+
+  .theme-toggle-icon svg {
+    display: block;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+
+  /* One glyph, three readings. Each state shows the mark for the state it is IN,
+     not the one a press would move to: a control that displays its own value is
+     readable at a glance, one that displays its next value has to be reasoned
+     about. The label names it for anyone who would rather read. */
+  .theme-glyph-rays,
+  .theme-glyph-moon,
+  .theme-glyph-auto {
+    display: none;
+  }
+
+  .theme-toggle[data-theme-state='light'] .theme-glyph-rays,
+  .theme-toggle[data-theme-state='auto'] .theme-glyph-auto {
+    display: inline;
+  }
+
+  .theme-toggle[data-theme-state='dark'] .theme-glyph-disc {
+    display: none;
+  }
+
+  .theme-toggle[data-theme-state='dark'] .theme-glyph-moon {
+    display: inline;
+  }
+
+  .theme-toggle-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ─── Theme change ────────────────────────────────────────────────────────
+     Custom properties do not transition, so swapping data-theme is an instant cut
+     on every surface at once. The class is added for one beat around the swap and
+     removed after, rather than left on: a standing transition on every colour would
+     make hovers and focus rings lag by the same amount. The global
+     prefers-reduced-motion rule already turns the whole thing back into a cut. */
+  html.is-theming,
+  html.is-theming *,
+  html.is-theming *::before,
+  html.is-theming *::after {
+    transition:
+      background-color var(--duration-medium) var(--ease-out),
+      border-color var(--duration-medium) var(--ease-out),
+      color var(--duration-medium) var(--ease-out),
+      box-shadow var(--duration-medium) var(--ease-out),
+      outline-color var(--duration-medium) var(--ease-out) !important;
   }
 
   .logo {
@@ -670,7 +950,10 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: calc(var(--space-5) * 2);
-    padding-block: calc(var(--space-9) * 2) var(--space-9);
+    /* Bottom padding raised from --space-9. The rail sits at the foot of the row and
+       its track is a content-column hairline; at 28px it landed 25px from the next
+       row's border-top and the two read as a doubled rule. */
+    padding-block: calc(var(--space-9) * 2) var(--space-12);
     border-top: 1px solid var(--color-border-subtle);
   }
 
@@ -687,13 +970,29 @@
       grid-row: 1;
     }
 
-    /* Gallery breaks the 3-track grid and spans the full content width: an
+    /* The shelf breaks the 3-track grid and spans the full content width: an
        h-scroll needs the room, and the strip reads as its own band under the
-       name and copy, the way a store listing does. */
-    .work-gallery {
+       name and copy, the way a store listing does. The gallery inside it then
+       breaks out further, to the viewport edges. */
+    .work-shelf {
       grid-column: 1 / -1;
       grid-row: 2;
     }
+  }
+
+  /* Gallery and its rail. They are wrapped rather than made two more tracks of
+     .work-row, because the row's 56px row-gap is right between the name and the
+     shelf and far too much between the shelf and its own scrollbar. */
+  .work-shelf {
+    display: grid;
+    /* Explicitly one bounded column. Left to its own devices the implicit column
+       is auto-sized to max-content, and the gallery inside is deliberately wider
+       than the page (100cqw with a negative start margin), so the track grew to
+       the viewport edge and dragged the rail out past the content column with it.
+       Measured: the rail ran to 1425 where the column ends at 1224. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    min-inline-size: 0;
   }
 
   /* Horizontal showcase strip. The scrollport reaches the viewport edges while
@@ -716,41 +1015,128 @@
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--gallery-edge-inset);
-    padding-block-end: var(--space-10);
-    scrollbar-width: thin;
-    scrollbar-color:
-      color-mix(in oklab, var(--color-text-primary) 26%, transparent)
-      color-mix(in oklab, var(--color-text-primary) 5%, transparent);
+    /* Holds the frame shadow. --shadow-shot's widest layer is 0 30px 56px -14px,
+       which reaches 30 + 56/2 - 14 = 44px below the frame; the scrollport clips
+       both axes, because a box with overflow-x: auto computes overflow-y to auto
+       too, so anything shorter cuts the shadow off in a straight line. */
+    padding-block-end: calc(var(--space-12) + var(--space-3));
+    /* The native bar is gone in favour of .work-rail. It ran the full viewport
+       width rather than the content column: ::-webkit-scrollbar-track's
+       margin-inline is ignored, and the thumb started at x=3 where the design
+       called for 208. It was also the loudest element on the page, and on Safari's
+       overlay scrollbars it may never appear at all, so the only affordance the
+       shelf had was browser-dependent. */
+    scrollbar-width: none;
   }
 
   .work-gallery::-webkit-scrollbar {
-    block-size: 1rem;
+    display: none;
   }
 
-  .work-gallery::-webkit-scrollbar-track {
-    margin-inline: var(--gallery-edge-inset);
-    background: color-mix(in oklab, var(--color-text-primary) 5%, transparent);
-    border-block: 0.38rem solid transparent;
-    background-clip: content-box;
-  }
-
-  .work-gallery::-webkit-scrollbar-thumb {
-    min-inline-size: 5rem;
-    background: color-mix(in oklab, var(--color-text-primary) 26%, transparent);
-    border-block: 0.34rem solid transparent;
-    background-clip: content-box;
-    border-radius: var(--radius-pill);
-  }
-
-  .work-gallery::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in oklab, var(--color-text-primary) 36%, transparent);
-    background-clip: content-box;
-  }
-
+  /* outline-offset was +4px on an element as wide as the viewport, which drew the
+     left and right edges of the ring off-screen: keyboard focus showed as two
+     stray horizontal lines. Negative offset puts the whole ring inside the
+     scrollport. */
   .work-gallery:focus-visible {
     outline: 2px solid var(--color-focus-ring);
-    outline-offset: 4px;
+    outline-offset: -3px;
     border-radius: var(--radius-xs);
+  }
+
+  /* Snap fights a rail drag: every scrollLeft assignment is re-snapped, so the
+     thumb jumps away from the pointer. main.js drops snap for the duration of a
+     drag and restores it on release, which re-snaps by itself. */
+  .work-gallery.is-railing {
+    scroll-snap-type: none;
+  }
+
+  /* ─── Shelf rail ───────────────────────────────────────────────────────────
+     A scrollbar substitute, sized to the content column and inked in the row's own
+     app accent. aria-hidden and pointer-only on purpose: it duplicates scrolling
+     the gallery already has, and the scrollport itself is focusable and
+     arrow-scrollable for anyone not using a pointer. */
+  .work-rail {
+    position: relative;
+    /* 24px, the WCAG 2.2 target minimum. It was 1.25rem, which measured 350x20 and
+       missed the floor the footer links were raised to clear in the same pass. */
+    block-size: 1.5rem;
+    cursor: pointer;
+    /* pan-y, not none. `none` handed the element every gesture including vertical
+       panning, so a swipe begun anywhere on this strip would not scroll the page.
+       `pan-y` leaves vertical panning with the browser and keeps the horizontal
+       drag, which is the only gesture the rail wants. */
+    touch-action: pan-y;
+  }
+
+  /* On a touch primary the rail is an indicator, not a control: dragging a 24px
+     strip with a thumb is hostile, the track's hover reveal can never fire on
+     `hover: none`, and the shelf already answers a direct swipe. It still tracks
+     position, which is worth having on the narrowest screen. */
+  @media (pointer: coarse) {
+    .work-rail {
+      pointer-events: none;
+      cursor: default;
+    }
+  }
+
+  /* The markup ships it hidden and main.js reveals it in sync(). With scripting
+     off, or if the script fails, a rail would otherwise render as a static bar at
+     the CSS fallback width that cannot be dragged: a control that lies. */
+  .work-rail[hidden] {
+    display: none;
+  }
+
+  .work-rail::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(50% - 1px);
+    block-size: 2px;
+    border-radius: var(--radius-pill);
+    background: var(--rail-track);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  /* At rest the track is a hint at 1.1:1, because a full-strength one is a
+     content-column hairline sitting 40px from the next row's border-top and the
+     two read as a doubled rule. It comes up when the pointer is anywhere on the
+     shelf, which is the only time its job is to say "this is draggable". */
+  .work-shelf:hover .work-rail::before,
+  .work-rail.is-dragging::before {
+    background: var(--rail-track-hover);
+  }
+
+  .work-rail-thumb {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: calc(50% - 1.5px);
+    block-size: 3px;
+    inline-size: var(--rail-thumb-size, 30%);
+    transform: translateX(var(--rail-thumb-offset, 0px));
+    border-radius: var(--radius-pill);
+    background: var(--row-accent, var(--color-text-muted));
+    transition:
+      block-size var(--duration-fast) var(--ease-out),
+      inset-block-start var(--duration-fast) var(--ease-out);
+  }
+
+  .work-rail:hover .work-rail-thumb,
+  .work-rail.is-dragging .work-rail-thumb {
+    block-size: 5px;
+    inset-block-start: calc(50% - 2.5px);
+  }
+
+  /* The icons' own hues, at one OKLCH lightness and chroma per scheme. */
+  .work-row[data-app='kiwido'] {
+    --row-accent: var(--accent-kiwido);
+  }
+
+  .work-row[data-app='upkeeper'] {
+    --row-accent: var(--accent-upkeeper);
+  }
+
+  .work-row[data-app='bountiful'] {
+    --row-accent: var(--accent-bountiful);
   }
 
   .work-showcase-item {
@@ -796,9 +1182,10 @@
     aspect-ratio: 1206 / 2622;
     position: relative;
     overflow: hidden;
-    border: 1px solid color-mix(in oklab, var(--color-text-primary) 16%, transparent);
+    border: 1px solid var(--border-shot);
     border-radius: clamp(1.9rem, 8.5vw, 3.15rem);
     background: var(--color-surface-elevated);
+    box-shadow: var(--shadow-shot);
     isolation: isolate;
   }
 
@@ -972,15 +1359,19 @@
     outline-offset: 4px;
   }
 
-  .app-store-link img {
-    display: block;
-    inline-size: 100%;
-    block-size: auto;
+  .app-store-link {
+    background-image: var(--appstore-badge);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
   }
 
   /* ─── Studio note / contact ─── */
+  /* The note and the address are one closing thought, so they are one band. They
+     used to be two, separated by a rule and 112px, which made the foot of the page
+     read as two thin sections rather than a sign-off. */
   .studio-note {
-    padding-block: clamp(2rem, 4vw, 3.5rem);
+    padding-block: clamp(2.75rem, 5vw, 4.5rem) 0;
   }
 
   .studio-note p {
@@ -992,8 +1383,12 @@
     color: var(--color-text-primary);
   }
 
+  .studio-note + .contact {
+    border-top: none;
+  }
+
   .contact {
-    padding-block: clamp(2rem, 4vw, 3.5rem);
+    padding-block: var(--space-9) clamp(2.75rem, 5vw, 4.5rem);
   }
 
   .contact-layout {
@@ -1116,7 +1511,8 @@
       scroll-behavior: auto;
     }
 
-    [data-reveal] {
+    [data-reveal],
+    .work-shelf[data-reveal] .work-showcase-item {
       opacity: 1;
       transform: none;
     }

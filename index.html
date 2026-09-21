@@ -30,16 +30,33 @@
     />
     <title>Studio Spreza</title>
     <link rel="icon" href="/favicon.png" type="image/png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/assets/fonts/geist-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
+    <script>
+      /* Applies a saved theme before first paint. Inline and synchronous on purpose:
+         anything deferred lets the wrong scheme flash. Mirrored on every page so the
+         choice carries across the site, including the policies, which load no main.js. */
+      (function () {
+        try {
+          var saved = localStorage.getItem('spreza-theme');
+          if (saved === 'light' || saved === 'dark') {
+            document.documentElement.setAttribute('data-theme', saved);
+          }
+        } catch (error) {
+          /* Private mode, or storage disabled: fall through to the system scheme. */
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="styles.css" />
     <noscript>
       <style>
-        [data-reveal] {
+        [data-reveal],
+        .work-shelf[data-reveal] .work-showcase-item {
           opacity: 1;
           transform: none;
         }
@@ -54,6 +71,22 @@
     <header class="site-header">
       <div class="header-inner">
         <a class="logo brand-wordmark" href="/">Studio Spreza</a>
+        <button
+          class="theme-toggle"
+          type="button"
+          id="theme-toggle"
+          hidden
+        >
+          <span class="theme-toggle-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle class="theme-glyph-disc" cx="12" cy="12" r="5" />
+              <path class="theme-glyph-rays" d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              <path class="theme-glyph-moon" d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z" />
+              <path class="theme-glyph-auto" d="M12 7a5 5 0 0 0 0 10Z" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+          <span class="theme-toggle-label" aria-live="polite"></span>
+        </button>
       </div>
     </header>
 
@@ -79,160 +112,154 @@
           </header>
 
           <ul class="work-list">
-            <li class="work-row" data-reveal>
-              <div class="work-lede">
+            <li class="work-row" data-app="kiwido">
+              <div class="work-lede" data-reveal>
                 <span class="work-icon" data-app="kiwido" aria-hidden="true"></span>
                 <div class="work-row-body">
                   <h3 class="work-title">Kiwido</h3>
                   <p class="work-line">Your week on a board.</p>
                 </div>
-                <a class="app-store-link" href="#" aria-label="Kiwido on the App Store">
-                  <picture>
-                    <source srcset="assets/appstore-dark.svg" media="(prefers-color-scheme: dark)" />
-                    <img src="assets/appstore-light.svg" width="120" height="40" alt="Download Kiwido on the App Store" />
-                  </picture>
-                </a>
+                <a class="app-store-link" href="#" aria-label="Kiwido on the App Store"></a>
               </div>
-              <div class="work-gallery" role="region" aria-label="Kiwido screens" tabindex="0">
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Focus board</span>
-                  <span class="work-shot" role="img" aria-label="Kiwido's week board, with today's column in view.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-01-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-01-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+              <div class="work-shelf" data-reveal>
+                <div class="work-gallery" role="region" aria-label="Kiwido screens" tabindex="0">
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Focus board</span>
+                    <span class="work-shot" role="img" aria-label="Kiwido's week board, with today's column in view.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-01-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-01-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Next up</span>
-                  <span class="work-shot" role="img" aria-label="Kiwido's agenda, the days ahead as one list.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-02-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-02-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Next up</span>
+                    <span class="work-shot" role="img" aria-label="Kiwido's agenda, the days ahead as one list.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-02-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-02-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Weeks</span>
-                  <span class="work-shot" role="img" aria-label="Kiwido zoomed out to the weeks grid.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-03-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-03-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Weeks</span>
+                    <span class="work-shot" role="img" aria-label="Kiwido zoomed out to the weeks grid.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-03-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-03-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Perfect days</span>
-                  <span class="work-shot" role="img" aria-label="Kiwido's Perfect Days sheet, a year of days at a glance.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-04-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-04-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Perfect days</span>
+                    <span class="work-shot" role="img" aria-label="Kiwido's Perfect Days sheet, a year of days at a glance.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-04-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-04-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Rank</span>
-                  <span class="work-shot" role="img" aria-label="Kiwido's rank card, with the medal and the running total.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-05-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-05-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Rank</span>
+                    <span class="work-shot" role="img" aria-label="Kiwido's rank card, with the medal and the running total.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-05-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-05-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
+                </div>
+                <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
-            <li class="work-row" data-reveal>
-              <div class="work-lede">
+            <li class="work-row" data-app="upkeeper">
+              <div class="work-lede" data-reveal>
                 <span class="work-icon" data-app="upkeeper" aria-hidden="true"></span>
                 <div class="work-row-body">
                   <h3 class="work-title">Upkeeper</h3>
                   <p class="work-line">Log it twice. It learns the rhythm.</p>
                 </div>
-                <a class="app-store-link" href="#" aria-label="Upkeeper on the App Store">
-                  <picture>
-                    <source srcset="assets/appstore-dark.svg" media="(prefers-color-scheme: dark)" />
-                    <img src="assets/appstore-light.svg" width="120" height="40" alt="Download Upkeeper on the App Store" />
-                  </picture>
-                </a>
+                <a class="app-store-link" href="#" aria-label="Upkeeper on the App Store"></a>
               </div>
-              <div class="work-gallery" role="region" aria-label="Upkeeper screens" tabindex="0">
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Today</span>
-                  <span class="work-shot" role="img" aria-label="Upkeeper's home, with what needs care at the top.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-01-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-01-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+              <div class="work-shelf" data-reveal>
+                <div class="work-gallery" role="region" aria-label="Upkeeper screens" tabindex="0">
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Today</span>
+                    <span class="work-shot" role="img" aria-label="Upkeeper's home, with what needs care at the top.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-01-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-01-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">The library</span>
-                  <span class="work-shot" role="img" aria-label="Upkeeper's full library of actions, scrolled.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-02-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-02-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">The library</span>
+                    <span class="work-shot" role="img" aria-label="Upkeeper's full library of actions, scrolled.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-02-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-02-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Status</span>
-                  <span class="work-shot" role="img" aria-label="Upkeeper's status page, with the fortnight ahead.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-03-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-03-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Status</span>
+                    <span class="work-shot" role="img" aria-label="Upkeeper's status page, with the fortnight ahead.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-03-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-03-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Detail</span>
-                  <span class="work-shot" role="img" aria-label="One Upkeeper action, with its learned rhythm.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-04-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-04-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Detail</span>
+                    <span class="work-shot" role="img" aria-label="One Upkeeper action, with its learned rhythm.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-04-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-04-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">History</span>
-                  <span class="work-shot" role="img" aria-label="An Upkeeper action's logged history.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-05-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-05-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">History</span>
+                    <span class="work-shot" role="img" aria-label="An Upkeeper action's logged history.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-05-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-05-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
+                </div>
+                <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
-            <li class="work-row" data-reveal>
-              <div class="work-lede">
+            <li class="work-row" data-app="bountiful">
+              <div class="work-lede" data-reveal>
                 <span class="work-icon" data-app="bountiful" aria-hidden="true"></span>
                 <div class="work-row-body">
                   <h3 class="work-title">Bountiful</h3>
                   <p class="work-line">Habits on your terms.</p>
                 </div>
-                <a class="app-store-link" href="#" aria-label="Bountiful on the App Store">
-                  <picture>
-                    <source srcset="assets/appstore-dark.svg" media="(prefers-color-scheme: dark)" />
-                    <img src="assets/appstore-light.svg" width="120" height="40" alt="Download Bountiful on the App Store" />
-                  </picture>
-                </a>
+                <a class="app-store-link" href="#" aria-label="Bountiful on the App Store"></a>
               </div>
-              <div class="work-gallery" role="region" aria-label="Bountiful screens" tabindex="0">
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Home</span>
-                  <span class="work-shot" role="img" aria-label="Bountiful's home, with the record card over the practices.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-01-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-01-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+              <div class="work-shelf" data-reveal>
+                <div class="work-gallery" role="region" aria-label="Bountiful screens" tabindex="0">
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Home</span>
+                    <span class="work-shot" role="img" aria-label="Bountiful's home, with the record card over the practices.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-01-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-01-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Sections</span>
-                  <span class="work-shot" role="img" aria-label="Bountiful's practices, grouped rather than ranked.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-02-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-02-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Sections</span>
+                    <span class="work-shot" role="img" aria-label="Bountiful's practices, grouped rather than ranked.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-02-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-02-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Detail</span>
-                  <span class="work-shot" role="img" aria-label="One Bountiful practice, with its rhythm and nudges.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-03-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-03-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Detail</span>
+                    <span class="work-shot" role="img" aria-label="One Bountiful practice, with its rhythm and nudges.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-03-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-03-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Over time</span>
-                  <span class="work-shot" role="img" aria-label="Bountiful's accumulation curve, which only rises.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-04-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-04-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Over time</span>
+                    <span class="work-shot" role="img" aria-label="Bountiful's accumulation curve, which only rises.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-04-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-04-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
-                <span class="work-showcase-item">
-                  <span class="work-shot-label">Patterns</span>
-                  <span class="work-shot" role="img" aria-label="When and on which days a Bountiful practice happens.">
-                    <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-05-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
-                    <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-05-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                  <span class="work-showcase-item">
+                    <span class="work-shot-label">Patterns</span>
+                    <span class="work-shot" role="img" aria-label="When and on which days a Bountiful practice happens.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-05-light.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-05-dark.webp" width="768" height="1669" loading="lazy" decoding="async" alt="" />
+                    </span>
                   </span>
-                </span>
+                </div>
+                <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
           </ul>
