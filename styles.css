@@ -408,6 +408,13 @@
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
       --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
       --app-icon-bountiful: url('assets/bountiful-icon.png');
+      /* SDS-D009, fixed 2026-09-22. This line was in html[data-theme='dark'] and not
+         here, so a visitor whose OS is dark but who had never touched the site's own
+         toggle got the LIGHT badge on a dark ground. The icons beside it were already
+         defined in both places, which is what made the gap invisible: the row looked
+         right until the one asset that is a pure black-on-white lockup. Both blocks
+         define it now, and the site chapter's checker should hold them together. */
+      --appstore-badge: url('assets/appstore-dark.svg');
       color-scheme: dark;
     }
   }
