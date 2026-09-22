@@ -329,7 +329,7 @@
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 11%, transparent);
     --accent-kiwido: #5f8136;
     --accent-upkeeper: #8b7210;
-    --accent-bountiful: #ac594f;
+    --accent-bountiful: #a65778;
 
     /* App icons: 144px transparent exports from the shared appicon masters.
        Bountiful ships one universal mark rather than a light/dark pair: it has a
@@ -370,7 +370,7 @@
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
     --accent-kiwido: #6c8c46;
     --accent-upkeeper: #967e2a;
-    --accent-bountiful: #b7665c;
+    --accent-bountiful: #b16483;
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
     --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
     --app-icon-bountiful: url('assets/bountiful-icon.png');
@@ -404,7 +404,7 @@
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
     --accent-kiwido: #6c8c46;
     --accent-upkeeper: #967e2a;
-    --accent-bountiful: #b7665c;
+    --accent-bountiful: #b16483;
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
       --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
       --app-icon-bountiful: url('assets/bountiful-icon.png');
@@ -432,20 +432,20 @@
     :root {
       --accent-kiwido: oklch(0.56 0.11 129.5);
       --accent-upkeeper: oklch(0.56 0.11 92.3);
-      --accent-bountiful: oklch(0.56 0.11 28.3);
+      --accent-bountiful: oklch(0.56 0.11 355);
     }
 
     html[data-theme='dark'] {
       --accent-kiwido: oklch(0.6 0.105 129.5);
       --accent-upkeeper: oklch(0.6 0.105 92.3);
-      --accent-bountiful: oklch(0.6 0.105 28.3);
+      --accent-bountiful: oklch(0.6 0.105 355);
     }
 
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
         --accent-kiwido: oklch(0.6 0.105 129.5);
         --accent-upkeeper: oklch(0.6 0.105 92.3);
-        --accent-bountiful: oklch(0.6 0.105 28.3);
+        --accent-bountiful: oklch(0.6 0.105 355);
       }
     }
   }

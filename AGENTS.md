@@ -231,14 +231,25 @@ and 0, and a down-then-move drag landed on 1231 of 1231.
 
 ### The three accents are the icons' own hues
 
-Sampled from the 144px masters, then normalised to a single OKLCH lightness and chroma
-per scheme so the set reads as one ramp rather than three intensities. Only H differs:
-Kiwido 129.5, Upkeeper 92.3, Bountiful 28.3.
+Normalised to a single OKLCH lightness and chroma per scheme so the set reads as one
+ramp rather than three intensities. Only H differs: Kiwido 129.5, Upkeeper 92.3,
+Bountiful 355.
+
+**Amended 2026-09-22 (SDS-D008).** Kiwido's and Upkeeper's hues were sampled from the
+144px icon masters and happen to match those apps' own signature accents — kiwi and
+lemon — within 2.7 degrees. **Bountiful's did not.** Its icon is a pomegranate, so a
+sampled hue gave 28.3, a terracotta, while the app's signature accent is **plum** at
+355. The site was painting Bountiful in a colour the app does not use.
+
+Peter's call, 2026-09-22: the swatch follows the **app's accent**, not the icon.
+Lightness and chroma are unchanged, so the ramp still reads as one set; only H moved.
+Where an icon hue and an app accent disagree in future, the app accent wins, and this
+paragraph is why.
 
 | Scheme | Ramp | Rendered | Contrast on ground |
 | --- | --- | --- | --- |
-| Light | `oklch(0.56 0.11 H)` | `#5f8136` `#8b7210` `#ac594f` | 3.95, 4.09, 4.30 |
-| Dark | `oklch(0.6 0.105 H)` | `#6c8c46` `#967e2a` `#b7665c` | 4.87, 4.73, 4.51 |
+| Light | `oklch(0.56 0.11 H)` | `#5f8136` `#8b7210` `#a65778` | 3.95, 4.09, 4.34 |
+| Dark | `oklch(0.6 0.105 H)` | `#6c8c46` `#967e2a` `#b16483` | 4.87, 4.73, 4.47 |
 
 All clear the 3:1 floor for a non-text indicator. The dark ramp was first set at
 L 0.68 and measured 6.2–6.7:1, visibly louder than its light counterpart; L 0.60 puts
