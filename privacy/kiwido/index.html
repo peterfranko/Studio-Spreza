@@ -53,7 +53,7 @@
         <a class="legal-back" href="/">Studio Spreza</a>
 
         <h1 class="legal-title">Kiwido Privacy Policy</h1>
-        <p class="legal-meta">Last updated September 9, 2026. Developer: Studio Spreza.</p>
+        <p class="legal-meta">Last updated September 27, 2026. Developer: Studio Spreza.</p>
 
         <p class="legal-lede">
           This policy explains how the Kiwido app handles information on your device and when it
@@ -100,22 +100,24 @@
         </p>
         <p>
           Coordinates may be sent over the network for forecasts and place labels. Forecast requests
-          go to Open-Meteo. When you use current location for weather, coordinates may also go to
-          OpenStreetMap Nominatim to turn coordinates into a short place name.
+          go to Apple Weather through Apple's WeatherKit. When you use current location for weather,
+          the app also asks Apple Maps to turn those coordinates into a short place name. Both are
+          handled by Apple under Apple's privacy policy, not on servers operated by Studio Spreza.
         </p>
 
         <h2>Network services</h2>
         <p>The app may connect to the internet for the following, and nothing else.</p>
         <ul>
           <li>
-            <strong>Weather.</strong>
-            <a href="https://open-meteo.com/en/terms" rel="noopener noreferrer">Open-Meteo</a> over
-            HTTPS, for forecasts only, using coordinates for the location you chose or your current
-            location. The app does not use Apple Weather or WeatherKit for forecasts.
+            <strong>Weather.</strong> Apple Weather, through Apple's WeatherKit, for forecasts only,
+            using coordinates for the location you chose or your current location. The app also loads
+            the Apple Weather mark and a link to
+            <a href="https://weatherkit.apple.com/legal-attribution.html" rel="noopener noreferrer">its data sources</a>
+            from Apple, to credit the forecast where it appears.
           </li>
           <li>
-            <strong>Place names.</strong> OpenStreetMap Nominatim over HTTPS, to turn coordinates
-            into a short place label when you use current location for weather.
+            <strong>Place names.</strong> Apple MapKit, to turn coordinates into a short place label
+            when you use current location for weather.
           </li>
           <li>
             <strong>Map search.</strong> When you search for a city, address, or point of interest,
@@ -201,7 +203,8 @@
     <footer class="site-footer">
       <div class="wrap footer-inner">
         <span class="footer-brand">© 2026 Studio Spreza</span>
-        <nav class="footer-links" aria-label="Legal">
+        <nav class="footer-links" aria-label="Support and privacy">
+          <a href="/support/">Support</a>
           <a href="/privacy/upkeeper/">Upkeeper privacy</a>
           <a href="/privacy/bountiful/">Bountiful privacy</a>
         </nav>
