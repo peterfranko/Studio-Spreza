@@ -565,6 +565,8 @@ they stay; the rows are separated by their icons and names, not their rails.
   the system settings for each. Neither claims photos are end-to-end encrypted (unverified).
   Every page's footer now lists Support and the five other policies, and Notation's page
   lost its `noindex`, which it should have lost when it went on the shelf.
-- **The Support page still answers for the first three.** Its copy says so plainly, so it
-  is not wrong, only incomplete.
+- **The Support page answers for all six** since later on 2026-10-02: a section per new app,
+  each naming the settings and behaviours the app actually has (checked in the source, like
+  the policies). Notation's and Bilberry's locks both fall back to the device passcode;
+  Bilberry and Homegrown have no in-app sync switch, so Support names the system one.
 
