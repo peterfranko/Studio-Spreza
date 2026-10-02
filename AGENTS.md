@@ -280,6 +280,9 @@ on the page.
 
 Headless captures in this repo used Microsoft Edge, which is **no longer installed**.
 Arc and Dia ignore `--headless` and open real windows, so they are not substitutes.
+**The share card no longer needs one** (2026-10-02): `Scripts/make-studio-og-card.sh`
+falls back to `Scripts/lib/render-html-webkit.swift`, an offscreen `WKWebView` that ships
+with macOS.
 Until another Chromium is available, verification runs through the in-app Browser pane:
 measure with `javascript_tool`, and nudge the page with a scroll before every
 screenshot, because a hidden pane returns a stale or blank frame otherwise.
@@ -481,3 +484,68 @@ The fix is a `srcset` with a 384px variant, and it should be **emitted by
 into 30 `<img>` tags that the next re-shoot would invalidate. Doing it here would also
 mean re-encoding captures that are already queued for replacement. It goes with the
 capture-rig project.
+
+**Update 2026-10-02:** the shelf is six rows and 60 frames now, so this matters twice as
+much. Lazy loading bounds it to the rows a reader scrolls to. The stable names mean a
+`srcset` would survive every re-shoot, so the publisher could emit the 384px variant
+without any markup churn after the first edit.
+
+## Six apps on the shelf (2026-10-02)
+
+Peter put **Bilberry, Notation and Homegrown** on the shelf, with the meta copy and the
+share card to match. Compass Decision Log, 2026-10-02, carries the positioning; this
+section carries the site.
+
+**Order is launch priority**: Kiwido, Upkeeper, Bountiful, Bilberry, Notation, Homegrown.
+**Taglines are the in-app shelf lines** (`DOC-SETTINGS-DESIGN-SYSTEM.md` S1a), word for
+word. **Every badge is the same non-live placeholder**, and no copy may say any app is
+available. Homegrown's frames show the pilot catalogue's wide, provisional estimates, so
+no line here may claim care coverage or a plant count.
+
+### Accents
+
+The ramp is unchanged; three hues joined it, each the app's own accent (SDS-D008, above):
+
+| App | H | Light | Contrast | Dark | Contrast |
+| --- | --- | --- | --- | --- | --- |
+| Bilberry | 263 (Blueberry) | `#5273b5` | 4.14 | `#5f7fbf` | 4.70 |
+| Notation | 51 (Husk) | `#a76033` | 4.26 | `#b26d43` | 4.57 |
+| Homegrown | 145 (Fern) | `#47854a` | 3.91 | `#569158` | 4.95 |
+
+All in sRGB gamut at both points of the ramp, all over the 3:1 floor. **Fern and Kiwi sit
+15.5 degrees apart**, the closest pair on the page. They are the apps' own accents, so
+they stay; the rows are separated by their icons and names, not their rails.
+
+### Icons, frames and the card
+
+- **Icons** are manifest targets (`site/bilberry-icon`, `site/notation-icon`,
+  `site/homegrown-icon`), one file per app for both schemes, as Bountiful's is. Never
+  export one by hand.
+- **Frames**: `Scripts/publish-showcase-to-site.sh` maps all six. **Kiwido's mapping was
+  stale when this pass began**: the capture test had renumbered its moments, so three
+  stems no longer existed and the publisher would have put the composer under *Perfect
+  days* while leaving three slots on old files. Read the frame, not the stem:
+  `11-perfect-days` is the Rank page and `12-heatmap` is the Perfect Days sheet.
+- **Bilberry's frames are the 2026-09-29 afternoon set**, published with
+  `SHOWCASE_SET=2026-09-29`. Its demo seeds today's entries relative to the real clock, so
+  the 2026-10-02 pass, shot after midnight, had one entry on today's page and a
+  "scrolled" frame identical to the first. It is one polish commit behind (2026-09-30:
+  day-page photo crop, month and search sheets). **Re-shoot it in the daytime.**
+- **Bountiful's Patterns slot had been repeating Over time** in every capture since
+  2026-09-28: the test's swipe went through the record chart and never scrolled. The
+  site still showed the 2026-09-09 frame, so nothing public was wrong, but the next
+  publish would have been. Fixed in the test, which now fails on identical frames.
+- **Homegrown skips its Plants grid**: until Peter's demo photos land every tile is the
+  leaf placeholder, and five of them read as an empty app.
+- **The share card** lays the six out as columns, icon over label, since six
+  icon-beside-label pairs need about 1700px of a 1024px measure.
+
+### Privacy and support
+
+- **Notation's policy was already live** and is now in every footer, the sitemap, and the
+  other policies' footers. Its own footer was the pre-Support version and now matches.
+- **Bilberry and Homegrown have no policy on the site**, so their rows carry no footer
+  link. Write one before either goes anywhere near App Store Connect.
+- **The Support page still answers for the first three.** Its copy says so plainly, so it
+  is not wrong, only incomplete.
+

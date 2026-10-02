@@ -316,10 +316,11 @@
        separation the colours cannot, and it is mixed from --color-accent rather
        than black so it stays in the paper world instead of going cool and grey.
 
-       The three app accents are the icons' own hues, taken from the 144px
-       masters and then normalised to a single OKLCH lightness and chroma so the
-       set reads as one ramp rather than three intensities. Only H differs:
-       Kiwido 129.5, Upkeeper 92.3, Bountiful 28.3. */
+       The six app accents share a single OKLCH lightness and chroma per scheme
+       so the set reads as one ramp rather than six intensities. Only H differs,
+       and H is each app's own accent (SDS-D008: where the icon's hue and the
+       app's accent disagree, the accent wins): Kiwido 129.5, Upkeeper 92.3,
+       Bountiful 355, Bilberry 263, Notation 51, Homegrown 145. */
     --shadow-shot:
       0 1px 3px color-mix(in oklab, var(--color-accent) 22%, transparent),
       0 10px 20px -4px color-mix(in oklab, var(--color-accent) 20%, transparent),
@@ -330,6 +331,9 @@
     --accent-kiwido: #5f8136;
     --accent-upkeeper: #8b7210;
     --accent-bountiful: #a65778;
+    --accent-bilberry: #5273b5;
+    --accent-notation: #a76033;
+    --accent-homegrown: #47854a;
 
     /* App icons: 144px transparent exports from the shared appicon masters.
        Bountiful ships one universal mark rather than a light/dark pair: it has a
@@ -337,6 +341,9 @@
     --app-icon-kiwido: url('assets/kiwido-icon-light.png');
     --app-icon-upkeeper: url('assets/upkeeper-icon-light.png');
     --app-icon-bountiful: url('assets/bountiful-icon.png');
+    --app-icon-bilberry: url('assets/bilberry-icon.png');
+    --app-icon-notation: url('assets/notation-icon.png');
+    --app-icon-homegrown: url('assets/homegrown-icon.png');
     /* Was <picture> with a media source. That can only see prefers-color-scheme, so
        an explicit data-theme showed the wrong badge: the same reason the showcase
        shelves are stacked images rather than <picture>. */
@@ -371,9 +378,15 @@
     --accent-kiwido: #6c8c46;
     --accent-upkeeper: #967e2a;
     --accent-bountiful: #b16483;
+    --accent-bilberry: #5f7fbf;
+    --accent-notation: #b26d43;
+    --accent-homegrown: #569158;
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
     --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
     --app-icon-bountiful: url('assets/bountiful-icon.png');
+    --app-icon-bilberry: url('assets/bilberry-icon.png');
+    --app-icon-notation: url('assets/notation-icon.png');
+    --app-icon-homegrown: url('assets/homegrown-icon.png');
     --appstore-badge: url('assets/appstore-dark.svg');
     color-scheme: dark;
   }
@@ -405,9 +418,15 @@
     --accent-kiwido: #6c8c46;
     --accent-upkeeper: #967e2a;
     --accent-bountiful: #b16483;
+    --accent-bilberry: #5f7fbf;
+    --accent-notation: #b26d43;
+    --accent-homegrown: #569158;
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
       --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
       --app-icon-bountiful: url('assets/bountiful-icon.png');
+      --app-icon-bilberry: url('assets/bilberry-icon.png');
+      --app-icon-notation: url('assets/notation-icon.png');
+      --app-icon-homegrown: url('assets/homegrown-icon.png');
       /* SDS-D009, fixed 2026-09-22. This line was in html[data-theme='dark'] and not
          here, so a visitor whose OS is dark but who had never touched the site's own
          toggle got the LIGHT badge on a dark ground. The icons beside it were already
@@ -420,7 +439,7 @@
   }
 
   /* ─── Accent ramp, in OKLCH where it parses ──────────────────────────────
-     The three app hues are meant to share one lightness and chroma, which only
+     The six app hues are meant to share one lightness and chroma, which only
      OKLCH says out loud; the hex above is exactly what each one resolves to.
 
      It has to be declared this way round rather than `oklch()` with a var()
@@ -440,12 +459,18 @@
       --accent-kiwido: oklch(0.56 0.11 129.5);
       --accent-upkeeper: oklch(0.56 0.11 92.3);
       --accent-bountiful: oklch(0.56 0.11 355);
+      --accent-bilberry: oklch(0.56 0.11 263);
+      --accent-notation: oklch(0.56 0.11 51);
+      --accent-homegrown: oklch(0.56 0.11 145);
     }
 
     html[data-theme='dark'] {
       --accent-kiwido: oklch(0.6 0.105 129.5);
       --accent-upkeeper: oklch(0.6 0.105 92.3);
       --accent-bountiful: oklch(0.6 0.105 355);
+      --accent-bilberry: oklch(0.6 0.105 263);
+      --accent-notation: oklch(0.6 0.105 51);
+      --accent-homegrown: oklch(0.6 0.105 145);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -453,6 +478,9 @@
         --accent-kiwido: oklch(0.6 0.105 129.5);
         --accent-upkeeper: oklch(0.6 0.105 92.3);
         --accent-bountiful: oklch(0.6 0.105 355);
+        --accent-bilberry: oklch(0.6 0.105 263);
+        --accent-notation: oklch(0.6 0.105 51);
+        --accent-homegrown: oklch(0.6 0.105 145);
       }
     }
   }
@@ -1133,7 +1161,7 @@
     inset-block-start: calc(50% - 2.5px);
   }
 
-  /* The icons' own hues, at one OKLCH lightness and chroma per scheme. */
+  /* Each app's accent hue, at one OKLCH lightness and chroma per scheme. */
   .work-row[data-app='kiwido'] {
     --row-accent: var(--accent-kiwido);
   }
@@ -1144,6 +1172,18 @@
 
   .work-row[data-app='bountiful'] {
     --row-accent: var(--accent-bountiful);
+  }
+
+  .work-row[data-app='bilberry'] {
+    --row-accent: var(--accent-bilberry);
+  }
+
+  .work-row[data-app='notation'] {
+    --row-accent: var(--accent-notation);
+  }
+
+  .work-row[data-app='homegrown'] {
+    --row-accent: var(--accent-homegrown);
   }
 
   .work-showcase-item {
@@ -1311,6 +1351,18 @@
 
   .work-icon[data-app='bountiful'] {
     background-image: var(--app-icon-bountiful);
+  }
+
+  .work-icon[data-app='bilberry'] {
+    background-image: var(--app-icon-bilberry);
+  }
+
+  .work-icon[data-app='notation'] {
+    background-image: var(--app-icon-notation);
+  }
+
+  .work-icon[data-app='homegrown'] {
+    background-image: var(--app-icon-homegrown);
   }
 
   .work-row-body {
