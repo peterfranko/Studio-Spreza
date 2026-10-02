@@ -569,4 +569,15 @@ they stay; the rows are separated by their icons and names, not their rails.
   each naming the settings and behaviours the app actually has (checked in the source, like
   the policies). Notation's and Bilberry's locks both fall back to the device passcode;
   Bilberry and Homegrown have no in-app sync switch, so Support names the system one.
+- **Support's sections have addresses** (2026-10-02): every `h2` carries an id, the intro's
+  app names link to them, and a jump lands 20px below the top edge (`.legal h2`
+  `scroll-margin-top`). Use `/support/#<app>` as that app's support URL in App Store Connect.
+- **Legal-page links are underlined again.** `.legal a` always set an underline offset and
+  thickness, but the global `a` reset removed the underline itself, so every link in every
+  policy and on Support read as plain text. `.legal :is(p, li) a` restores it; the caps back
+  link is outside `p` and `li` and keeps its own treatment.
+- **Homegrown's Plant frame stays over the Guide** (2026-10-02). Its "care guide is still
+  being written" line is the honest state of the pilot. The Guide frame lists species under
+  "Will it grow here?", which reads as the care-coverage claim the canon forbids until the
+  catalogue run.
 

@@ -1631,6 +1631,9 @@
     margin-block: var(--space-12) var(--space-5);
     padding-block-start: var(--space-10);
     border-top: 1px solid var(--color-border-subtle);
+    /* Support's sections carry ids since 2026-10-02, one address per app for App Store
+       Connect's support URL. A jump lands the rule a little below the top edge, not on it. */
+    scroll-margin-top: var(--space-6);
   }
 
   .legal h2:first-of-type {
@@ -1667,6 +1670,14 @@
     color: inherit;
     text-underline-offset: 0.2em;
     text-decoration-thickness: 1px;
+  }
+
+  /* Links in the prose are underlined. The offset and thickness above were always meant for
+     an underline, but the global `a` reset removed it, so every policy's links read as plain
+     text (found 2026-10-02, adding Support's per-app links). Scoped to p and li so the caps
+     back link keeps its own treatment. */
+  .legal :is(p, li) a {
+    text-decoration-line: underline;
   }
 
   .legal a:hover,
