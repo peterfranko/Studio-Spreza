@@ -485,10 +485,18 @@ into 30 `<img>` tags that the next re-shoot would invalidate. Doing it here woul
 mean re-encoding captures that are already queued for replacement. It goes with the
 capture-rig project.
 
-**Update 2026-10-02:** the shelf is six rows and 60 frames now, so this matters twice as
-much. Lazy loading bounds it to the rows a reader scrolls to. The stable names mean a
-`srcset` would survive every re-shoot, so the publisher could emit the 384px variant
-without any markup churn after the first edit.
+**Done 2026-10-02.** The publisher writes a 384px twin beside every frame
+(`<app>-0N-<scheme>-384.webp`) and each `<img>` names both, with
+`sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px"`: the three
+widths `.work-showcase-item` actually takes (`min(18rem, 66vw)` below 820px, 24rem
+above), in px because a `sizes` rem is the initial 16px either way and `min()` in
+`sizes` is not safe in every Safari still in use. Measured in Chromium at 2x: a
+384px slot and a phone slot both resolve to the 768 file, and the 1x equivalent
+resolves to the 384 one when neither is cached. Sixty frames are about 2.2MB at 768
+and 1MB at 384, so a 1x reader who scrolls the whole shelf saves about 1.2MB.
+**Chromium keeps the larger file once it has it**, so a probe against an already
+loaded frame reports 768 at any size; test with uncached URLs. `height` is now
+1670, the files' real height (it said 1669).
 
 ## Six apps on the shelf (2026-10-02)
 
@@ -512,7 +520,9 @@ The ramp is unchanged; three hues joined it, each the app's own accent (SDS-D008
 | Notation | 51 (Husk) | `#a76033` | 4.26 | `#b26d43` | 4.57 |
 | Homegrown | 145 (Fern) | `#47854a` | 3.91 | `#569158` | 4.95 |
 
-All in sRGB gamut at both points of the ramp, all over the 3:1 floor. **Fern and Kiwi sit
+All in sRGB gamut at both points of the ramp, all over the 3:1 floor. **All six are traced**
+by `Scripts/check-sds.sh` against each app's own spec dump: Blueberry, Husk and Fern land within
+0.5° of their app's signature hue (Homegrown's dumper was written for this, 2026-10-02). **Fern and Kiwi sit
 15.5 degrees apart**, the closest pair on the page. They are the apps' own accents, so
 they stay; the rows are separated by their icons and names, not their rails.
 
@@ -521,6 +531,11 @@ they stay; the rows are separated by their icons and names, not their rails.
 - **Icons** are manifest targets (`site/bilberry-icon`, `site/notation-icon`,
   `site/homegrown-icon`), one file per app for both schemes, as Bountiful's is. Never
   export one by hand.
+- **The publisher refuses instead of half-publishing** (2026-10-02, after this
+  pass): a missing stem, two slots showing the same screen, or a slot identical in
+  light and dark exits 2 and writes nothing for that app. Run against the night's
+  bad sets it refused all three, and caught one more: Bilberry's `04-entry-dark` was
+  the day page, not the editor.
 - **Frames**: `Scripts/publish-showcase-to-site.sh` maps all six. **Kiwido's mapping was
   stale when this pass began**: the capture test had renumbered its moments, so three
   stems no longer existed and the publisher would have put the composer under *Perfect
@@ -544,8 +559,12 @@ they stay; the rows are separated by their icons and names, not their rails.
 
 - **Notation's policy was already live** and is now in every footer, the sitemap, and the
   other policies' footers. Its own footer was the pre-Support version and now matches.
-- **Bilberry and Homegrown have no policy on the site**, so their rows carry no footer
-  link. Write one before either goes anywhere near App Store Connect.
+- **Bilberry's and Homegrown's policies went live later on 2026-10-02**, written against
+  each app's code, not its plan: Bilberry has no in-app sync switch, so its page names the
+  system one; Homegrown has no in-app switch for sync, Spotlight or nudges, so its page names
+  the system settings for each. Neither claims photos are end-to-end encrypted (unverified).
+  Every page's footer now lists Support and the five other policies, and Notation's page
+  lost its `noindex`, which it should have lost when it went on the shelf.
 - **The Support page still answers for the first three.** Its copy says so plainly, so it
   is not wrong, only incomplete.
 
