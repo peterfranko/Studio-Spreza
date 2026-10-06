@@ -643,6 +643,20 @@ subtitle line both centre on the column to 0.00px at 1440 and 375. The subtitle'
 1.7px left of that, the half-advance of its final period; too small to correct with the
 punctuation hang `pf-portfolio` needed at 10px. Everything below the hero stays flush left.
 
+**The header mark followed it onto the axis** (Peter, 2026-10-06, from `/polish-check`).
+Centring the hero left the scroll handoff 486px wide at 1440 (hero mark centre 720, header
+mark 234): the motion is built to read as one mark settling into the bar, and it read as two.
+`.header-inner` is now a `1fr auto 1fr` grid with the mark in the middle track and the theme
+toggle at the end of the last, so the mark holds the axis whatever the toggle's width,
+including while it ships `hidden`. Measured from fresh loads: both marks centre at 720, 400,
+187.5 and 160 at 1440, 800, 375 and 320, the bar is still 56.19px, and nothing overflows.
+(A resize in the pane once reported a 611px page at 375; it was the pane, and a fresh load at
+the same width measured 375.)
+
+**The subtitle is `text-wrap: balance`.** At 320 it wrapped as "…apps made in" over a lone
+"NYC.", which centring made louder. Now "Subscription-free" over "apps made in NYC.", lines
+140 and 151px. One line from 375 up, unchanged.
+
 **The glow followed** (Peter, same day): `.hero-glow` was two layers at 22% and 82%, set for
 the flush-left hero. It is now one, at 50%, with the old main layer's strength and reach.
 Moving both to the centre would have stacked them to nearly twice the depth. Measured off a
@@ -653,5 +667,42 @@ column axis; the right-hand corner is lighter for losing the second layer.
 blurs out as the header mark settles in), and with keyboard focus on the header link. No
 horizontal overflow, no console errors.
 
-**Not changed:** the favicon and the policy pages' "Studio Spreza" back link are still
-Geist. The share card took the mark the same day (see the share card section).
+**Followed later:** the share card took the mark the same day (see the share card section),
+and the favicon and the policy pages' back link the day after (2026-10-06).
+
+**The policy pages draw the mark from `assets/spreza-mark.svg`**, not an inline sprite: seven
+pages share one cached file through `<use href="/assets/spreza-mark.svg#spreza-mark">`, still
+`currentColor`, so it follows the theme. The back link is the header's 3.25rem. Its colour is
+`.legal a` (primary, muted on hover), which outranks `.legal-back`: the old uppercase label's
+muted colour never actually applied. **The file is a copy of the `<symbol>` in `index.html`**;
+after a retrace, refresh both, or the policy pages keep the old mark.
+
+## The favicon is the S of the wordmark (2026-10-06)
+
+Peter picked it from two rounds of sketches: the S of "Studio", paper on an ink tile, one
+version for both colour schemes. It replaced a purple squircle with "Studio Spreza" set in
+Geist, which was off-palette and unreadable at tab size. Ruled out on the way: the S of
+"Spreza" (too narrow for a square), "St" and "Sp" (smudge at 16px), a paper tile (vanishes on
+a light tab strip), the "o" (reads as a zero), six accent seeds (mush, and tied to the shelf).
+
+| Need | Do this |
+| --- | --- |
+| Regenerate all four files | `python3 Scripts/make-studio-favicons.py` (workspace `Scripts/`) |
+| Source | the leftmost subpath of `/Users/peter/Developer/Assets/studiospreza-script.svg`, so a retrace carries through |
+
+**Never hand-edit the files.** `favicon.svg`, `favicon.png` (48px), `favicon.ico` (16/32/48,
+unlinked, for clients that ask for `/favicon.ico` directly) and `apple-touch-icon.png` (180px,
+full-bleed square: iOS rounds it) all come out of the script. The three tab sizes thicken the
+stroke by 14 path units, because the traced brush is about 1px wide at 16px; the Home Screen
+icon keeps the stroke as traced.
+
+**The Home Screen icon carries the site's atmosphere; the tab files stay flat** (Peter,
+2026-10-06, option F of six flavour sketches). Three layers, each below notice at tab size:
+the `.hero-glow` light in its dark-mode colour (`#c9bca8`, 13%, from the top centre), ink that
+runs `#262019` at the top to `#0f0d0a` at the bottom with a 7% rim along the top edge, and
+the page grain multiplied into the paper S. The grain is seeded, so a rerun is byte-identical.
+Passed over: a vermilion maker's seal under the S, which survived at 16px but read as a
+sticker.
+
+**Link order matters.** Every page lists the PNG with `sizes="48x48"` first and the SVG
+second. With a sized raster ahead of it, Chrome and Firefox both take the SVG.

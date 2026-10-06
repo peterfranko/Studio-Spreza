@@ -752,11 +752,18 @@
     );
   }
 
+  /* Three columns so the mark sits on the same axis as the hero mark it takes
+     over from on scroll (2026-10-05). With the hero flush left the two shared
+     the column's left edge; once the hero was centred they were 486px apart at
+     1440 and the handoff read as two marks rather than one settling into the
+     bar. The equal outer tracks keep the middle one on the axis whatever the
+     toggle's width, including while it is still hidden. */
   .header-inner {
     max-width: calc(var(--layout-measure-wide) + 2 * var(--space-gutter-x));
     margin-inline: auto;
     padding: var(--space-4) var(--space-gutter-x);
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: var(--space-5);
   }
@@ -770,7 +777,8 @@
      Ships `hidden` and main.js reveals it, like .work-rail. Without scripting it
      would be a control that changes nothing. */
   .theme-toggle {
-    margin-inline-start: auto;
+    grid-column: 3;
+    justify-self: end;
     inline-size: 2.75rem;
     block-size: 2.75rem;
     margin-block: -0.5rem;
@@ -883,6 +891,7 @@
      rather than growing the bar, the same way the theme toggle does. The
      margin sits on the link, not the mark, so the focus ring wraps the ink. */
   .logo {
+    grid-column: 2;
     margin-block: -0.45rem;
   }
 
@@ -960,10 +969,13 @@
     margin-inline: auto;
   }
 
+  /* Balanced so a narrow phone breaks it into two even lines instead of
+     leaving "NYC." alone on the second (measured at 320px). */
   .hero-subtitle {
     max-width: 26rem;
     margin-top: var(--space-6);
     margin-inline: auto;
+    text-wrap: balance;
     font-size: var(--text-body-lg);
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-snug);
@@ -1635,22 +1647,18 @@
     padding-block: var(--space-section-lg);
   }
 
+  /* The brush mark, the header's size, drawn from assets/spreza-mark.svg rather
+     than an inline sprite: seven pages share one cached file. line-height: 0
+     keeps the link box on the ink, so the focus ring wraps the mark. Colour comes
+     from `.legal a` below: primary ink, muted on hover, like every link here. */
   .legal-back {
     display: inline-block;
     margin-block-end: var(--space-10);
-    font-size: var(--text-label);
-    font-weight: var(--font-weight-medium);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    color: var(--color-text-muted);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
+    line-height: 0;
   }
 
-  .legal-back:hover,
-  .legal-back:focus-visible {
-    color: var(--color-text-primary);
-    border-bottom-color: currentColor;
+  .legal-back .brand-mark {
+    inline-size: 3.25rem;
   }
 
   .legal-title {
