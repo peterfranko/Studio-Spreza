@@ -716,7 +716,7 @@ reworked; he picked these two.
 **The write-on follows the pen, not a wipe.** The first version swept a soft mask across
 each line, which filled letters column by column (the "d" stem appeared whole) and dragged
 a grey band across every stroke. Now each letter is uncovered along its own centre-line, in
-reading order, at one pen speed: about 2.2s, once per load.
+reading order, with pen lifts between strokes: about 2.1s, once per load.
 
 | Step | Command |
 | --- | --- |
@@ -727,7 +727,7 @@ reading order, at one pen speed: about 2.2s, once per load.
 - **The script writes two marked blocks in `index.html`** (`spreza-sprite`, `spreza-pen`).
   Do not hand-edit either. The sprite's symbol is now one `<path>` per letter, so the header
   still draws the whole symbol and the hero `<use>`s each letter through its own mask: the
-  path data is on the page once. Pen data is 9.4 KB.
+  path data is on the page once. Pen data is 7.9 KB.
 - **Centre-lines are found, not drawn**: the master is thinned to one-pixel lines (Zhang-Suen,
   half resolution), each connected ink shape is a letter, and a greedy walk orders its line
   from the leftmost free end, lifting the pen only at a real gap. Stroke order is therefore a
@@ -741,15 +741,41 @@ reading order, at one pen speed: about 2.2s, once per load.
   reached fills in rather than staying missing.
 - **Verified**: with motion removed and after the write finishes, the mark matches the static
   render to 3 pixels of antialiasing (83,959 of 83,961 ink pixels). Frames at 0.6s and 1.2s
-  show the write in progress. Live in the pane: 38 strokes and 11 settles all finish, header
+  show the write in progress. Live in the pane: every stroke and settle finishes, header
   mark intact, no console errors. **Capture note:** the pane cannot photograph a running mask
   reveal (it returns a stale or finished frame) and throttles a hidden tab's timeline, so mid-
   write stills come from `Scripts/lib/render-html-webkit.swift` with the animation paused at a
   negative delay.
 
+**Phone check, dark mode (same day).** Two fixes came out of it. **Stroke order:** the walk
+counted a letter's free ends once, up front, so after the z's top bar the pen jumped to the
+caret's far stroke; ends are now recounted at every lift, and the z, a and caret write in
+order. Thinning spurs under 24 units no longer get a pen of their own (they popped in as late
+dabs; `.pen-rest` fills them), which took the write from 38 strokes and 2.2s to 20 and 1.7s.
+**Lamp shape:** sized as a share of the hero box it was a wide pool at 1440 and a tall beam no
+wider than the mark on a phone; its radii are now 1.12 and 0.68 times `--hero-mark-w`, the
+mark's width, which `.hero` now defines and the mark itself uses. Verified at 375 and 320 in
+the pane, and at 375 in WebKit (the Safari engine) with frames at 0.7s, 1.4s and done.
+
+**Rhythm and the lamp's rise (Peter, same day).** The pen no longer runs strokes back to
+back at one speed, which read like a plotter: strokes are quicker (9,500 units/s) with a
+45ms lift between strokes of a letter and 35ms between letters, and a held 150ms beat before
+the mark's last stroke, so the caret's down-stroke lands as a flick after the rest is
+written. The ink is done at 1.89s, the last letter settled at 2.13s; the timeline is printed
+by the script. In dark mode `.hero-glow` runs `lamp-up` (opacity 0 to 1, 1.4s ease-out, after
+0.12s), so the light rises while the mark writes; switching the toggle to dark starts the
+same rise, because the animating rule only matches once the page is dark, and moving between
+explicit and automatic dark keeps the animation name, so it does not replay. Reduce Motion
+gets the lamp at full strength and the mark finished. Verified: a frame inside the held beat
+shows everything but the caret's down-stroke; the finished frame matches the static mark to
+3 pixels; in the pane, a dark load starts the lamp at opacity 0 and the toggle's light-to-dark
+step starts a fresh rise while light and automatic-light start none. **Capture note:** the
+offscreen renderer keeps `localStorage` between runs, so a render that sets `spreza-theme`
+leaves every later render in that theme until it is cleared.
+
 **At night the glow is a lamp.** In dark mode `.hero-glow` becomes one warm pool behind the
-mark (`--color-accent` at 13%, ellipse 30% by 44%), over the whole hero with its own bottom
-fade; light mode keeps the centred top glow. Tried in daylight first and dropped: a lit
+mark (`--color-accent` at 13%, radii 1.12 and 0.68 mark widths), over the whole hero with its
+own bottom fade; light mode keeps the centred top glow. Tried in daylight first and dropped: a lit
 centre with darker edges on light paper read as a photo vignette.
 
 **Not taken**, from the same review: a bigger mark (fine, optional, no reason of its own),

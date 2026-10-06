@@ -900,7 +900,11 @@
   }
 
   /* ─── Hero ─── */
+  /* The mark's width, shared so the dark-mode lamp can be sized off the mark
+     rather than off the hero box, which is wide on a desktop and nearly square
+     on a phone. 5.5 display steps, floored for phones (see .brand-mark below). */
   .hero {
+    --hero-mark-w: max(calc(5.5 * var(--text-display)), 13.5rem);
     position: relative;
     padding-block: clamp(7.5rem, 15vw, 12rem) clamp(3rem, 7vw, 5.5rem);
     overflow: hidden;
@@ -933,13 +937,16 @@
 
   /* At night the glow becomes a lamp (2026-10-06): a warm pool behind the mark,
      on the whole hero rather than the top band, since the light is for the mark.
+     Its radii are multiples of the mark's width, so it has the same shape at every
+     size: set as a share of the hero box it was 864px wide at 1440 but a tall,
+     narrow beam on a phone, no wider than the mark.
      Day keeps the top glow above. Tried in daylight too and dropped: a lit
      centre with darker edges on light paper read as a photo vignette. */
   html[data-theme='dark'] .hero-glow {
     inset: 0;
     height: auto;
     background: radial-gradient(
-      ellipse 30% 44% at 50% 47%,
+      calc(var(--hero-mark-w) * 1.12) calc(var(--hero-mark-w) * 0.68) at 50% 47%,
       color-mix(in oklab, var(--color-accent) 13%, transparent) 0%,
       transparent 100%
     );
@@ -952,12 +959,34 @@
       inset: 0;
       height: auto;
       background: radial-gradient(
-        ellipse 30% 44% at 50% 47%,
+        calc(var(--hero-mark-w) * 1.12) calc(var(--hero-mark-w) * 0.68) at 50% 47%,
         color-mix(in oklab, var(--color-accent) 13%, transparent) 0%,
         transparent 100%
       );
       mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+    }
+  }
+
+  /* The lamp comes up with the ink (2026-10-06): on a dark load it rises while
+     the mark writes itself in, and switching to dark warms it up the same way
+     rather than cutting it in, because the rule that starts the animation only
+     matches once the page is dark. Moving between explicit dark and automatic
+     dark keeps the same animation name, so it does not replay. Most of the rise
+     is early (ease-out), so the light is there before the last letter lands. */
+  @keyframes lamp-up {
+    from { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-theme='dark'] .hero-glow {
+      animation: lamp-up 1.4s var(--ease-out) 0.12s both;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) and (prefers-color-scheme: dark) {
+    html:not([data-theme]) .hero-glow {
+      animation: lamp-up 1.4s var(--ease-out) 0.12s both;
     }
   }
 
@@ -995,7 +1024,7 @@
   /* The floor is for phones, where the display step bottoms out and the mark
      came in at 189px: narrower than the one-line subtitle under it. */
   .hero-title .brand-mark {
-    inline-size: max(5.5em, 13.5rem);
+    inline-size: var(--hero-mark-w);
     margin-inline: auto;
   }
 
