@@ -8,7 +8,7 @@ Source control boundary: this site lives under `/Users/peter/Developer/GitHub/` 
 
 **Personal data: off-limits, including looking.** Never read, write, list, copy, move, open, or index anything under `/Volumes/` other than the boot volume `Macintosh HD`; `~/Library/Mobile Documents/` (which is what iCloud Drive actually is on disk) or `~/Library/CloudStorage/`; `~/Pictures/Photos Library.photoslibrary`, any other `.photoslibrary` bundle, or the Photos app; Time Machine destinations, APFS local snapshots, `tmutil`, and `~/Library/Application Support/MobileSync/Backup/`. There is no read-only version of this: do not `ls` an external drive to see what is on it and do not `find` inside the Photos library to answer a question. Writing is default-deny: an agent authors files only in `/Users/peter/Developer/`, `~/Claude/Studio-Spreza/`, the session scratchpad, and a project's memory directory under `~/.claude/projects/` (opened 2026-09-05; only that subtree), and otherwise only in paths a tool writes for it (`~/Library/Developer/Xcode/DerivedData/`, `~/Library/Developer/CoreSimulator/`, `~/.swiftpm/` and the SwiftPM caches, the rest of `~/.claude/`), which are never hand-edited. If you are typing the path yourself, it is not one of those. Never root a recursive or destructive command at `~`, `/`, or `/Volumes/`. If a task looks like it needs a path outside the list, stop and ask. Workspace rule, added 2026-09-04: `/Users/peter/Developer/COMPASS.md` Personal Data Boundary.
 
-**Type (2026-08-11): single-family Geist.** Cormorant Garamond and JetBrains Mono are both gone. Hierarchy is weight (400 body / 500 headings and labels / 600 wordmark and `<strong>`), size, and case; uppercase with positive tracking is the label voice that the monospace used to carry. The size steps are tuned to Geist's x-height, so they do not transfer to another family. This is now a deliberate divergence from pf-portfolio, which still runs the serif pairing and the old token names: read the header comment in `styles.css` before syncing anything between the two.
+**Type (2026-08-11): single-family Geist.** Cormorant Garamond and JetBrains Mono are both gone. Hierarchy is weight (400 body / 500 headings and labels / 600 `<strong>`), size, and case; uppercase with positive tracking is the label voice that the monospace used to carry. The size steps are tuned to Geist's x-height, so they do not transfer to another family. This is now a deliberate divergence from pf-portfolio, which still runs the serif pairing and the old token names: read the header comment in `styles.css` before syncing anything between the two.
 
 Geist ships with a metric-matched fallback: four `@font-face` rules at the top of `styles.css` reshape local Arial to Geist's exact box, so the `display=swap` handover does not rewrap text. One face per weight, because Geist widens with weight and Arial does not. The `size-adjust` values are browser-measured against this site's copy, not derived from OS/2 tables (the table-based estimate ran ~3% wide). Recalibrate with the console snippet in `.font-lab/metrics.py` after any change to the family, the weights used, or the body copy.
 
@@ -141,6 +141,21 @@ card uses this site's own family, weights, tracking and colour tokens rather tha
 second copy of them. Rendered at 2x and downsampled, because scrapers serve the PNG
 at whatever size they like. The template is copied into the site root for the render
 so its relative `assets/` paths resolve, and removed afterwards.
+
+**The card carries the brush mark since 2026-10-05**, centred like the hero, with the glow on
+one centred ellipse. The template holds a `<!-- spreza-mark -->` placeholder and the build
+script swaps in `Assets/studiospreza-script.svg`, so the path has one source and a retrace
+reaches the card on the next build. The mark is 216px tall; content sits 68px from the top
+and 73px from the bottom of the 630px card, and the mark centres at x 600.0. Checked
+downsampled to 500px wide, about the size most link previews show it: the mark still reads.
+
+**Every page's card URL carries `?v=<hash>`** (2026-10-05), the first 8 hex of the PNG's
+SHA-256, stamped by the build script. Scrapers cache a card by URL, so a rebuilt card at the
+same address keeps showing the old one wherever the site was shared. A hash rather than a
+date because the render is deterministic (two builds, identical bytes): a rebuild that changes
+nothing rewrites no page. The script refuses (exit 1) if a page has lost either tag, so a new
+page must carry both `og:image` and `twitter:image` before the next build. **Do not edit the
+tag by hand**; run the script.
 
 ## Smaller, same day
 
@@ -581,3 +596,62 @@ they stay; the rows are separated by their icons and names, not their rails.
   "Will it grow here?", which reads as the care-coverage claim the canon forbids until the
   catalogue run.
 
+
+## The wordmark is Peter's brush lettering (2026-10-05)
+
+Peter, with a scan of the hand-lettered mark: *"Can you vectorize this and utilize it on
+the Studio Spreza site?"* The Geist 600 "Studio Spreza" in the hero and in the compact
+header are both the traced mark now.
+
+| Step | Command |
+| --- | --- |
+| Master raster (black on transparent) | `/Users/peter/Developer/Assets/studiospreza-script.png` |
+| Trace it | `python3 Scripts/trace-wordmark.py 1.2 12 Assets/studiospreza-script.svg --src Assets/studiospreza-script.png --label "Studio Spreza" --crop 0` |
+| Master vector | `/Users/peter/Developer/Assets/studiospreza-script.svg` |
+| On the page | the `<symbol id="spreza-mark">` at the top of `index.html`'s `<body>` |
+
+**Same tracer as the Peter Franko signature**, which gained `--src`, `--label` and `--crop`
+for this. Run without them it is byte-identical to before (checked by sha).
+
+**Tolerance 1.2, not the 2.4 the signature uses.** Compared against the source at native
+scale: 1.6 starts sanding the dry-brush nicks off the edges and 2.4 turns the mark into a
+clean vector, which loses what makes it lettering. 1.2 keeps them at 40 KB (15 KB gzipped);
+IoU against the binarised source 0.982, mean error under 1/255 at 480px wide.
+
+**One path, drawn twice.** The sprite holds the path once and the hero and header each
+`<use>` it, so the 40 KB is not paid twice. Inline rather than an `<img>` for the reason the
+signature gave: `currentColor` only resolves in the document, and that is what lets one
+path follow all three theme states.
+
+**The viewBox is cropped to the ink** (`getBBox` fills it to 0.07px), so the box is the mark:
+its left edge is the stroke, flush to the column like the subtitle under it.
+
+**Sizing.** The hero mark is `max(5.5em, 13.5rem)` on the old `--text-display` step, so it
+keeps that step's responsive curve: 387px wide at 1440, 216 at 375. The floor exists because
+the step bottoms out on phones and the mark came in at 189px, narrower than the one-line
+subtitle beneath it. The header mark is `3.25rem` and takes the bar's padding with a negative
+margin, as the theme toggle does, so the bar stays 56.19px. **The margin is on the link, not
+the SVG**: on the SVG it shrank the link to 22px and the focus ring cut through the ink.
+
+**Accessible name** is a `.visually-hidden` "Studio Spreza" beside an `aria-hidden` SVG in
+both places, the pattern `pf-portfolio` uses for the signature.
+
+**The hero is centred** (Peter, same day): `.hero-copy` is `text-align: center` with both
+children on `margin-inline: auto`, and the scroll handoff's shrink now scales from
+`center top`, not `left top`, so the mark recedes onto its own axis. Measured: mark box and
+subtitle line both centre on the column to 0.00px at 1440 and 375. The subtitle's letters sit
+1.7px left of that, the half-advance of its final period; too small to correct with the
+punctuation hang `pf-portfolio` needed at 10px. Everything below the hero stays flush left.
+
+**The glow followed** (Peter, same day): `.hero-glow` was two layers at 22% and 82%, set for
+the flush-left hero. It is now one, at 50%, with the old main layer's strength and reach.
+Moving both to the centre would have stacked them to nearly twice the depth. Measured off a
+2x render: peak darkening 219.8 against 219.6 before (paper 237.3), now symmetric about the
+column axis; the right-hand corner is lighter for losing the second layer.
+
+**Verified** at 1440, 800 and 375, light and dark, through the scroll handoff (hero mark
+blurs out as the header mark settles in), and with keyboard focus on the header link. No
+horizontal overflow, no console errors.
+
+**Not changed:** the favicon and the policy pages' "Studio Spreza" back link are still
+Geist. The share card took the mark the same day (see the share card section).

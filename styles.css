@@ -195,7 +195,9 @@
        distinction cannot be made with weight, size, or case, it does not
        belong in the system.
 
-         WEIGHT  400 body · 500 headings and labels · 600 wordmark and <strong>
+         WEIGHT  400 body · 500 headings and labels · 600 <strong>
+                 (the wordmark left the type system on 2026-10-05: it is
+                 a traced brush mark now, see "Brand mark" below)
          SIZE    one label step, two body steps, three heading steps
          CASE    uppercase + positive tracking is the label voice; it does
                  the job the monospace used to do
@@ -571,6 +573,25 @@
     }
   }
 
+  /* Text for assistive tech only. Carries the name beside a decorative mark. */
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Holds the <symbol> the brand marks draw from. Zero-size rather than
+     display: none, which some engines treat as "do not render the symbol". */
+  .sprite {
+    position: absolute;
+    inline-size: 0;
+    block-size: 0;
+    overflow: hidden;
+  }
+
   .skip-link {
     position: absolute;
     left: -10000px;
@@ -828,10 +849,21 @@
       outline-color var(--duration-medium) var(--ease-out) !important;
   }
 
+  /* ─── Brand mark ──────────────────────────────────────────────────────────
+     Peter's brush lettering, traced to one path and drawn from the sprite at
+     the top of index.html. Not type: it replaced the Geist 600 wordmark on
+     2026-10-05. The viewBox is cropped to the ink, so the box is the mark and
+     its left edge is the stroke, flush to the column like the text it sits on.
+     Shown raw, as on the Peter Franko site: the dry-brush fray is the trace. */
+  .brand-mark {
+    display: block;
+    block-size: auto;
+    aspect-ratio: 1510 / 1061;
+    overflow: visible;
+  }
+
   .logo {
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-body);
-    letter-spacing: var(--tracking-snug);
+    display: block;
     color: var(--color-text-primary);
     opacity: var(--brand-progress, 0);
     filter: blur(var(--brand-inverse-blur, 10px));
@@ -845,6 +877,17 @@
 
   .has-compact-brand .logo {
     pointer-events: auto;
+  }
+
+  /* Taller than the text line it replaced, so it borrows the bar's padding
+     rather than growing the bar, the same way the theme toggle does. The
+     margin sits on the link, not the mark, so the focus ring wraps the ink. */
+  .logo {
+    margin-block: -0.45rem;
+  }
+
+  .logo .brand-mark {
+    inline-size: 3.25rem;
   }
 
   /* ─── Hero ─── */
@@ -866,17 +909,15 @@
     position: absolute;
     inset: -10% -8% auto;
     height: 70%;
-    background:
-      radial-gradient(
-        ellipse 85% 60% at 22% 18%,
-        color-mix(in oklab, var(--color-accent) 12%, transparent) 0%,
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse 70% 50% at 82% 24%,
-        color-mix(in oklab, var(--color-accent) 8%, transparent) 0%,
-        transparent 55%
-      );
+    /* One layer on the axis since the hero was centred (2026-10-05). It was two,
+       at 22% and 82%, set for the flush-left hero; both moved to the centre would
+       stack to nearly twice the depth, so the fainter one went. Same strength and
+       reach as the old main layer. */
+    background: radial-gradient(
+      ellipse 85% 60% at 50% 18%,
+      color-mix(in oklab, var(--color-accent) 12%, transparent) 0%,
+      transparent 60%
+    );
     mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
   }
@@ -886,24 +927,25 @@
     z-index: var(--z-raised);
   }
 
+  /* Centred on the column at Peter's request (2026-10-05), the day the
+     wordmark became the brush mark. Only the hero: every section below it
+     stays flush left. */
   .hero-copy {
     max-width: 56rem;
+    margin-inline: auto;
+    text-align: center;
   }
 
-  .brand-wordmark {
-    font-family: var(--font-sans);
-  }
-
+  /* The mark is sized in em off the display step it replaced, so it keeps that
+     step's responsive curve without a second clamp to tune. */
   .hero-title {
-    font-weight: var(--font-weight-medium);
     font-size: var(--text-display);
     line-height: var(--leading-none);
-    letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
     opacity: var(--hero-brand-opacity, 1);
     filter: blur(var(--brand-blur, 0px));
     transform: translateY(var(--hero-brand-offset, 0)) scale(var(--hero-brand-scale, 1));
-    transform-origin: left top;
+    transform-origin: center top;
     will-change: opacity, filter, transform;
     transition:
       opacity var(--duration-fast) var(--ease-out),
@@ -911,9 +953,17 @@
       transform var(--duration-medium) var(--ease-default);
   }
 
+  /* The floor is for phones, where the display step bottoms out and the mark
+     came in at 189px: narrower than the one-line subtitle under it. */
+  .hero-title .brand-mark {
+    inline-size: max(5.5em, 13.5rem);
+    margin-inline: auto;
+  }
+
   .hero-subtitle {
     max-width: 26rem;
     margin-top: var(--space-6);
+    margin-inline: auto;
     font-size: var(--text-body-lg);
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-snug);
