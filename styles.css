@@ -931,6 +931,36 @@
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
   }
 
+  /* At night the glow becomes a lamp (2026-10-06): a warm pool behind the mark,
+     on the whole hero rather than the top band, since the light is for the mark.
+     Day keeps the top glow above. Tried in daylight too and dropped: a lit
+     centre with darker edges on light paper read as a photo vignette. */
+  html[data-theme='dark'] .hero-glow {
+    inset: 0;
+    height: auto;
+    background: radial-gradient(
+      ellipse 30% 44% at 50% 47%,
+      color-mix(in oklab, var(--color-accent) 13%, transparent) 0%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme]) .hero-glow {
+      inset: 0;
+      height: auto;
+      background: radial-gradient(
+        ellipse 30% 44% at 50% 47%,
+        color-mix(in oklab, var(--color-accent) 13%, transparent) 0%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+    }
+  }
+
   .hero-content {
     position: relative;
     z-index: var(--z-raised);
@@ -967,6 +997,41 @@
   .hero-title .brand-mark {
     inline-size: max(5.5em, 13.5rem);
     margin-inline: auto;
+  }
+
+  /* ─── Pen write-on (2026-10-06) ───────────────────────────────────────────
+     The hero mark writes itself in once, on load: each letter is uncovered
+     along its own centre-line, in reading order, the pen moving at one speed.
+     Scripts/pen-wordmark.py writes the masks and the per-stroke timings (--t
+     start, --d duration, --end when a letter's last stroke lands); this block
+     is only the motion.
+
+     The resting state is the finished mark. Pen lines carry no dash until this
+     block gives them one, so with reduced motion, or CSS that never arrives,
+     every mask is fully drawn. The dash is 1 and the gap 1.2 so the offset can
+     start past the path's beginning: a dash that ends exactly at the start
+     still paints its round cap, and every letter would show a dot before its
+     pen arrived. .pen-rest covers the letter whole once its strokes are done,
+     so fray a centre-line never reached fills in rather than staying missing. */
+  @media (prefers-reduced-motion: no-preference) {
+    .brand-mark--pen .pen {
+      stroke-dasharray: 1 1.2;
+      stroke-dashoffset: 1.1;
+      animation: pen-write var(--d) cubic-bezier(0.45, 0.05, 0.55, 0.95) var(--t) forwards;
+    }
+
+    .brand-mark--pen .pen-rest {
+      opacity: 0;
+      animation: pen-rest 0.2s var(--ease-out) var(--end) forwards;
+    }
+
+    @keyframes pen-write {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes pen-rest {
+      to { opacity: 1; }
+    }
   }
 
   /* Balanced so a narrow phone breaks it into two even lines instead of

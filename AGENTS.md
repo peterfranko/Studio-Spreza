@@ -706,3 +706,53 @@ sticker.
 
 **Link order matters.** Every page lists the PNG with `sizes="48x48"` first and the SVG
 second. With a sized raster ahead of it, Chrome and Firefox both take the SVG.
+
+## The hero mark writes itself in, and dark mode lights it (2026-10-06)
+
+Peter, on *"what could make this top section even cooler and more eye-catching, while
+remaining restrained"*: five ideas were rendered from real copies of the site, critiqued, and
+reworked; he picked these two.
+
+**The write-on follows the pen, not a wipe.** The first version swept a soft mask across
+each line, which filled letters column by column (the "d" stem appeared whole) and dragged
+a grey band across every stroke. Now each letter is uncovered along its own centre-line, in
+reading order, at one pen speed: about 2.2s, once per load.
+
+| Step | Command |
+| --- | --- |
+| Regenerate after a retrace of the mark | `python3 Scripts/pen-wordmark.py` |
+| Timing (pen speed, gaps, settle) | constants at the top of that script |
+| The motion | `styles.css`, "Pen write-on" |
+
+- **The script writes two marked blocks in `index.html`** (`spreza-sprite`, `spreza-pen`).
+  Do not hand-edit either. The sprite's symbol is now one `<path>` per letter, so the header
+  still draws the whole symbol and the hero `<use>`s each letter through its own mask: the
+  path data is on the page once. Pen data is 9.4 KB.
+- **Centre-lines are found, not drawn**: the master is thinned to one-pixel lines (Zhang-Suen,
+  half resolution), each connected ink shape is a letter, and a greedy walk orders its line
+  from the leftmost free end, lifting the pen only at a real gap. Stroke order is therefore a
+  heuristic. If a letter writes in an order that looks wrong, fix it in the script, not here.
+- **Masks are per letter**, so a 118-unit pen cannot uncover the letter beside it.
+- **The resting state is the finished mark.** Pen lines carry no dash outside the
+  reduced-motion guard, so Reduce Motion, or CSS that never loads, shows the whole mark. The
+  dash is `1 1.2` with offset `1.1` because a dash ending exactly at a path's start still
+  paints its round cap: the first build showed a dot on every letter before its pen arrived.
+  `.pen-rest` covers each letter whole as its last stroke lands, so fray a centre-line never
+  reached fills in rather than staying missing.
+- **Verified**: with motion removed and after the write finishes, the mark matches the static
+  render to 3 pixels of antialiasing (83,959 of 83,961 ink pixels). Frames at 0.6s and 1.2s
+  show the write in progress. Live in the pane: 38 strokes and 11 settles all finish, header
+  mark intact, no console errors. **Capture note:** the pane cannot photograph a running mask
+  reveal (it returns a stale or finished frame) and throttles a hidden tab's timeline, so mid-
+  write stills come from `Scripts/lib/render-html-webkit.swift` with the animation paused at a
+  negative delay.
+
+**At night the glow is a lamp.** In dark mode `.hero-glow` becomes one warm pool behind the
+mark (`--color-accent` at 13%, ellipse 30% by 44%), over the whole hero with its own bottom
+fade; light mode keeps the centred top glow. Tried in daylight first and dropped: a lit
+centre with darker edges on light paper read as a photo vignette.
+
+**Not taken**, from the same review: a bigger mark (fine, optional, no reason of its own),
+the subtitle in tracked caps (Peter's call, left open), the six app icons under the line
+(read as status dots, duplicated the shelf), and an accent-coloured caret (the caret is the
+"a"'s exit stroke, so no clean seam, and any app's colour favours one app).
