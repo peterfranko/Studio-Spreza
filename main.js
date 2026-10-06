@@ -300,6 +300,16 @@
     sync();
   });
 
+  /* The hero medley drifts only while the hero is on screen: six blurred
+     shapes repainting every frame is work nobody sees once it has scrolled
+     away. The class pauses the loops in styles.css. */
+  var hero = document.querySelector(".hero");
+  if (hero && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      hero.classList.toggle("is-offscreen", !entries[0].isIntersecting);
+    }).observe(hero);
+  }
+
   /* Scroll reveals */
   var nodes = document.querySelectorAll("[data-reveal]");
   if (!nodes.length || !("IntersectionObserver" in window)) {

@@ -142,11 +142,12 @@ second copy of them. Rendered at 2x and downsampled, because scrapers serve the 
 at whatever size they like. The template is copied into the site root for the render
 so its relative `assets/` paths resolve, and removed afterwards.
 
-**The card carries the brush mark since 2026-10-05**, centred like the hero, with the glow on
-one centred ellipse. The template holds a `<!-- spreza-mark -->` placeholder and the build
+**The card carries the brush mark since 2026-10-05**, centred like the hero, with the hero's
+six-accent medley behind it since 2026-10-06 (it had the single glow on one centred ellipse). The template holds a `<!-- spreza-mark -->` placeholder and the build
 script swaps in `Assets/studiospreza-script.svg`, so the path has one source and a retrace
-reaches the card on the next build. The mark is 216px tall; content sits 68px from the top
-and 73px from the bottom of the 630px card, and the mark centres at x 600.0. Checked
+reaches the card on the next build. The mark is 216px tall; content sits 48px from the top
+and 54px from the bottom of the 630px card (68 and 73 until the subtitle took two lines,
+2026-10-06), and the mark centres at x 600.0. Checked
 downsampled to 500px wide, about the size most link previews show it: the mark still reads.
 
 **Every page's card URL carries `?v=<hash>`** (2026-10-05), the first 8 hex of the PNG's
@@ -656,6 +657,9 @@ the same width measured 375.)
 **The subtitle is `text-wrap: balance`.** At 320 it wrapped as "…apps made in" over a lone
 "NYC.", which centring made louder. Now "Subscription-free" over "apps made in NYC.", lines
 140 and 151px. One line from 375 up, unchanged.
+**Since 2026-10-06 it breaks by hand** (Peter): "Subscription-free apps" over "made in NYC.",
+a `<br />` in the markup, at every width. Measured at 336: both lines centre on the column to
+0.5px. `balance` stays for a screen too narrow for the first line. The share card breaks the same way.
 
 **The glow followed** (Peter, same day): `.hero-glow` was two layers at 22% and 82%, set for
 the flush-left hero. It is now one, at 50%, with the old main layer's strength and reach.
@@ -676,6 +680,9 @@ pages share one cached file through `<use href="/assets/spreza-mark.svg#spreza-m
 `.legal a` (primary, muted on hover), which outranks `.legal-back`: the old uppercase label's
 muted colour never actually applied. **The file is a copy of the `<symbol>` in `index.html`**;
 after a retrace, refresh both, or the policy pages keep the old mark.
+**`assets/spreza-mark-mask.svg` is a third copy** (2026-10-06): the master with its role and
+label stripped, the mask for the hero's dye. After a retrace, refresh it too, or the colour
+lands beside the new letterforms.
 
 ## The favicon is the S of the wordmark (2026-10-06)
 
@@ -697,8 +704,9 @@ stroke by 14 path units, because the traced brush is about 1px wide at 16px; the
 icon keeps the stroke as traced.
 
 **The Home Screen icon carries the site's atmosphere; the tab files stay flat** (Peter,
-2026-10-06, option F of six flavour sketches). Three layers, each below notice at tab size:
-the `.hero-glow` light in its dark-mode colour (`#c9bca8`, 13%, from the top centre), ink that
+2026-10-06, option F of six flavour sketches). Three layers, none of them in the tab sizes:
+the hero's medley in its dark-mode accents (since 2026-10-06; it was the `.hero-glow` light,
+`#c9bca8` at 13% from the top centre), ink that
 runs `#262019` at the top to `#0f0d0a` at the bottom with a 7% rim along the top edge, and
 the page grain multiplied into the paper S. The grain is seeded, so a rerun is byte-identical.
 Passed over: a vermilion maker's seal under the S, which survived at 16px but read as a
@@ -782,3 +790,141 @@ centre with darker edges on light paper read as a photo vignette.
 the subtitle in tracked caps (Peter's call, left open), the six app icons under the line
 (read as status dots, duplicated the shelf), and an accent-coloured caret (the caret is the
 "a"'s exit stroke, so no clean seam, and any app's colour favours one app).
+
+## The six accents, blurred behind the mark (2026-10-06)
+
+Peter: the monochrome blurred spotlight under the mark should become *"a series of arranged
+varied shapes in colors that resemble our app accents"*, blurred into a medley. `.hero-glow`
+and its lamp are gone, in both schemes; `.hero-medley` holds six `.medley-shape` spans, one
+per app, each filled with that app's `--accent-*` token, so the medley follows the ramp and
+its OKLCH guard with no colours of its own.
+
+**Each shape nods to its codename:** a circle for the kiwi, an ellipse for the lemon, an
+irregular blob for the pomegranate, a small circle for the berry, a rounded card for the note,
+a leaf (`border-radius: 0 100% 0 100%`). Blurred at 0.07 mark widths they read as colour with
+varied edges, not as icons.
+
+**Neighbours are hue neighbours**, round the ring: blueberry, plum, husk, lemon, kiwi, fern.
+Overlapping blurs mix, and an analogous pair mixes to a third colour where a complementary
+one (plum on kiwi) mixes to grey: the mush the six-seed favicon sketches hit. All six weigh
+the same, so no app is favoured, which is what ruled out an accent-coloured caret.
+
+**Sized and centred off the mark**, like the lamp was: the box is 1.3 by 0.95 mark widths,
+centred at `--hero-pad-top` plus 0.3513 mark widths (half the mark's 1061/1510 height), and
+every shape length is a multiple of `--hero-mark-w`. One `filter: blur()` on the group, not
+one per shape, so overlaps blend as they blur. Strength is the group's opacity: 0.4 on paper,
+0.55 at night.
+
+**The rise now runs in both schemes**: `medley-up` (opacity from 0, 1.4s ease-out, after
+0.12s) on every load, so the colour comes up while the mark writes. Unlike the lamp, toggling
+the theme does not replay it, because the animating rule matches in both schemes.
+
+**Verified** in the pane at 1024 light and dark, and at 375 dark: medley centre on the mark
+centre to 0.01px, no horizontal overflow, the blur ends inside the hero.
+
+**It drifts** (Peter, same day: *"drift slowly and vary their degree of blurring and shapes
+over time"*). Each shape runs six loops at once: x and y drift (up to 0.1 mark widths either
+way), blur (0.045 to 0.11), stretch (up to 12% on one axis), tilt (10 to 20 degrees either
+side of its rest angle) and an outline morph that stays in the shape's family (the kiwi
+wobbles, the leaf keeps its two points). Every loop has its own period per shape, 7.8 to 28.2s
+(0.6 of the first cut's 13 to 47s, Peter: *"a bit faster"*), no two alike on one shape, so the
+whole never visibly repeats; negative delays start each
+partway through. All run there and back on a sine ease. The blur moved from the group onto
+each shape so each can soften on its own.
+
+- **The drift offsets are registered** (`@property --medley-dx/--medley-dy`, at top level
+  outside the layers). An unregistered custom property animates by flipping at the halfway
+  point, so the shapes would jump. Two offsets rather than one `translate` so each axis has its
+  own period.
+- **Paused off screen**: `main.js` toggles `.hero.is-offscreen` from an IntersectionObserver
+  and the loops pause on it. Reduce Motion gets the still medley, identical to the rest pose.
+- **Verified** in the pane: all six values interpolate continuously (sampled 1s apart, no
+  steps), 120fps with the loops running, `is-offscreen` pauses and resumes on scroll, and
+  frames 9s apart in both schemes show the arrangement shifting.
+- **The card and Home Screen icon stay still**: each is the rest pose, one blur on the group.
+
+**Spread into a diamond, and wilder** (Peter, same evening: *"spread out more horizontally …
+a squished rounded diamond … shake it up, make this feel dynamic and hypnotizing"*). This
+supersedes the geometry, strengths and ranges above; `styles.css` is the source.
+
+- **The diamond.** The box is `min(2.3 mark widths, 100%)` by 0.95: berry at the left tip
+  (9%), lemon at the right (91%), pomegranate on top, kiwi below, note card and leaf on the two
+  edges between, so clockwise is still the hue ring. Sizes run 0.34 to 0.74 mark widths. On a
+  phone the tips run off the screen edges. A first cut at 0.22 to 0.58 read as six separate
+  dots; the orbs have to overlap their neighbours to read as one medley.
+- **Seven loops per orb**, 4.4 to 18.8s: the six above with wider ranges (drift to 0.2 mark
+  widths, tilt to 34 degrees, per-orb blur ranges from 0.02 to 0.17) plus a swell (`transform:
+  scale`, composing after the `scale` squash) of up to 0.7 to 1.48 that fades the orb to 0.72
+  at its largest. Small orbs swell most, so the size order keeps changing; at its sharpest the
+  leaf or note card briefly reads as its shape. The whole diamond also sways (2.5 degrees
+  either way) and breathes (0.95 to 1.05) on a 17s loop.
+- **Overlaps blend**: `screen` at night, so they add as light; `multiply` on paper, as ink
+  does. Group opacity 0.45 on paper, 0.62 at night.
+- **`.hero-atmosphere` fades out over its bottom 28%**, so a swollen, drifted, softened orb
+  never meets the hero's `overflow: hidden` edge as a hard line on a phone.
+- **The header's `saturate(140%)` now comes in with the scroll** (`--brand-progress`), like
+  its blur. At rest it tinted whatever sat under the bar, which on bare paper was a 4-level
+  shift nobody saw; with orbs drifting under it, it would show as a hard-edged strip.
+- **Verified** in the pane at 1440 both schemes and 375 dark: 120fps, 44 loops running, no
+  horizontal overflow, header `saturate(1)` at the top and `1.4` scrolled.
+- **Softer** (Peter, same evening: *"the minimum amount of blur is too low"*): the per-orb
+  blur floor rose from 0.02–0.06 to 0.09–0.12 mark widths and the ceiling from 0.12–0.17 to
+  0.20–0.26; the still pose (Reduce Motion, the card, the icon) went from 0.08 to 0.14. A wider
+  blur spreads the same colour thinner, so strength rose with it: 0.5 on paper, 0.7 at night,
+  0.6 on the card. No orb sharpens into its outline any more; the shapes now show only as the
+  varying contour of the wash.
+- **The ink takes the colour** (Peter, same evening: *"some color let through, in both light
+  and dark"*). A second copy of the medley (`.hero-dye`, six `.medley-shape` spans in the
+  h1) sits over the mark, masked to the letterforms by `assets/spreza-mark-mask.svg`, with the
+  same box, shapes and loops, started on the same frame (checked: identical `startTime` on
+  every loop), so it stays in step with the medley behind. At night it is `hard-light`, so the
+  cream goes pastel pink, yellow or green and stays bright; on paper it lies over the ink as it
+  is, opacity 0.9, so the near-black goes dusky plum, olive or slate. Its blur is 0.55 of the
+  medley's (`--blur-scale`), so the colour over a letter is dense enough to read. It fades in
+  at 1.9s, when the pen is done: the mask is the finished mark, and earlier it would colour
+  letters not yet written. Being in the h1, the scroll handoff fades and blurs it with the mark.
+  - **Tried and dropped:** blending the mark itself with the medley behind it (`luminosity`,
+    then `overlay`, which needed `.hero-content`'s z-index removed so the blend could see
+    past it). A blend borrows only the colour that is there, the medley is soft by design, and
+    the tint measured 4 to 34 chroma levels: invisible on paper, faint at night. Hard-light
+    for the dye on paper was also faint, because near-black ink only rises in a channel where
+    the dye passes mid-grey, and these accents barely do.
+  - **The card has the dye too** (Peter, same evening), at rest: a `.dye` over the mark in
+    `Scripts/lib/og-card-studio.html` with the card's own medley geometry, opacity 0.9, blur
+    0.55 of the card medley's. **Its mask is inlined at build time** as a data URI cut from
+    the master: CSS fetches a mask image CORS-style, a `file://` page cannot do that for a
+    `file://` image, and a mask that fails to load hides its element outright. The first
+    build came out byte-identical for exactly that reason. The live site is unaffected (same
+    origin).
+  - **The Home Screen icon's paper S is dyed too** (Peter, same evening), with the night
+    treatment, since the icon is paper on ink: hard-light, blur 0.55 of the icon medley's,
+    strength 0.75 rather than the site's 1, because the tile packs the whole diamond behind
+    one letter and at full strength the S went lime and cyan. `dye()` in
+    `Scripts/make-studio-favicons.py` works hard-light out as `paper × K + M` per channel on a
+    coarse grid (K and M depend only on the smooth dye), so the full-size paper keeps its
+    grain without numpy. Tab icons unchanged (sha), rerun byte-identical.
+  - **The icon is one frame of the hero's motion** (Peter, same evening: *"blur more severe
+    and the shapes more dynamic"*). `Scripts/make-studio-favicons.py` no longer keeps its own
+    table: it parses each `.medley-shape` block and the dark accents out of `styles.css` and
+    evaluates all seven loops at `POSE_T` (29s, Peter's pick from a sheet of six moments), so
+    every orb is drifted, tilted, squashed, swollen, morphed and blurred as the hero has it
+    then. Each orb has its own blur, 1.5 times the site's at that moment (`ICON_BLUR`), and
+    they add as light (`screen`) as they do at night, at full strength (`MEDLEY_ALPHA` 1: the
+    heavier blur spreads the colour thinner). The dye follows the same pose. The group sway
+    is left out. `ICON_POSE_T=<seconds>` renders another moment without editing the file.
+    A change to the medley in `styles.css` moves the icon on its next run, so rerun it.
+  - **Not measured:** frame rate with the dye's 42 loops added. The pane was hidden for that
+    check; the 120fps above was with the medley alone.
+- **The card** takes the diamond at rest, scaled to 0.85 with the pomegranate and kiwi nudged
+  toward the mark (22% and 78%): at the site's spacing on a 630px card the pomegranate ran off
+  the top and the kiwi sat under the subtitle. **The Home Screen icon took the diamond too**
+  (Peter, same evening), at 0.38 tile widths per mark width so the tips sit just inside the
+  tile: at 0.45 the berry and lemon met its edges and read as a band cut off at the sides.
+  Night strength, 0.62, rest blur 0.14. Tab icons unchanged (checked by sha).
+
+**Followed the same day** (Peter): the share card draws the medley behind its mark with the
+light hex at 0.5 (a card is seen small), copied into `Scripts/lib/og-card-studio.html`; and
+the Home Screen icon swaps its top glow for the medley in the dark hex at 0.5, centred on the
+S at 0.8 tile widths per unit, from `MEDLEY` in `Scripts/make-studio-favicons.py`. The card
+holds its own copy of the geometry: **move a shape here and move it there**, then rerun the
+card script. The icon reads the medley from `styles.css` itself (since 2026-10-06), so it follows on its next run. The tab icons are unchanged (checked by sha), and an icon rerun is byte-identical.
