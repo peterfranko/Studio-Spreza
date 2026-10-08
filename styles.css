@@ -1900,8 +1900,13 @@
     padding-block: clamp(2.75rem, 5vw, 4.5rem) 0;
   }
 
+  /* The note, the address and the footer below them are centred on one axis
+     (2026-10-06, Peter), so the page closes on the same line the petals turn on. */
   .studio-note p {
     max-width: var(--layout-measure);
+    margin-inline: auto;
+    text-align: center;
+    text-wrap: balance;
     font-weight: var(--font-weight-medium);
     font-size: var(--text-body-lg);
     line-height: var(--leading-body);
@@ -1919,6 +1924,7 @@
 
   .contact-layout {
     display: flex;
+    justify-content: center;
   }
 
   .contact-email {
@@ -1949,9 +1955,10 @@
     background-size:
       100% 1px,
       0% 2px;
+    /* Centred with the address, so the hover underline grows out from the middle. */
     background-position:
-      0 calc(100% - 0.06em),
-      0 calc(100% - 0.06em);
+      50% calc(100% - 0.06em),
+      50% calc(100% - 0.06em);
     background-repeat: no-repeat;
     /* No letter-spacing here: animating it relayouts the text on every hover,
        and the underline's background-size then chases a moving width. */
@@ -1974,11 +1981,81 @@
     padding-block: var(--space-9);
   }
 
+  /* ─── Petals (2026-10-06) ─────────────────────────────────────────────────
+     Six discs in the six accents, each passing through the centre, so
+     neighbours overlap and mix where they cross: multiply on paper, screen at
+     night, the hero medley's rule. Hue order runs clockwise from Bountiful at
+     the top, the medley's neighbours, so the page opens with the six blurred
+     together and closes with them in focus. Peter's pick from ten sketches:
+     Petals crossed with Taking turns.
+
+     The whole flower turns once a minute and each petal swells in turn, 1.5s
+     apart, so one app at a time leans forward. The swell scales a petal about
+     its own centre (fill-box); the turn rotates the svg's own CSS box, whose
+     centre is the flower's. Still under Reduce Motion. Decorative: aria-hidden. */
+  .footer-petals {
+    display: block;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    margin: 0 auto var(--space-8);
+    isolation: isolate;
+  }
+
+  .footer-petals circle {
+    opacity: 0.62;
+    mix-blend-mode: multiply;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  html[data-theme='dark'] .footer-petals circle {
+    mix-blend-mode: screen;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme]) .footer-petals circle {
+      mix-blend-mode: screen;
+    }
+  }
+
+  .petal-bountiful { fill: var(--accent-bountiful); }
+  .petal-notation { fill: var(--accent-notation); }
+  .petal-upkeeper { fill: var(--accent-upkeeper); }
+  .petal-kiwido { fill: var(--accent-kiwido); }
+  .petal-homegrown { fill: var(--accent-homegrown); }
+  .petal-bilberry { fill: var(--accent-bilberry); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-petals {
+      animation: petals-turn 60s linear infinite;
+    }
+
+    .footer-petals circle {
+      animation: petal-swell 9s ease-in-out infinite;
+    }
+
+    .petal-notation { animation-delay: 1.5s; }
+    .petal-upkeeper { animation-delay: 3s; }
+    .petal-kiwido { animation-delay: 4.5s; }
+    .petal-homegrown { animation-delay: 6s; }
+    .petal-bilberry { animation-delay: 7.5s; }
+  }
+
+  @keyframes petals-turn {
+    to { rotate: 360deg; }
+  }
+
+  @keyframes petal-swell {
+    0%, 26%, 100% { scale: 1; }
+    11% { scale: 1.14; }
+  }
+
   .footer-inner {
     display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: var(--space-4) var(--space-6);
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-4);
     font-size: var(--text-label);
     font-weight: var(--font-weight-medium);
     letter-spacing: 0;
@@ -1990,16 +2067,26 @@
     color: var(--color-text-muted);
   }
 
-  /* Sits to the right of the brand on wide viewports and wraps under it on
-     narrow ones, which is what footer-inner's flex-wrap already does. */
+  /* Under the brand at every width, centred. Inline blocks rather than a flex
+     wrap so text-wrap: balance can even out the rows: the flex wrap left
+     Homegrown privacy alone on a third row at 800px (2026-10-06). Each link
+     carries half the old gap on every side and the nav takes the outer half
+     back, so the spacing between links and rows is the old gap. The nav's
+     zero font size removes the 3px space character the markup puts between
+     links, which would otherwise widen every gap. */
   .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4) var(--space-6);
-    margin-inline-start: auto;
+    display: block;
+    text-align: center;
+    text-wrap: balance;
+    font-size: 0;
+    margin: calc(var(--space-4) / -2) calc(var(--space-6) / -2);
   }
 
   .footer-links a {
+    display: inline-block;
+    font-size: var(--text-label);
+    white-space: nowrap;
+    margin: calc(var(--space-4) / 2) calc(var(--space-6) / 2);
     position: relative;
     color: var(--color-text-muted);
     text-decoration: none;

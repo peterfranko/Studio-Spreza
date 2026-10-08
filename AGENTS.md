@@ -55,8 +55,10 @@ screen reader announcing two alt texts for one screenshot, one of them invisible
 
 | Step | Command |
 | --- | --- |
+| **All of it, then a review sheet** (2026-10-06) | `/showcase-reshoot [apps]`, which runs `Scripts/showcase-reshoot.sh` |
 | Photograph the apps | `Scripts/capture-showcase.sh --app <name>` |
 | Install into this site | `Scripts/publish-showcase-to-site.sh [app...]` |
+| Check every slot against its `aria-label` | `python3 Scripts/showcase-review-sheet.py` |
 
 The publisher writes **stable names** — `assets/<app>-h-scroll/<app>-0N-{light,dark}.webp` — so the
 markup never changes and a re-shoot is two commands with no HTML edit. It picks which capture lands
@@ -176,6 +178,12 @@ tag by hand**; run the script.
 - **Footer legal links are a 28px target**, up from 20px, which clears the 24px WCAG
   2.2 floor. The hit area is an absolutely positioned `::after` rather than padding,
   because padding would carry the hover underline away from the text.
+- **Every footer opens with the petals** (2026-10-06, Peter's pick of ten sketches,
+  Petals crossed with Taking turns): an inline `svg.footer-petals`, six blended discs in
+  the app accents, clockwise from Bountiful in hue order, turning once a minute while
+  each swells in turn. The closing note, the address and the footer are centred on one
+  axis. The markup is copied into all eight pages, so a new page copies the whole
+  footer, and a seventh app means re-spacing the flower (60° steps today) in every page.
 - **`robots.txt` and `sitemap.xml`** added. The sitemap carries no `<lastmod>` on
   purpose: a hand-maintained date rots and a missing one is never wrong.
 
