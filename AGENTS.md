@@ -20,9 +20,9 @@ Geist ships with a metric-matched fallback: four `@font-face` rules at the top o
 
 **Tier 2 (site work):** `/Users/peter/Developer/COMPASS-assessment.md` — site assessment, recommended copy, “what not to say”.
 
-Apps are upstream truth; this site is downstream. Keep local site docs lean. Router: `/Users/peter/Developer/AGENTS.md`. Site copy: `@studio-site-copy`.
+Apps are upstream truth; this site is downstream. Keep local site docs lean. Router: `/Users/peter/Developer/AGENTS.md`. Site copy: `/studio-site-copy`.
 
-**Before done:** `@compass-update-check` — verify claims against app source; update assessment or COMPASS if public story changed.
+**Before done:** apply `CLAUDE.md` → Before done (or `/finish-up`) — verify claims against app source; update assessment or COMPASS if public story changed.
 
 Do not invent app claims from marketing copy alone.
 
