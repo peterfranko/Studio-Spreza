@@ -52,12 +52,30 @@
 
     <main id="main">
       <article class="wrap legal">
-        <a class="legal-back" href="/">
-          <span class="visually-hidden">Studio Spreza</span>
-          <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
-        </a>
+        <div class="legal-bar">
+          <a class="legal-back" href="/">
+            <span class="visually-hidden">Studio Spreza</span>
+            <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
+          </a>
+          <button
+            class="theme-toggle"
+            type="button"
+            id="theme-toggle"
+            hidden
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle class="theme-glyph-disc" cx="12" cy="12" r="5" />
+                <path class="theme-glyph-rays" d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                <path class="theme-glyph-moon" d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z" />
+                <path class="theme-glyph-auto" d="M12 7a5 5 0 0 0 0 10Z" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+            <span class="theme-toggle-label" aria-live="polite"></span>
+          </button>
+        </div>
 
-        <h1 class="legal-title">Kiwido Privacy Policy</h1>
+        <h1 class="legal-title"><span class="legal-icon" data-app="kiwido" aria-hidden="true"></span>Kiwido Privacy Policy</h1>
         <p class="legal-meta">Last updated October 12, 2026. Developer: Studio Spreza.</p>
 
         <p class="legal-lede">
@@ -79,7 +97,7 @@
             <strong>Calendar and Reminders.</strong> The app reads and writes events and reminders
             through Apple EventKit. Tasks and events you create go to your Apple Calendar and
             Reminders, not to a separate Kiwido database. That data stays under your Apple ID and
-            within Apple's systems. The app does not send your calendar or reminder content to
+            within Apple’s systems. The app does not send your calendar or reminder content to
             servers controlled by Studio Spreza.
           </li>
           <li>
@@ -106,16 +124,16 @@
         </p>
         <p>
           Coordinates may be sent over the network for forecasts and place labels. Forecast requests
-          go to Apple Weather through Apple's WeatherKit. When you use current location for weather,
+          go to Apple Weather through Apple’s WeatherKit. When you use current location for weather,
           the app also asks Apple Maps to turn those coordinates into a short place name. Both are
-          handled by Apple under Apple's privacy policy, not on servers operated by Studio Spreza.
+          handled by Apple under Apple’s privacy policy, not on servers operated by Studio Spreza.
         </p>
 
         <h2>Network services</h2>
         <p>The app may connect to the internet for the following, and nothing else.</p>
         <ul>
           <li>
-            <strong>Weather.</strong> Apple Weather, through Apple's WeatherKit, for forecasts only,
+            <strong>Weather.</strong> Apple Weather, through Apple’s WeatherKit, for forecasts only,
             using coordinates for the location you chose or your current location. The app also loads
             the Apple Weather mark and a link to
             <a href="https://weatherkit.apple.com/legal-attribution.html" rel="noopener noreferrer">its data sources</a>
@@ -127,7 +145,7 @@
           </li>
           <li>
             <strong>Map search.</strong> When you search for a city, address, or point of interest,
-            the app uses Apple MapKit. Those queries are handled under Apple's terms and systems,
+            the app uses Apple MapKit. Those queries are handled under Apple’s terms and systems,
             not on servers operated by Studio Spreza.
           </li>
           <li>
@@ -141,7 +159,7 @@
         <p>
           Kiwido can alert you about your own events and tasks, and send a short summary of the day
           each morning. These are off until you turn them on in the app, and they are local
-          notifications scheduled on your device by Apple's notification system. They are built from
+          notifications scheduled on your device by Apple’s notification system. They are built from
           calendar and reminder data that is already on the device. No notification content is sent
           off your device, and there is no push server.
         </p>
@@ -158,7 +176,7 @@
           <li>No Studio Spreza server holding your app data.</li>
           <li>No analytics, no crash reporting, and no advertising SDKs in the app.</li>
           <li>
-            No tracking. The app does not track you across other companies' apps or websites, and
+            No tracking. The app does not track you across other companies’ apps or websites, and
             does not use App Tracking Transparency for that purpose.
           </li>
           <li>We do not sell your personal information.</li>
@@ -186,7 +204,7 @@
           </li>
         </ul>
 
-        <h2>Children's privacy</h2>
+        <h2>Children’s privacy</h2>
         <p>
           The app is not directed specifically at children under 13. If you believe information has
           been collected that should be removed, contact us at the address below.
@@ -200,7 +218,7 @@
 
         <h2>Questions</h2>
         <p>
-          For questions about this policy or the app's privacy practices, email
+          For questions about this policy or the app’s privacy practices, email
           <a href="mailto:hey@studiospreza.com">hey@studiospreza.com</a>.
         </p>
       </article>
@@ -227,5 +245,7 @@
         </nav>
       </div>
     </footer>
+
+    <script src="/theme.js" defer></script>
   </body>
 </html>

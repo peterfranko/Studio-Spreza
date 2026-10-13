@@ -80,8 +80,10 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    METRIC-MATCHED FALLBACK  (2026-08-11)
 
-   Geist arrives from Google Fonts with display=swap, so every first visit
-   paints in a system sans and then swaps. These faces reshape local Arial to
+   Geist loads with display=swap, so a visit that paints before the font file
+   arrives paints in a system sans and then swaps. (It came from Google Fonts
+   when this was written; it is self-hosted and preloaded since 2026-09-21, so
+   that window is now short. See above.) These faces reshape local Arial to
    occupy Geist's exact box — same line box, same advance widths — so the swap
    changes glyphs and nothing else. Nothing is downloaded; local() only ever
    matches an already-installed font.
@@ -161,16 +163,9 @@
   size-adjust: 107.63%;
 }
 
-@font-face {
-  font-family: 'Geist Fallback';
-  font-style: italic;
-  font-weight: 400;
-  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
-  ascent-override: 99.57%;
-  descent-override: 29.23%;
-  line-gap-override: 0%;
-  size-adjust: 100.94%;
-}
+/* No italic face (dropped 2026-10-13). There was one, at 400, matched to a
+   Geist italic that stopped being downloaded when the italic axis went: no page
+   sets italic, and the real face it stood in for no longer arrives. */
 
 /* The medley's drift offsets (2026-10-06). Registered so they interpolate: an
    unregistered custom property animates by flipping at the halfway point, and
@@ -344,7 +339,6 @@
       0 10px 20px -4px color-mix(in oklab, var(--color-accent) 20%, transparent),
       0 30px 56px -14px color-mix(in oklab, var(--color-accent) 30%, transparent);
     --border-shot: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
-    --rail-track: color-mix(in oklab, var(--color-text-primary) 5%, transparent);
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 11%, transparent);
     --accent-kiwido: #5f8136;
     --accent-upkeeper: #8b7210;
@@ -370,46 +364,57 @@
     color-scheme: light;
   }
 
-  html[data-theme='dark'] {
-    --color-surface-base: #141210;
-    --color-surface-elevated: #1a1814;
-    --color-text-primary: #f2ebe0;
-    --color-text-secondary: #b8b0a3;
-    --color-text-muted: #8a8478;
-    --color-accent: #c9bca8;
-    --color-border-subtle: rgba(242, 235, 224, 0.09);
-    --color-border-strong: rgba(242, 235, 224, 0.16);
-    --color-focus-ring: rgba(201, 188, 168, 0.7);
-    /* A shadow cast on #141210 is very nearly invisible: rendered side by side at
-       four strengths, every dark variant looked the same and only the border weight
-       changed anything. So the dark scheme separates with the edge (26% against
-       light's 15%) and keeps the shadow only for where the frame meets a lighter
-       surface. An inset top rim was tried and dropped: .work-shot clips to the image,
-       which paints over any inset shadow, so it drew nothing at all. */
-    --shadow-shot:
-      0 1px 3px rgba(0, 0, 0, 0.6),
-      0 10px 22px -4px rgba(0, 0, 0, 0.55),
-      0 30px 56px -14px rgba(0, 0, 0, 0.7);
-    --border-shot: color-mix(in oklab, var(--color-text-primary) 26%, transparent);
-    --rail-track: color-mix(in oklab, var(--color-text-primary) 7%, transparent);
-    --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
-    --accent-kiwido: #6c8c46;
-    --accent-upkeeper: #967e2a;
-    --accent-bountiful: #b16483;
-    --accent-bilberry: #5f7fbf;
-    --accent-notation: #b26d43;
-    --accent-homegrown: #569158;
-    --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
-    --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
-    --app-icon-bountiful: url('assets/bountiful-icon.png');
-    --app-icon-bilberry: url('assets/bilberry-icon.png');
-    --app-icon-notation: url('assets/notation-icon.png');
-    --app-icon-homegrown: url('assets/homegrown-icon.png');
-    --appstore-badge: url('assets/appstore-dark.svg');
-    color-scheme: dark;
+  /* The dark palette is for screens (2026-10-13): here, in the system-dark block
+     below, in the dark accent ramp, and in every component rule keyed to the
+     dark scheme (grain, medley, dye, the screenshots' swap, the petals' blend),
+     each of which is `@media screen` or `screen and (prefers-color-scheme:
+     dark)`; a new one should be too. Printed in
+     dark, a policy came out in its cream ink on white paper with backgrounds
+     off, which is how browsers print: body text at 2.6:1, the mark at 1.2:1, the
+     section rules gone. That was always so; it mattered once Support and the
+     policies got their own toggle, which made dark one press away on the pages
+     people print. Paper takes the light tokens whatever the screen shows. */
+  @media screen {
+    html[data-theme='dark'] {
+      --color-surface-base: #141210;
+      --color-surface-elevated: #1a1814;
+      --color-text-primary: #f2ebe0;
+      --color-text-secondary: #b8b0a3;
+      --color-text-muted: #8a8478;
+      --color-accent: #c9bca8;
+      --color-border-subtle: rgba(242, 235, 224, 0.09);
+      --color-border-strong: rgba(242, 235, 224, 0.16);
+      --color-focus-ring: rgba(201, 188, 168, 0.7);
+      /* A shadow cast on #141210 is very nearly invisible: rendered side by side at
+         four strengths, every dark variant looked the same and only the border weight
+         changed anything. So the dark scheme separates with the edge (26% against
+         light's 15%) and keeps the shadow only for where the frame meets a lighter
+         surface. An inset top rim was tried and dropped: .work-shot clips to the image,
+         which paints over any inset shadow, so it drew nothing at all. */
+      --shadow-shot:
+        0 1px 3px rgba(0, 0, 0, 0.6),
+        0 10px 22px -4px rgba(0, 0, 0, 0.55),
+        0 30px 56px -14px rgba(0, 0, 0, 0.7);
+      --border-shot: color-mix(in oklab, var(--color-text-primary) 26%, transparent);
+      --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
+      --accent-kiwido: #6c8c46;
+      --accent-upkeeper: #967e2a;
+      --accent-bountiful: #b16483;
+      --accent-bilberry: #5f7fbf;
+      --accent-notation: #b26d43;
+      --accent-homegrown: #569158;
+      --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
+      --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
+      --app-icon-bountiful: url('assets/bountiful-icon.png');
+      --app-icon-bilberry: url('assets/bilberry-icon.png');
+      --app-icon-notation: url('assets/notation-icon.png');
+      --app-icon-homegrown: url('assets/homegrown-icon.png');
+      --appstore-badge: url('assets/appstore-dark.svg');
+      color-scheme: dark;
+    }
   }
 
-  @media (prefers-color-scheme: dark) {
+  @media screen and (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
       --color-surface-base: #141210;
       --color-surface-elevated: #1a1814;
@@ -431,7 +436,6 @@
       0 10px 22px -4px rgba(0, 0, 0, 0.55),
       0 30px 56px -14px rgba(0, 0, 0, 0.7);
     --border-shot: color-mix(in oklab, var(--color-text-primary) 26%, transparent);
-    --rail-track: color-mix(in oklab, var(--color-text-primary) 7%, transparent);
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
     --accent-kiwido: #6c8c46;
     --accent-upkeeper: #967e2a;
@@ -456,6 +460,27 @@
     }
   }
 
+  /* On paper the images keep the screen's scheme (2026-10-13). Kiwido's and
+     Upkeeper's icons and the App Store badge have a light and a dark file, and
+     only the one the screen shows has been fetched when printing starts: given
+     the light file, Chromium printed an empty box where Kiwido's icon belongs.
+     The other four icons are one file for both schemes. */
+  @media print {
+    html[data-theme='dark'] {
+      --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
+      --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
+      --appstore-badge: url('assets/appstore-dark.svg');
+    }
+  }
+
+  @media print and (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
+      --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
+      --appstore-badge: url('assets/appstore-dark.svg');
+    }
+  }
+
   /* ─── Accent ramp, in OKLCH where it parses ──────────────────────────────
      The six app hues are meant to share one lightness and chroma, which only
      OKLCH says out loud; the hex above is exactly what each one resolves to.
@@ -469,9 +494,12 @@
      unparseable, .work-rail-thumb's background computed to rgba(0, 0, 0, 0) and
      the rail became a control you could not see.
 
-     Every other modern-colour feature here degrades to something visible when it
-     is unsupported (a failed color-mix() border falls back to currentColor), so
-     this is the one place the pattern needed guarding. */
+     Most other modern-colour features here degrade to something visible when
+     unsupported (a failed color-mix() in a `border-color` falls back to
+     currentColor). Not all: a color-mix() background, or a `border` shorthand
+     holding a var(), fails to transparent and none, which left the fixed header
+     bar with no paper at any scroll position in Safari before 16.2; the header
+     has its own @supports fallback (2026-10-13). */
   @supports (color: oklch(0.5 0.1 100)) {
     :root {
       --accent-kiwido: oklch(0.56 0.11 129.5);
@@ -482,16 +510,18 @@
       --accent-homegrown: oklch(0.56 0.11 145);
     }
 
-    html[data-theme='dark'] {
-      --accent-kiwido: oklch(0.6 0.105 129.5);
-      --accent-upkeeper: oklch(0.6 0.105 92.3);
-      --accent-bountiful: oklch(0.6 0.105 355);
-      --accent-bilberry: oklch(0.6 0.105 263);
-      --accent-notation: oklch(0.6 0.105 51);
-      --accent-homegrown: oklch(0.6 0.105 145);
+    @media screen {
+      html[data-theme='dark'] {
+        --accent-kiwido: oklch(0.6 0.105 129.5);
+        --accent-upkeeper: oklch(0.6 0.105 92.3);
+        --accent-bountiful: oklch(0.6 0.105 355);
+        --accent-bilberry: oklch(0.6 0.105 263);
+        --accent-notation: oklch(0.6 0.105 51);
+        --accent-homegrown: oklch(0.6 0.105 145);
+      }
     }
 
-    @media (prefers-color-scheme: dark) {
+    @media screen and (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
         --accent-kiwido: oklch(0.6 0.105 129.5);
         --accent-upkeeper: oklch(0.6 0.105 92.3);
@@ -577,12 +607,14 @@
     background-size: 180px 180px;
   }
 
-  html[data-theme='dark'] .grain {
-    opacity: 0.08;
-    mix-blend-mode: overlay;
+  @media screen {
+    html[data-theme='dark'] .grain {
+      opacity: 0.08;
+      mix-blend-mode: overlay;
+    }
   }
 
-  @media (prefers-color-scheme: dark) {
+  @media screen and (prefers-color-scheme: dark) {
     html:not([data-theme]) .grain {
       opacity: 0.08;
       mix-blend-mode: overlay;
@@ -628,10 +660,21 @@
     white-space: nowrap;
   }
 
+  /* Focused, it sits in the bar's first track, exactly over the Support link
+     (2026-10-13): on the column's left edge, by the same sum as .header-inner's
+     max-width and padding, and centred on the bar's row (its top padding plus
+     half the 1.75rem row the toggle sets). From 20px off the corner it covered
+     the link below about 1245px wide and missed it above 1375, and in between
+     half-covered it: "RT" left showing at 1280, "ORT" at 1300, the S cut by the
+     focus ring at 1366. It also hung 1px below the bar. With scripting off the
+     row is the mark's 22px and the word sits 3px higher, still covered. Hiding
+     the link while this has focus was the other way out; covering it needs no
+     rule reaching across the two. */
   .skip-link:focus,
   .skip-link:focus-visible {
-    left: var(--space-6);
-    top: var(--space-6);
+    left: max(var(--space-gutter-x), (100% - var(--layout-measure-wide)) / 2);
+    top: calc(var(--space-4) + 0.875rem);
+    translate: 0 -50%;
     width: auto;
     height: auto;
     overflow: visible;
@@ -760,14 +803,43 @@
       transparent
     );
     /* The saturation comes in with the scroll, like the blur: at the top it
-       would tint the hero medley under the bar into a hard-edged strip. */
-    backdrop-filter: saturate(calc(1 + 0.4 * var(--brand-progress, 1))) blur(var(--header-blur, 0px));
-    -webkit-backdrop-filter: saturate(calc(1 + 0.4 * var(--brand-progress, 1))) blur(var(--header-blur, 0px));
+       would tint the hero medley under the bar into a hard-edged strip.
+       Its fallback is 0, the top, like the other values main.js sets in this
+       rule (2026-10-13). It was 1, so with scripting off the strip was there
+       after all, under the Support link: at 1440, mean saturation 0.08 above
+       the bar's bottom edge and 0.06 below it, a step of up to 10 levels
+       across the pink orb. Now 0.057 on both sides. */
+    backdrop-filter: saturate(calc(1 + 0.4 * var(--brand-progress, 0))) blur(var(--header-blur, 0px));
+    -webkit-backdrop-filter: saturate(calc(1 + 0.4 * var(--brand-progress, 0))) blur(var(--header-blur, 0px));
     border-bottom: 1px solid color-mix(
       in oklab,
       var(--color-border-subtle) var(--header-border-alpha, 0%),
       transparent
     );
+  }
+
+  /* Without scripting the bar never takes its paper and the toggle stays
+     hidden, so a fixed bar would carry the Support link over the page's text
+     with no ground under it (measured at 375: the word sat on a screenshot
+     frame at 1200px down). It sits at the top and scrolls away instead
+     (2026-10-13). Paired with a <noscript> block in the head, like the reveal. */
+  @media (scripting: none) {
+    .site-header {
+      position: absolute;
+    }
+  }
+
+  /* An engine without color-mix() (Safari before 16.2, Chromium before 111)
+     computes the bar's background and border above as invalid at computed-value
+     time, so it never took its paper at any scroll position, and the mark, the
+     Support link and the toggle crossed app icons and frames at about 1.1 to
+     1.3:1 (2026-10-13). There it takes the full paper once the compact mark is
+     in, keyed to the class main.js sets at the same moment. */
+  @supports not (color: color-mix(in oklab, red, red)) {
+    html.has-compact-brand .site-header {
+      background: var(--color-surface-base);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
   }
 
   /* Three columns so the mark sits on the same axis as the hero mark it takes
@@ -786,20 +858,76 @@
     gap: var(--space-5);
   }
 
+  /* ─── Support link (2026-10-13) ───────────────────────────────────────────
+     Support was reachable only from the footer, a 12px link 7,204px down the
+     page at 1440. It takes the bar's first track, which centring the mark left
+     empty, so the grid above still holds the mark on the axis: measured 720,
+     400, 187.5 and 160 at 1440, 800, 375 and 320, the bar still 56.19px, and
+     nothing overflows at 320, where the word ends 50px short of the mark. It
+     shows at the top as well as in the compact bar, and needs no script.
+
+     The label voice in secondary ink, so it reads as part of the bar rather
+     than as a second name beside the mark: 64px of 12px capitals against a
+     hero mark 387px wide at 1440. It is also the skip link's type, so the one
+     stands in for the other when the skip link takes focus. Sentence case at
+     body size was tried: its ink runs 14px top to bottom against 8.5 here,
+     and it read as text that had strayed into the bar. Beside the toggle in
+     track 3 it came within 18px of the mark at 320 and left the bar lopsided.
+
+     The word starts on the column's edge, the chapter titles' x. Its 44px
+     target is an overlay reaching 8px past the word each side, not padding:
+     padding would push the word off that edge and stretch the focus ring round
+     the whole target. The 0.14em of top padding evens Geist's line box about
+     the capitals, which had 4.5px above them and 6.2px below the baseline: they
+     now centre on the bar's row (27.75 against 27.59) and the ring on them. */
+  .header-link {
+    grid-column: 1;
+    justify-self: start;
+    position: relative;
+    padding-block-start: 0.14em;
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .header-link::after {
+    content: '';
+    position: absolute;
+    inset-block: calc(50% - 1.375rem);
+    inset-inline: calc(-1 * var(--space-3));
+  }
+
+  .header-link:hover,
+  .header-link:focus-visible {
+    color: var(--color-text-primary);
+  }
+
   /* ─── Theme toggle ────────────────────────────────────────────────────────
      Three states, cycling auto -> light -> dark. Two would be simpler, and would
      throw away the third state the colour tokens were built around: a reader whose
      machine turns dark at sunset can keep that behaviour, and can get back to it
      after trying the others.
 
-     Ships `hidden` and main.js reveals it, like .work-rail. Without scripting it
-     would be a control that changes nothing. */
+     Ships `hidden` and theme.js reveals it, like .work-rail. Without scripting it
+     would be a control that changes nothing. Support and the policies carry the
+     same button in .legal-bar (2026-10-13). */
   .theme-toggle {
     grid-column: 3;
     justify-self: end;
     inline-size: 2.75rem;
     block-size: 2.75rem;
     margin-block: -0.5rem;
+    /* Hung by its padding, so the glyph's box rather than the button's ends on
+       the column's edge, on every page: .legal-bar had it first, and the home
+       bar has it since the Support link took the left edge (2026-10-13). Flush,
+       the glyph sat well inside that edge: at 375, SUPPORT's ink 21px from the
+       screen's left against the glyph's 37.5 from its right (33.5 for the sun);
+       hung, 25.5 (21.5). The hover disc reaches 12px into the gutter and the
+       focus ring 17, of 20 at the narrowest. */
+    margin-inline-end: -0.75rem;
     display: grid;
     place-items: center;
     border-radius: var(--radius-pill);
@@ -811,6 +939,14 @@
 
   .theme-toggle[hidden] {
     display: none;
+  }
+
+  /* Paper has no theme to change (2026-10-13). Support and the policies are pages
+     people print, and the glyph came out as a stray mark in the corner. */
+  @media print {
+    .theme-toggle {
+      display: none;
+    }
   }
 
   .theme-toggle:hover,
@@ -905,6 +1041,17 @@
     pointer-events: auto;
   }
 
+  /* The link enters the tab order at 0.55 of the handoff while it is still
+     fading and blurring in, and its ring fades with it: Shift+Tab back from the
+     first badge at 390x844 stops the page at that point and focused it at
+     opacity 0.8 behind blur(0.8px), its ring 1.8:1 (2026-10-13). Focused, it
+     shows whole. */
+  .logo:focus-visible {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
   /* Taller than the text line it replaced, so it borrows the bar's padding
      rather than growing the bar, the same way the theme toggle does. The
      margin sits on the link, not the mark, so the focus ring wraps the ink. */
@@ -921,12 +1068,41 @@
   /* The mark's width and the hero's top padding, shared so the medley can be
      sized and centred off the mark rather than off the hero box, which is wide
      on a desktop and nearly square on a phone. 5.5 display steps, floored for
-     phones (see .brand-mark below). */
+     phones (see .brand-mark below).
+
+     Both paddings follow the screen's height as well as its width (2026-10-13).
+     Sized by width alone the hero was 619px tall at 1440 whatever the height,
+     so a laptop's first screen ended on "Apps" and a hairline: at 1440x900
+     Kiwido's lede began at 842px, under the reveal's fire line (90% of the
+     height, 810px), and stayed invisible until a scroll. Each padding now has
+     a height term beside its width term, and the smaller wins. The height term
+     runs from the phone value at 800px of height to the old cap at 1040px:
+     (100vh - 50rem) is the height above 800px, and over that 15rem ramp the
+     top padding gains its 4.5rem (0.3 of the ramp) and the bottom its 2.5rem
+     (a sixth). The gap above "Apps" (.work, below) rides the same ramp.
+     Measured, the hero is 553px at 1440x900, 522px at 1470x830, 537px at
+     1512x860, and 507px at 1280x720, where both paddings sit on their floors.
+     It measures as before at 1040px of height and over and on an upright
+     phone; a phone on its side is under 800px tall and drops to the floors
+     (430px at 844x390, from 448).
+     The mark, its size curve and the medley's placement off --hero-pad-top are
+     untouched (medley centre on mark centre within 0.02px at every size
+     measured). The scroll handoff is the same motion started higher: at
+     1440x900 the mark reaches the bar at opacity 0.43 rather than 0.17, as a
+     phone already does at 0.57.
+     vh, not svh: --hero-pad-top is a custom property, so an engine that cannot
+     parse svh gets no vh line to fall back to; the var() resolves invalid and
+     the padding computes to 0. On a desktop the two agree, and on a phone one
+     term or the other already holds both paddings at their floors.
+     Rejected: scaling the mark by height (its curve is the hero), and a fixed
+     shorter hero on wide screens (it would shrink 1920x1080 too). */
   .hero {
     --hero-mark-w: max(calc(5.5 * var(--text-display)), 13.5rem);
-    --hero-pad-top: clamp(7.5rem, 15vw, 12rem);
+    --hero-pad-top: clamp(7.5rem, min(15vw, 7.5rem + (100vh - 50rem) * 0.3), 12rem);
     position: relative;
-    padding-block: var(--hero-pad-top) clamp(3rem, 7vw, 5.5rem);
+    padding-block:
+      var(--hero-pad-top)
+      clamp(3rem, min(7vw, 3rem + (100vh - 50rem) / 6), 5.5rem);
     overflow: hidden;
     isolation: isolate;
   }
@@ -1122,15 +1298,17 @@
     --lags: -1.3s, -7.4s, -4.6s, -10.8s, -5.5s, -2.6s, -3.8s;
   }
 
-  html[data-theme='dark'] .hero-medley {
-    opacity: 0.7;
+  @media screen {
+    html[data-theme='dark'] .hero-medley {
+      opacity: 0.7;
+    }
+
+    html[data-theme='dark'] .medley-shape {
+      mix-blend-mode: screen;
+    }
   }
 
-  html[data-theme='dark'] .medley-shape {
-    mix-blend-mode: screen;
-  }
-
-  @media (prefers-color-scheme: dark) {
+  @media screen and (prefers-color-scheme: dark) {
     html:not([data-theme]) .hero-medley {
       opacity: 0.7;
     }
@@ -1303,12 +1481,14 @@
     --blur-scale: 0.55;
   }
 
-  html[data-theme='dark'] .hero-dye {
-    mix-blend-mode: hard-light;
-    opacity: 1;
+  @media screen {
+    html[data-theme='dark'] .hero-dye {
+      mix-blend-mode: hard-light;
+      opacity: 1;
+    }
   }
 
-  @media (prefers-color-scheme: dark) {
+  @media screen and (prefers-color-scheme: dark) {
     html:not([data-theme]) .hero-dye {
       mix-blend-mode: hard-light;
       opacity: 1;
@@ -1420,10 +1600,6 @@
     .chapter-head--row .chapter-title {
       grid-column: 1 / 3;
     }
-
-    .chapter-head--row .chapter-dek {
-      grid-column: 3;
-    }
   }
 
   .chapter-title {
@@ -1435,16 +1611,15 @@
     max-width: var(--layout-measure);
   }
 
-  .chapter-dek {
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-    max-width: var(--layout-measure-narrow);
-    margin-top: var(--space-5);
-  }
-
-  .work .chapter-head {
-    margin-bottom: var(--space-8);
+  /* The gap above "Apps" is still --space-section-lg, capped by the hero's
+     height ramp (2026-10-13): the cap runs from the token's 3.25rem floor at
+     800px of height to its 5.25rem top at 1040px, 2rem over the 15rem ramp
+     (2/15), and below 800px the floor holds. With the hero's bottom padding
+     the gap made a 172px band of bare paper between the subtitle and "Apps" at
+     1440x900; it is 130px now. Only the top: under the list the section keeps
+     its own padding. */
+  .work {
+    padding-block-start: min(var(--space-section-lg), 3.25rem + max(0rem, (100vh - 50rem) * 2 / 15));
   }
 
   /* ─── Work catalog (editorial rows) ─── */
@@ -1459,6 +1634,8 @@
      puts the air before the band rule rather than after it, so the rule groups with
      the statement it introduces. */
   .work-row {
+    /* The rail's containing block: it sits on the next row's rule. */
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: calc(var(--space-5) * 2);
@@ -1466,9 +1643,31 @@
        its track is a content-column hairline; at 28px it landed 25px from the next
        row's border-top and the two read as a doubled rule.
        Both ends up 8px on 2026-10-06 (56/40 to 64/48), once the shot labels came
-       out and the rows got 30px shorter: the rule now has more air on both sides. */
-    padding-block: calc(var(--space-10) * 2) calc(var(--space-8) * 2);
+       out and the rows got 30px shorter: the rule now has more air on both sides.
+       Bottom 48 to 32px on 2026-10-13, when the rail moved onto the rule (see
+       .work-rail) and the scrollport began holding the whole shadow. The frames end
+       48px above the shelf's foot, so the rule is 80.5px under them, past the end
+       of the shadow, and 64px over the next name: between the two apps rather
+       than under either. At 48 it was 96.5px down and read as the next app's; 40
+       sat in between. */
+    padding-block: calc(var(--space-10) * 2) calc(var(--space-5) * 2);
     border-top: 1px solid var(--color-border-subtle);
+  }
+
+  /* The first row has no rule and no top padding (2026-10-13). A row's rule
+     separates it from the row above, and the first has no row above it: its rule
+     only underlined "Apps", 24px under the heading and 64px over Kiwido. The
+     chapter head's own 2.25rem margin (.work no longer cuts it to 1.5rem) does
+     that job now, which lifts Kiwido's lede 53px.
+     With the hero's height ramp the lede sits at 705-777px at 1440x900 with
+     67px of its frames showing under it, at 664-736px at 1470x830 with 38px,
+     at 683-755px at 1512x860 with 49px, and wholly on screen at 1280x720
+     (645-717px).
+     Rows 2 to 6 keep their rule; their bottom padding is the rail's business
+     (see .work-rail). */
+  .work-row:first-child {
+    padding-block-start: 0;
+    border-top: 0;
   }
 
   @media (min-width: 820px) {
@@ -1496,7 +1695,10 @@
 
   /* Gallery and its rail. They are wrapped rather than made two more tracks of
      .work-row, because the row's 56px row-gap is right between the name and the
-     shelf and far too much between the shelf and its own scrollbar. */
+     shelf and far too much between the shelf and its own scrollbar.
+     Since 2026-10-13 the rail is out of flow, on the next row's rule, so the
+     wrapper is the hover target that brings the track up, and its gap went:
+     with one item in flow it spaced nothing. */
   .work-shelf {
     display: grid;
     /* Explicitly one bounded column. Left to its own devices the implicit column
@@ -1505,7 +1707,6 @@
        the viewport edge and dragged the rail out past the content column with it.
        Measured: the rail ran to 1425 where the column ends at 1224. */
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-4);
     min-inline-size: 0;
   }
 
@@ -1529,11 +1730,36 @@
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--gallery-edge-inset);
-    /* Holds the frame shadow. --shadow-shot's widest layer is 0 30px 56px -14px,
-       which reaches 30 + 56/2 - 14 = 44px below the frame; the scrollport clips
-       both axes, because a box with overflow-x: auto computes overflow-y to auto
-       too, so anything shorter cuts the shadow off in a straight line. */
-    padding-block-end: calc(var(--space-12) + var(--space-3));
+    /* Holds the frame shadow. The scrollport clips both axes, because a box with
+       overflow-x: auto computes overflow-y to auto too, so anything shorter cuts
+       the shadow off in a straight line.
+       72px, not 48 (2026-10-13). 48 was sized as 30 + 56/2 - 14 = 44px, but a blur
+       radius is twice the Gaussian's standard deviation and the tail stays visible
+       for about a whole radius past the edge: 30 + 56 - 14 = 72. Measured with the
+       clip removed, light, under a frame: 2.1 L* darker than the paper 48px down,
+       0.35 L* at 72. At 48 that step was a straight edge under every frame (on a
+       phone, across the whole screen) and a third line beside the rail and the
+       rule. The negative margin hands the extra 24px back, so nothing after the
+       scrollport moves and the tail paints into the room below it.
+       Rejected: a shorter shadow; it is the tuned one (AGENTS.md, 2026-09-20). */
+    padding-block-end: 4.5rem;
+    margin-block-end: calc(-1 * var(--space-8));
+    /* The same 24px are shadow, not content, so scrolling leaves them out too. A
+       shelf taller than the screen has its bottom edge lined up on Shift+Tab, and
+       with them counted its frames went 24px higher: the ring's top at 56px on
+       1366x657, level with the bar's edge, where it was 80. Chromium's focus
+       scroll honours a negative scroll-margin, though not a positive one. */
+    scroll-margin-block-end: calc(-1 * var(--space-8));
+    /* Room above the frames (2026-10-13), taken back by the negative margin so
+       nothing moves: every frame measured in the same place as before at nine
+       widths, with scripting on and off. The focus ring reaches 7px outside each
+       frame and this box clips both axes, so with no top padding the ring's top
+       edge was cut off flat. The same clip cut the top of --shadow-shot along
+       each frame's top edge, a straight line across the halo at the rounded
+       corners. Unclipped, the halo is gone 16px above the frame, hence 1rem
+       rather than the 7px the ring alone needs. */
+    padding-block-start: var(--space-5);
+    margin-block-start: calc(-1 * var(--space-5));
     /* The native bar is gone in favour of .work-rail. It ran the full viewport
        width rather than the content column: ::-webkit-scrollbar-track's
        margin-inline is ignored, and the thumb started at x=3 where the design
@@ -1547,14 +1773,114 @@
     display: none;
   }
 
-  /* outline-offset was +4px on an element as wide as the viewport, which drew the
-     left and right edges of the ring off-screen: keyboard focus showed as two
-     stray horizontal lines. Negative offset puts the whole ring inside the
-     scrollport. */
+  /* Keyboard focus rings the frames, not the scrollport (2026-10-13).
+     The scrollport is 100cqw wide, so its ring (-3px offset since 2026-09-20)
+     ran down the window's outermost pixels: at 1440x900 its sides were at x 1-2
+     and 1437-1438, its bottom 45px under the frames, and 62% of its top edge was
+     painted over by the frames, which are positioned. Each frame now carries the
+     site's ring, which follows the frame's corners, and the rail comes up to
+     its dragging state (see below), so the column shows where the arrow keys
+     have got to. A mouse click shows neither, because :focus-visible does not
+     match it.
+     5px off the frame, not the usual 3px: the frame's own shadow is darkest
+     1-4px under it, and there the light ring measured 2.95:1 at its lowest,
+     under the 3:1 the token is tuned for. At 5px its bottom edge is 3.04:1 at
+     its lowest and the other three 3.5:1 or more; dark is 4.5:1 or more all
+     round.
+     Rejected: a ring on the content column, which the frames overflow on the
+     right, so it would cut across the third and fourth frames; a capsule ring
+     round the rail alone, which sat 57px under 692px of frames at 1440x900 and
+     without scripting had to be drawn round nothing; and tinting the ring per
+     app (see AGENTS.md). */
   .work-gallery:focus-visible {
+    outline: none;
+  }
+
+  .work-gallery:focus-visible .work-shot {
     outline: 2px solid var(--color-focus-ring);
-    outline-offset: -3px;
-    border-radius: var(--radius-xs);
+    outline-offset: 5px;
+  }
+
+  /* Under forced colours the browser repaints the focused element's ring in
+     Highlight. The frames are not the focused element, so theirs came out in
+     CanvasText, the colour of each frame's own border: measured rgb(0, 0, 0)
+     where the badge's ring was rgba(5, 0, 73, 0.8). */
+  @media (forced-colors: active) {
+    .work-gallery:focus-visible .work-shot {
+      outline-color: Highlight;
+    }
+  }
+
+  /* The ring rides on the frames, and a shelf's frames stay invisible until its
+     reveal fires, which waited for the focus scroll to land: Tab from the top at
+     1280x720, where the first shelf is off the landing screen, brought the third
+     frame, ring and all, to full opacity 420-520ms after the page stopped moving
+     (three runs). Focus reveals the shelf at once, so the fade runs during the
+     scroll and ends within 100ms of it. */
+  .work-shelf[data-reveal]:has(> .work-gallery:focus-visible) .work-showcase-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* The same for the other reveal units that hold something focusable: a lede
+     (its App Store badge) and the closing band (the address). Tabbed to before
+     they had revealed, their ring sat on an element at opacity 0 and came up
+     about 0.5s after the page stopped moving. The shorter fade ends it with the
+     scroll. Inert with Reduce Motion or no script, where nothing is hidden. */
+  [data-reveal]:has(:focus-visible) {
+    opacity: 1;
+    transform: none;
+    transition-duration: var(--duration-slow);
+  }
+
+  /* Clearance under the fixed bar for keyboard focus in the app list
+     (2026-10-13). Focus on an element already on screen but partly under the
+     bar does not scroll it: Chromium scrolls only an element not wholly inside
+     the viewport, and the bar is inside the viewport. Measured on Shift+Tab:
+     back into a shelf from the next row's badge, the frames' top stayed at 0px
+     at 820x1180 and 2560x1440, ring and all under the bar, and at 44px at
+     1366x657; from a shelf back to its own App Store badge, the badge's top
+     stayed at 47px at 1440x900 (37px at 1280x720). Focus scrolling ignores a
+     positive scroll-margin on the target and honours scroll-padding on the
+     root, so the root reserves 5rem, the clearance the sections' anchor jumps
+     use, while focus is in the list.
+     Not site-wide: anchor jumps keep their own scroll-margin, and Space and
+     Page Down step less only while focus is here: 787px to 717px at 900 tall,
+     672px on a shelf with the room below. */
+  html:has(.work-list :focus-visible) {
+    scroll-padding-block-start: 5rem;
+  }
+
+  /* And room under a focused shelf for its rail: at 375x812 the focus scroll
+     stopped with the rail's top 20px below the screen. The rail sits on the
+     next row's rule (see .work-rail), so the room is the row's 32px bottom
+     padding, the 12.5px of rail that hang below the row, and 8px, counted from
+     the edge a focus scroll lines up, 48px under the frames (see
+     .work-gallery). Only where the shelf still fits between the two paddings,
+     or all but: it takes 718px with its frames at the 15rem floor, and from
+     712px the few px it lacks come off the ring's top on Shift+Tab (83px at
+     712) and the rail's foot on Tab (2px above the screen's edge). A shelf
+     that does not fit gets its bottom edge lined up on Shift+Tab, so on
+     shorter screens this room put the ring's top under the 56px bar, at 28px
+     on 1366x657, 21.5px on 375x667 and 1.5px on 320x568. Without it, 80, 73.5
+     and 53.5 (Shift+Tab from the next row's badge, re-measured after phone
+     frames went back to 66vw). Below about 640px of height a shelf at the
+     floor is taller than the screen under the bar whatever the padding, and
+     Shift+Tab still leaves the ring's top at or under it (48px at 1366x625).
+     The height a shelf needs depends on its frames, so the gate does too:
+     44.5rem from 820px wide, where a short screen has floor frames; 51.5rem
+     below it, where frames keep 66vw and up to 288px (a shelf of 288px frames
+     needs 822.5px); and a phone-shaped window up to 436px wide, at least 2.05
+     times as tall as wide, where 66vw frames always fit. Gated on height alone,
+     the 288px frames on a half-screen laptop window put the ring's top under
+     the bar: 46.8px at 720x780, 26.8 at 800x760, 15.5 at 430x740; now 88.8,
+     78.8 and 67.5. */
+  @media (min-width: 820px) and (min-height: 44.5rem),
+    (max-width: 819px) and (min-height: 51.5rem),
+    (max-width: 436px) and (max-aspect-ratio: 20 / 41) {
+    html:has(.work-gallery:focus-visible) {
+      scroll-padding-block-end: calc(var(--space-5) * 2 + 0.75rem + 0.5px + var(--space-3));
+    }
   }
 
   /* Snap fights a rail drag: every scrollLeft assignment is re-snapped, so the
@@ -1570,7 +1896,26 @@
      the gallery already has, and the scrollport itself is focusable and
      arrow-scrollable for anyone not using a pointer. */
   .work-rail {
-    position: relative;
+    /* On the rule, not above it (2026-10-13). The rail sat in the shelf's flow, its
+       track a content-column line 60px above the next row's border-top, and the
+       two read as a doubled rule; two passes widened the gap and neither fixed it.
+       The box is now centred on that border (half the box plus half the 1px rule
+       below the row's foot), its track is clear at rest, and the thumb rides the
+       line that already separates the two apps. Out of flow, so showing it moves
+       nothing: the page is the same height with scripting off, where the rule is
+       all there is. The last row has no rule under it, so its thumb rides alone,
+       with no track even on hover or focus (see the track below).
+       Rejected: dropping the next row's border while a rail shows, with :has(),
+       which draws the same picture but needs an @supports fallback that keeps the
+       doubled rule, changes row heights when the script reveals the rail, and
+       needs its own forced-colours track; and a clear track over the old spacing,
+       which still left a 680px accent line 60px over a grey one at 1440. */
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: calc(-0.75rem - 0.5px);
+    /* Above the next row, which is positioned too and later in the tree: without
+       it, that row's border painted across the thumb's middle pixel. */
+    z-index: var(--z-rail);
     /* 24px, the WCAG 2.2 target minimum. It was 1.25rem, which measured 350x20 and
        missed the floor the footer links were raised to clear in the same pass. */
     block-size: 1.5rem;
@@ -1604,20 +1949,39 @@
     content: '';
     position: absolute;
     inset-inline: 0;
-    inset-block-start: calc(50% - 1px);
-    block-size: 2px;
-    border-radius: var(--radius-pill);
-    background: var(--rail-track);
+    inset-block-start: calc(50% - 0.5px);
+    block-size: 1px;
+    background: transparent;
     transition: background-color var(--duration-fast) var(--ease-out);
   }
 
-  /* At rest the track is a hint at 1.1:1, because a full-strength one is a
-     content-column hairline sitting 40px from the next row's border-top and the
-     two read as a doubled rule. It comes up when the pointer is anywhere on the
-     shelf, which is the only time its job is to say "this is draggable". */
+  /* Clear at rest, and 1px, square-ended, laid exactly over the rule (2026-10-13):
+     the next row's border is the track. It comes up when the pointer is anywhere
+     on the shelf, which is the only time its job is to say "this is draggable",
+     and with keyboard focus on the shelf, when the arrow keys move it; then it is
+     the rule under that shelf that darkens, from 1.23:1 to 1.53:1 on light paper
+     and 1.23:1 to 1.91:1 on dark. A 2px track straddled the 1px rule unevenly,
+     two device pixels above it and none below at 2x.
+     The :has() selector has a rule of its own, here and for the thumb below: in a
+     selector list, an engine that cannot parse :has() (Firefox before 121, Safari
+     before 15.4) drops the whole rule, and with it the hover and drag states that
+     need nothing new. */
   .work-shelf:hover .work-rail::before,
   .work-rail.is-dragging::before {
     background: var(--rail-track-hover);
+  }
+
+  .work-shelf:has(> .work-gallery:focus-visible) .work-rail::before {
+    background: var(--rail-track-hover);
+  }
+
+  /* Not under the last shelf (2026-10-13). There is no rule under the last row for
+     the track to lie on, so on hover or focus it drew a free content-column
+     hairline 83.5px over the band rule (51.5px on a phone): the doubled rule that
+     "One rule closes the app list" took out on 2026-09-20. Its thumb rides alone
+     in every state. */
+  .work-row:last-child .work-rail::before {
+    content: none;
   }
 
   .work-rail-thumb {
@@ -1638,6 +2002,30 @@
   .work-rail.is-dragging .work-rail-thumb {
     block-size: 5px;
     inset-block-start: calc(50% - 2.5px);
+  }
+
+  .work-shelf:has(> .work-gallery:focus-visible) .work-rail-thumb {
+    block-size: 5px;
+    inset-block-start: calc(50% - 2.5px);
+  }
+
+  /* Forced colours repaint every background as Canvas, so the thumb, now lying on
+     the rule, became a Canvas-coloured bar that cut the rule away under it:
+     measured at 1440, 680 of its 1024px were gone. CanvasText makes the thumb a
+     heavier stretch of the same rule, and the track stays out of it, because
+     the rule beneath is already the track. */
+  @media (forced-colors: active) {
+    .work-rail {
+      forced-color-adjust: none;
+    }
+
+    .work-rail::before {
+      display: none;
+    }
+
+    .work-rail-thumb {
+      background: CanvasText;
+    }
   }
 
   /* Each app's accent hue, at one OKLCH lightness and chroma per scheme. */
@@ -1665,18 +2053,37 @@
     --row-accent: var(--accent-homegrown);
   }
 
+  /* A frame is sized by the screen's height as well as its width (2026-10-13).
+     At a flat 24rem it is 835px tall, so on a 1440x900 laptop the frame and the
+     app's name above it never fitted on screen together (the pair needs about
+     960px), and at 1280x720 the frame alone did not fit. The height term caps the
+     width at what leaves the whole frame visible under the bar, the lede and the
+     row gap (56 + 72 + 56px, about 11.5rem), with 1.5rem to spare: 13rem in all.
+     15rem is the floor, below which an iPhone screen stops being readable; under
+     it a frame may still be taller than the screen, as it always could on a phone.
+     Twice, vh then svh: an engine that cannot parse svh keeps the vh line, and
+     svh on a phone measures the screen with its toolbars showing. */
   .work-showcase-item {
     flex: 0 0 auto;
-    inline-size: min(24rem, 88vw);
+    inline-size: min(24rem, 88vw, max(15rem, (100vh - 13rem) * 1206 / 2622));
+    inline-size: min(24rem, 88vw, max(15rem, (100svh - 13rem) * 1206 / 2622));
     scroll-snap-align: start;
   }
 
   /* At phone widths, 88vw makes the 1206:2622 frames almost a full viewport
      tall. Scale them to 75% of their former width while preserving the source
-     aspect ratio, so a complete screen is comfortably visible on an iPhone. */
+     aspect ratio, so a complete screen is comfortably visible on an iPhone.
+     The height term here budgets for the bar alone (56px and 16px of air,
+     4.5rem), not the lede: a phone's lede is 138px with the badge under the name,
+     so name and frame never fit one screen there, and the 13rem term above cut
+     every common iPhone's frame for nothing, by 3 to 14%, because Safari's svh
+     (toolbars showing: about 660px on a 393px iPhone) is well under the screen. With
+     4.5rem the frame on its own still fits under the bar on a short window, and
+     iPhones keep 66vw; only an SE in Safari (about 375 by 548) drops to the 240px floor. */
   @media (max-width: 819px) {
     .work-showcase-item {
-      inline-size: min(18rem, 66vw);
+      inline-size: min(18rem, 66vw, max(15rem, (100vh - 4.5rem) * 1206 / 2622));
+      inline-size: min(18rem, 66vw, max(15rem, (100svh - 4.5rem) * 1206 / 2622));
     }
   }
 
@@ -1688,6 +2095,30 @@
     margin-inline-end: var(--gallery-edge-inset);
   }
 
+  /* No trailing inset once the whole strip is on screen at rest (2026-10-13).
+     The inset lets the last frame scroll in to end on the column's right edge,
+     which only means something while the strip is cut. At 3440x1440 the five
+     frames sit whole at 1208-3288, yet the gallery still scrolled 1056px: every
+     step slid whole frames off the column into the left margin, under a 783.5px
+     thumb on the 1024px rail. main.js sets .is-whole when the last frame ends
+     inside the scrollport at scrollLeft 0. With no inset there is nothing to
+     scroll, sync() keeps the rail hidden, and the next rule is 80.5px under the
+     frames, where it is with a rail and without scripting.
+     Five frames fit once the window is ten frame widths less 44rem: 3136px with
+     384px frames (1043px of height and up), 1696px with frames at the 15rem
+     floor (729px and under). 1920x1080 and 2560x1440 are cut and do not change;
+     shorter windows can fit (1920x760, 2560x900); 1440 and below never do.
+     Without scripting the inset stays, as before, and there is no rail.
+     Rejected: the same test in CSS, a clamp() step on five times the frame
+     width, which repeats the frame formula above and hard-codes the frame
+     count; for wide screens generally, ending the scrollport short of the
+     screen edge (the cut lands in open paper and slices the frame and its
+     shadow in a straight line) and larger frames (the captures are 768px, 2x
+     at 384). See AGENTS.md. */
+  .work-gallery.is-whole .work-showcase-item:last-child {
+    margin-inline-end: 0;
+  }
+
   /* Horizontal showcase media. Frames use the iPhone 17 Pro display ratio
      (1206 x 2622), so future rectangular exports inherit the same screen mask. */
   .work-shot {
@@ -1697,7 +2128,13 @@
     position: relative;
     overflow: hidden;
     border: 1px solid var(--border-shot);
-    border-radius: clamp(1.9rem, 8.5vw, 3.15rem);
+    /* A share of the frame, not of the viewport (2026-10-13): 3.15rem on the
+       24rem frame, 13.125%, at every size. The old clamp(1.9rem, 8.5vw, 3.15rem)
+       followed the window, so a frame narrowed by the height cap above, or a
+       288px tablet frame, kept the big 24rem corner. Horizontal radii resolve
+       against the width and vertical against the height, so the second figure
+       is the first times 1206/2622, which keeps each corner a circle. */
+    border-radius: 13.125% / 6.0369%;
     background: var(--color-surface-elevated);
     box-shadow: var(--shadow-shot);
     isolation: isolate;
@@ -1739,17 +2176,19 @@
     opacity: 0;
   }
 
-  html[data-theme='dark'] .work-shot-image[data-scheme='light'] {
-    opacity: 0;
-  }
+  @media screen {
+    html[data-theme='dark'] .work-shot-image[data-scheme='light'] {
+      opacity: 0;
+    }
 
-  html[data-theme='dark'] .work-shot-image[data-scheme='dark'] {
-    opacity: 1;
+    html[data-theme='dark'] .work-shot-image[data-scheme='dark'] {
+      opacity: 1;
+    }
   }
 
   /* `:not([data-theme])` so an explicit light choice still wins on a machine
      whose system is dark. Same three-state shape as the colour tokens. */
-  @media (prefers-color-scheme: dark) {
+  @media screen and (prefers-color-scheme: dark) {
     html:not([data-theme]) .work-shot-image[data-scheme='light'] {
       opacity: 0;
     }
@@ -1757,25 +2196,6 @@
     html:not([data-theme]) .work-shot-image[data-scheme='dark'] {
       opacity: 1;
     }
-  }
-
-  .work-shot-kicker,
-  .work-shot-title {
-    letter-spacing: var(--tracking-caps-wide);
-    text-transform: uppercase;
-  }
-
-  .work-shot-title {
-    color: var(--color-text-primary);
-  }
-
-  .work-shot-note {
-    font-size: 0.82rem;
-    font-weight: var(--font-weight-regular);
-    letter-spacing: 0;
-    text-transform: none;
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
   }
 
   /* `center`, not `flex-start`, and at every width.
@@ -1808,27 +2228,33 @@
     background-size: contain;
   }
 
-  .work-icon[data-app='kiwido'] {
+  .work-icon[data-app='kiwido'],
+  .legal-icon[data-app='kiwido'] {
     background-image: var(--app-icon-kiwido);
   }
 
-  .work-icon[data-app='upkeeper'] {
+  .work-icon[data-app='upkeeper'],
+  .legal-icon[data-app='upkeeper'] {
     background-image: var(--app-icon-upkeeper);
   }
 
-  .work-icon[data-app='bountiful'] {
+  .work-icon[data-app='bountiful'],
+  .legal-icon[data-app='bountiful'] {
     background-image: var(--app-icon-bountiful);
   }
 
-  .work-icon[data-app='bilberry'] {
+  .work-icon[data-app='bilberry'],
+  .legal-icon[data-app='bilberry'] {
     background-image: var(--app-icon-bilberry);
   }
 
-  .work-icon[data-app='notation'] {
+  .work-icon[data-app='notation'],
+  .legal-icon[data-app='notation'] {
     background-image: var(--app-icon-notation);
   }
 
-  .work-icon[data-app='homegrown'] {
+  .work-icon[data-app='homegrown'],
+  .legal-icon[data-app='homegrown'] {
     background-image: var(--app-icon-homegrown);
   }
 
@@ -2008,11 +2434,13 @@
     transform-origin: center;
   }
 
-  html[data-theme='dark'] .footer-petals circle {
-    mix-blend-mode: screen;
+  @media screen {
+    html[data-theme='dark'] .footer-petals circle {
+      mix-blend-mode: screen;
+    }
   }
 
-  @media (prefers-color-scheme: dark) {
+  @media screen and (prefers-color-scheme: dark) {
     html:not([data-theme]) .footer-petals circle {
       mix-blend-mode: screen;
     }
@@ -2140,12 +2568,11 @@
   }
 
   /* The brush mark, the header's size, drawn from assets/spreza-mark.svg rather
-     than an inline sprite: seven pages share one cached file. line-height: 0
+     than an inline sprite: eight pages share one cached file. line-height: 0
      keeps the link box on the ink, so the focus ring wraps the mark. Colour comes
      from `.legal a` below: primary ink, muted on hover, like every link here. */
   .legal-back {
     display: inline-block;
-    margin-block-end: var(--space-10);
     line-height: 0;
   }
 
@@ -2153,11 +2580,70 @@
     inline-size: 3.25rem;
   }
 
+  /* The back mark and the theme toggle share a row (2026-10-13): the mark's ink on
+     the column's left edge, the toggle's glyph on its right. The button is 2.75rem
+     around a 1.25rem glyph, so its -0.75rem end margin puts the glyph's box on the
+     edge and lets the 44px target and its hover disc overhang it, as a focus ring
+     does. With the button's box on the edge instead, the glyph sat 12px inside the
+     line the h2 rules end on and read as stranded. Both its margins come with
+     .theme-toggle, the end one since the home bar took it too (2026-10-13); the
+     -0.5rem block margin keeps the target from growing the row past the mark's
+     36.53px.
+
+     --space-12 under the row, where the link alone had --space-10: the link was an
+     inline-block on a line of text, and that line's descent added 7.6px under it.
+     40px puts the title within 0.4px of where it sat. With scripting off the button
+     stays hidden and the row is the mark alone, the same height. */
+  .legal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: var(--space-12);
+  }
+
+  /* The app's icon, inline before the title's first word (2026-10-13). Readers
+     mostly arrive from the App Store, where the icon is what they last looked at.
+     Decorative and aria-hidden: the h1 already names the app. The image comes from
+     the .work-icon rules, which list this class beside them.
+
+     The box is the disc. In all six exports the disc is 115.31px of the 144px
+     square, centred (measured by alpha coverage), so the background is drawn at
+     144/115.31 of the box and the transparent margin falls outside it, the way the
+     brand mark's viewBox is cut to its ink. In em, so it follows the title's clamp:
+     0.8em is 1.13 times Geist's 0.71em cap height, so the disc stands a little proud
+     of the capitals at both ends, and -0.045em centres it on them. The 0.2em gap
+     leaves 0.27 to 0.28em of paper before the first capital, just under the titles'
+     own word spaces (0.30 to 0.36em), so the icon reads as part of the name rather
+     than as a word of its own.
+
+     Rejected: 0.85em with a 0.25em gap. The icon stood a full word space off the
+     name, and Homegrown's title kept 3.2px of the 584px column at 1440 and wider.
+     The metric-matched fallback sets that title 5.3px wider, so a slow font load
+     drew it on two lines and then rewrapped it. This keeps 7.7px, and 2.4px in the
+     fallback. Printing keeps the icon: browsers drop backgrounds by default, which
+     left an empty indent before the title. */
+  .legal-icon {
+    display: inline-block;
+    inline-size: 0.8em;
+    block-size: 0.8em;
+    margin-inline-end: 0.2em;
+    vertical-align: -0.045em;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: calc(100% * 144 / 115.31);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Balanced (2026-10-13): where a title wraps, the break falls as "Homegrown" over
+     "Privacy Policy" rather than leaving "Policy" alone on the second line. With the
+     icon, Homegrown's title is one line from 401px and the others from 333 to 370px. */
   .legal-title {
     font-size: var(--text-chapter);
     font-weight: var(--font-weight-medium);
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
     margin-block-end: var(--space-4);
   }
 
@@ -2171,6 +2657,39 @@
     font-size: var(--text-body-lg);
     line-height: var(--leading-body);
     margin-block-end: var(--space-12);
+  }
+
+  /* The 404 (2026-10-13) is the one page shorter than a screen: a title and a
+     sentence. Left in flow its footer stopped mid-screen over bare paper (top at
+     406 of 900 at 1440), so on this page alone the body is a column at least a
+     screen tall and main takes the slack, which puts the footer on the bottom
+     edge. Scoped by :has() so the long pages keep their block layout untouched;
+     an engine without :has() shows the footer where it falls. */
+  body:has(.legal--notfound) {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+  }
+
+  body:has(.legal--notfound) > main {
+    flex: 1 0 auto;
+  }
+
+  /* The 404 is barely taller than a short screen, so Shift+Tab back to the top
+     scrolled only until the toggle's box was in view and left its ring 4.7px
+     above the window (320x568). Focus scrolling honours the root's
+     scroll-padding; the page has no anchors for it to move. */
+  html:has(.legal--notfound) {
+    scroll-padding-block: 0.5rem;
+  }
+
+  /* And at the foot of every page: at 320x568 Tab into the last row of footer
+     links found its border box already inside the window, so nothing scrolled
+     and the ring's bottom edge stopped 3 to 5px below it (571.4 of 568 on the
+     Kiwido policy, 573.4 on Support). Older than today; same remedy. */
+  html:has(.site-footer :focus-visible) {
+    scroll-padding-block-end: 0.5rem;
   }
 
   .legal h2 {

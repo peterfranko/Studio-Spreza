@@ -52,12 +52,30 @@
 
     <main id="main">
       <article class="wrap legal">
-        <a class="legal-back" href="/">
-          <span class="visually-hidden">Studio Spreza</span>
-          <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
-        </a>
+        <div class="legal-bar">
+          <a class="legal-back" href="/">
+            <span class="visually-hidden">Studio Spreza</span>
+            <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
+          </a>
+          <button
+            class="theme-toggle"
+            type="button"
+            id="theme-toggle"
+            hidden
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle class="theme-glyph-disc" cx="12" cy="12" r="5" />
+                <path class="theme-glyph-rays" d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                <path class="theme-glyph-moon" d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z" />
+                <path class="theme-glyph-auto" d="M12 7a5 5 0 0 0 0 10Z" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+            <span class="theme-toggle-label" aria-live="polite"></span>
+          </button>
+        </div>
 
-        <h1 class="legal-title">Homegrown Privacy Policy</h1>
+        <h1 class="legal-title"><span class="legal-icon" data-app="homegrown" aria-hidden="true"></span>Homegrown Privacy Policy</h1>
         <p class="legal-meta">Last updated October 2, 2026. Developer: Studio Spreza.</p>
 
         <p class="legal-lede">
@@ -77,7 +95,7 @@
         <ul>
           <li>
             <strong>Your plants and your home.</strong> The rooms and windows you describe, each
-            plant's details, its care history, check-ins, notes, photos and videos. A plant you delete
+            plant’s details, its care history, check-ins, notes, photos and videos. A plant you delete
             stays in Recently Deleted for 30 days, then is removed with everything recorded about it.
           </li>
           <li>
@@ -90,7 +108,7 @@
             small picture. Lock Screen widgets show plant names.
           </li>
           <li>
-            <strong>Spotlight.</strong> Plant names are added to your device's own search index, so you
+            <strong>Spotlight.</strong> Plant names are added to your device’s own search index, so you
             can find a plant from anywhere on the device. The index stays on the device.
           </li>
         </ul>
@@ -104,7 +122,7 @@
         <p>
           When sync is on, your data is stored in your private iCloud database under your own Apple ID.
           The names you give your places, rooms, windows, plants and tags, and every note you write,
-          are end-to-end encrypted there. It is governed by Apple's privacy policy and terms. Studio
+          are end-to-end encrypted there. It is governed by Apple’s privacy policy and terms. Studio
           Spreza has no access to that database and cannot read your synced data. If iCloud is
           unavailable, the app continues to work on your device.
         </p>
@@ -128,7 +146,7 @@
             else.
           </li>
           <li>
-            <strong>Photos.</strong> Adding a photo or video from your library uses Apple's picker,
+            <strong>Photos.</strong> Adding a photo or video from your library uses Apple’s picker,
             which gives the app only what you choose. Homegrown has no access to your photo library.
           </li>
         </ul>
@@ -162,7 +180,7 @@
           <li>No analytics, no crash reporting, and no advertising SDKs in the app.</li>
           <li>No access to your contacts, calendar, reminders, health data or photo library.</li>
           <li>
-            No tracking. The app does not track you across other companies' apps or websites, and
+            No tracking. The app does not track you across other companies’ apps or websites, and
             does not use App Tracking Transparency for that purpose.
           </li>
           <li>We do not sell your personal information.</li>
@@ -182,21 +200,21 @@
             permission off in the Settings app.
           </li>
           <li>
-            <strong>Nudges.</strong> Turn Homegrown's notifications off in the Settings app under
+            <strong>Nudges.</strong> Turn Homegrown’s notifications off in the Settings app under
             Notifications.
           </li>
           <li>
-            <strong>Spotlight.</strong> Stop Homegrown's plants appearing in search in the Settings app,
-            under Homegrown's Siri and search settings.
+            <strong>Spotlight.</strong> Stop Homegrown’s plants appearing in search in the Settings app,
+            under Homegrown’s Siri and search settings.
           </li>
           <li>
             <strong>Your data.</strong> Export it at any time. Deleting the app removes its on-device
-            data according to iOS behavior. If you used iCloud, you can also remove Homegrown's data
+            data according to iOS behavior. If you used iCloud, you can also remove Homegrown’s data
             from your iCloud account in Settings.
           </li>
         </ul>
 
-        <h2>Children's privacy</h2>
+        <h2>Children’s privacy</h2>
         <p>
           The app is not directed specifically at children under 13. If you believe information has
           been collected that should be removed, contact us at the address below.
@@ -210,7 +228,7 @@
 
         <h2>Questions</h2>
         <p>
-          For questions about this policy or the app's privacy practices, email
+          For questions about this policy or the app’s privacy practices, email
           <a href="mailto:hey@studiospreza.com">hey@studiospreza.com</a>.
         </p>
       </article>
@@ -237,5 +255,7 @@
         </nav>
       </div>
     </footer>
+
+    <script src="/theme.js" defer></script>
   </body>
 </html>

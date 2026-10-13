@@ -10,7 +10,7 @@ Source control boundary: this site lives under `/Users/peter/Developer/GitHub/` 
 
 **Type (2026-08-11): single-family Geist.** Cormorant Garamond and JetBrains Mono are both gone. Hierarchy is weight (400 body / 500 headings and labels / 600 `<strong>`), size, and case; uppercase with positive tracking is the label voice that the monospace used to carry. The size steps are tuned to Geist's x-height, so they do not transfer to another family. This is now a deliberate divergence from pf-portfolio, which still runs the serif pairing and the old token names: read the header comment in `styles.css` before syncing anything between the two.
 
-Geist ships with a metric-matched fallback: four `@font-face` rules at the top of `styles.css` reshape local Arial to Geist's exact box, so the `display=swap` handover does not rewrap text. One face per weight, because Geist widens with weight and Arial does not. The `size-adjust` values are browser-measured against this site's copy, not derived from OS/2 tables (the table-based estimate ran ~3% wide). Recalibrate with the console snippet in `.font-lab/metrics.py` after any change to the family, the weights used, or the body copy.
+Geist ships with a metric-matched fallback: three `@font-face` rules at the top of `styles.css` reshape local Arial to Geist's exact box, so the `display=swap` handover does not rewrap text. One face per weight, because Geist widens with weight and Arial does not. (There were four until 2026-10-13; the fourth matched an italic that no page sets and the site no longer downloads.) The `size-adjust` values are browser-measured against this site's copy, not derived from OS/2 tables (the table-based estimate ran ~3% wide). Recalibrate with the console snippet in `.font-lab/metrics.py` after any change to the family, the weights used, or the body copy.
 
 `.font-lab/` is the local specimen page that picked it (gitignored, not published, 560 families set in real site copy). Regenerate with `python3 .font-lab/build_specimens.py`; serve it, do not open it over `file://`.
 
@@ -182,7 +182,7 @@ tag by hand**; run the script.
   Petals crossed with Taking turns): an inline `svg.footer-petals`, six blended discs in
   the app accents, clockwise from Bountiful in hue order, turning once a minute while
   each swells in turn. The closing note, the address and the footer are centred on one
-  axis. The markup is copied into all eight pages, so a new page copies the whole
+  axis. The markup is copied into all nine pages (404.html since 2026-10-13), so a new page copies the whole
   footer, and a seventh app means re-spacing the flower (60° steps today) in every page.
 - **`robots.txt` and `sitemap.xml`** added. The sitemap carries no `<lastmod>` on
   purpose: a hand-maintained date rots and a missing one is never wrong.
@@ -220,6 +220,12 @@ drew literally nothing.
 `overflow-y` to `auto` as well, so `.work-gallery` clips both axes. Its
 `padding-block-end` is sized from the widest shadow layer (30 + 56/2 − 14 = 44px);
 anything shorter cuts the shadow off in a straight line under every frame.
+**Corrected 2026-10-13:** that sum takes half the blur radius and the tail runs about
+a whole one, so 48px still cut it, 2.1 L* under each frame. It is 72px now; see "One
+line between two apps". Since
+2026-10-13 it also has 1rem of `padding-block-start`, taken back by a matching negative
+margin so nothing moves: the focus ring reaches 7px above each frame and the shadow's
+halo 16px, and with no top padding both were cut off flat.
 
 ### The native scrollbar is gone
 
@@ -243,7 +249,8 @@ the row's own app accent, driven by `main.js`. Click to jump, drag to scrub.
 - **The track is a hint at rest** (1.1:1) and comes up on shelf hover. At full
   strength it is a content-column hairline sitting 40px from the next row's
   `border-top`, and the two read as a doubled rule. The row's bottom padding went from
-  `--space-9` to `--space-12` for the same reason.
+  `--space-9` to `--space-12` for the same reason. **Superseded 2026-10-13:** the rail
+  now sits on that border; see "One line between two apps".
 - **`.work-shelf` needs `grid-template-columns: minmax(0, 1fr)`.** Left implicit, the
   column auto-sizes to max-content, and the gallery inside is deliberately wider than
   the page, so the track grew to the viewport edge and dragged the rail out with it:
@@ -299,6 +306,22 @@ on the page.
   decorative gain. The ring's `outline-offset` did change, from +4px to −3px: on an
   element as wide as the viewport a positive offset drew the left and right edges
   off-screen, so keyboard focus showed as two stray horizontal lines.
+  **Superseded 2026-10-13: the scrollport draws no ring at all now.** At −3px it ran
+  down the window's outermost two pixels and the frames painted over 62% of its top
+  edge, so focus still read as faint lines at the screen edges. Each frame takes the
+  ring instead, 5px off the frame so its bottom edge clears the frame's own shadow
+  (3.04:1 at its lowest where 3px measured 2.95:1), and the rail comes up to its
+  dragging state.
+  Focus anywhere in the app list reserves 5rem under the fixed bar through the
+  root's `scroll-padding`, because focus scrolling ignores a positive `scroll-margin` (it
+  honours a negative one, which `.work-gallery` uses; see "One line between two apps"); a
+  focused shelf also reserves room below for its rail, but only where the shelf still
+  fits, because a shelf that no longer fits is lined up by its bottom edge and the ring's
+  top went under the bar. That height depends on the frames: 44.5rem from 820px wide,
+  51.5rem below it (288px frames), and any phone-shaped window up to 436px wide at least
+  2.05 times as tall as wide (66vw frames). Gated on 44.5rem alone, a half-screen laptop
+  window put the ring at 46.8px (720x780) or 15.5px (430x740), under the 56px bar. The
+  measurements are in the comments on `.work-gallery` in `styles.css`.
 
 ### Capture note
 
@@ -339,9 +362,12 @@ when the property is **unset**, never when it is invalid.
 
 So the ramp now ships as sRGB hex in all nine declarations and is upgraded inside
 `@supports (color: oklch(…))`. The hex is exactly what each OKLCH value resolves to.
-Every other modern-colour feature here degrades to something visible when unsupported
-(a failed `color-mix()` border falls back to `currentColor`), which is why this was
-the one place that needed guarding.
+Most other modern-colour features here degrade to something visible when unsupported
+(a failed `color-mix()` in a `border-color` falls back to `currentColor`), which is why
+this was the one place that needed guarding. **Not all, it turned out (2026-10-13):** a
+`color-mix()` background, or a `border` shorthand holding a `var()`, fails to transparent
+and none, so in Safari before 16.2 the fixed header bar never took its paper. The header
+now has its own `@supports not (color: color-mix(…))` fallback.
 
 ### The toggle
 
@@ -361,6 +387,8 @@ dark."), and a visually hidden `aria-live` span announces the new state.
 a saved choice before first paint. It is mirrored onto the three policy pages, which
 load no `main.js` at all, so a choice made on the home page carries to them. Verified:
 `/privacy/kiwido/` loads at `rgb(20, 18, 16)` with no toggle present.
+**Superseded 2026-10-13:** every page carries the toggle now, from `theme.js`; see "On
+every page since 2026-10-13" below. The `<head>` script stays, on all of them.
 
 **`theme-color` reads the token, not the painted background.** The first version read
 `getComputedStyle(document.body).backgroundColor` at the moment of the swap and got
@@ -386,6 +414,39 @@ name twice, on both the anchor's `aria-label` and the img's `alt`).
 Verified across the full cycle: `data-theme`, body background, app icon, App Store
 badge, showcase image opacity, rail accent, both `theme-color` tags and `localStorage`
 all follow, and `is-theming` is never left on the element.
+
+### On every page since 2026-10-13
+
+The toggle lived in `main.js`, which only the home page loads, so a choice carried to
+Support and the six policies through the `<head>` script but could not be changed there.
+**It is now `theme.js`**, one file every page loads with `defer` from a root-absolute
+`/theme.js`; the home page loads it beside `main.js`, which no longer mentions the theme.
+The button's markup is the home page's, character for character, and ships `hidden`. A
+new page copies the same button and script tag, as the 404 does.
+
+Support and the policies put it in `.legal-bar`, a row with the back mark: the mark's
+ink on the 42rem column's left edge, the glyph's 20px box on its right edge, where the
+`h2` rules end (the button's 44px target overhangs it by 12px, as a focus ring does),
+centred on the mark to 0px. The row is the mark's 36.53px. The title sits 0.4px lower
+than before: the link used to be an inline-block on a line of text whose 7.6px descent
+padded the gap, and the row's `--space-12` replaces both. The toggle does not print.
+
+Verified on all seven pages and the home page: the full cycle (state, `aria-label`, live
+text, both `theme-color` tags, storage, background), Enter and Space, the choice carrying
+both ways between pages, after Back from the back-forward cache and in a second open tab,
+with site storage blocked (the press steps from the state the button shows, so it still
+cycles), `is-theming` never added under Reduce Motion, tab order mark then
+toggle, identical geometry with scripting off (the button stays hidden), axe-core 0
+violations in both schemes at 375 and 1440, and the home page's toggle recording the same
+states as before in both schemes, with and without Reduce Motion.
+
+**Back needs `pageshow`.** A page restored from the back-forward cache keeps the DOM it was
+left with and the `<head>` script does not run again, so home, then Support, Dark, then
+Back showed the home page still light, and its next press skipped a state. `theme.js`
+re-reads the stored choice on a persisted `pageshow`, as a cut, and on `storage` for a
+choice made in another tab. (The press stepping from storage was the home page's own bug
+before it was everyone's: with storage blocked it stuck on Light under a label offering
+Dark.)
 
 ## The reveal was firing at the wrong things, and the page ended in two thin bands (2026-09-21)
 
@@ -600,6 +661,18 @@ they stay; the rows are separated by their icons and names, not their rails.
   thickness, but the global `a` reset removed the underline itself, so every link in every
   policy and on Support read as plain text. `.legal :is(p, li) a` restores it; the caps back
   link is outside `p` and `li` and keeps its own treatment.
+- **Each policy shows its app's icon before the title** (2026-10-13). `.legal-icon`,
+  aria-hidden since the `h1` names the app; Support covers six apps and has none. The image
+  is the `--app-icon-*` token, so Kiwido's and Upkeeper's follow the theme, and it prints.
+  The box is the disc, which is 115.31px of every 144px export: 0.8em, centred on the
+  capitals, 0.2em before the first letter. 0.85em with a 0.25em gap was tried and dropped:
+  it stood a word space off the name, and left Homegrown's title 3.2px of the column at
+  1440 and wider, so the metric-matched fallback, 5.3px wider, set it on two lines until
+  Geist arrived. Now 7.7px, and 2.4px in the fallback. Homegrown's title is one line from
+  401px, the others from 333 to 370px; narrower, it wraps balanced, "Homegrown" over
+  "Privacy Policy". Phones keep a near miss or two where the fallback and Geist disagree
+  by a couple of pixels (Homegrown at 402px, Bountiful at 360px), as Homegrown at 375px did
+  before the icon: no one size clears every phone width.
 - **Homegrown's Plant frame stays over the Guide** (2026-10-02). Its "care guide is still
   being written" line is the honest state of the pilot. The Guide frame lists species under
   "Will it grow here?", which reads as the care-coverage claim the canon forbids until the
@@ -682,8 +755,8 @@ horizontal overflow, no console errors.
 **Followed later:** the share card took the mark the same day (see the share card section),
 and the favicon and the policy pages' back link the day after (2026-10-06).
 
-**The policy pages draw the mark from `assets/spreza-mark.svg`**, not an inline sprite: seven
-pages share one cached file through `<use href="/assets/spreza-mark.svg#spreza-mark">`, still
+**The policy pages draw the mark from `assets/spreza-mark.svg`**, not an inline sprite: eight
+pages (the six policies, Support and, since 2026-10-13, the 404) share one cached file through `<use href="/assets/spreza-mark.svg#spreza-mark">`, still
 `currentColor`, so it follows the theme. The back link is the header's 3.25rem. Its colour is
 `.legal a` (primary, muted on hover), which outranks `.legal-back`: the old uppercase label's
 muted colour never actually applied. **The file is a copy of the `<symbol>` in `index.html`**;
@@ -936,3 +1009,287 @@ the Home Screen icon swaps its top glow for the medley in the dark hex at 0.5, c
 S at 0.8 tile widths per unit, from `MEDLEY` in `Scripts/make-studio-favicons.py`. The card
 holds its own copy of the geometry: **move a shape here and move it there**, then rerun the
 card script. The icon reads the medley from `styles.css` itself (since 2026-10-06), so it follows on its next run. The tab icons are unchanged (checked by sha), and an icon rerun is byte-identical.
+
+## Design review fixes (2026-10-13)
+
+A top-to-bottom review rendered every page at 375, 820, 1440, 1920 and 2560, both schemes,
+and ran axe-core (0 violations before and after). Peter: *"fix what you are able to,
+perfectly."* The App Store badges and the three newer icons were left alone on purpose:
+the badges wait on launch, the icons on their masters.
+
+### A frame fits the screen it is shown on
+
+`.work-showcase-item` was a flat 24rem, so every frame was **835px** tall. On a 1440x900
+laptop the frame and the app's name above it needed about 960px and never fitted together;
+at 1280x720 the frame alone did not fit. The width now has a third term,
+`max(15rem, (100svh - 13rem) * 1206 / 2622)`: 13rem is the 56px bar, the 72px lede and the
+56px row gap (about 11.5rem) plus 1.5rem of air, and 15rem is the floor below which a phone
+screen stops being readable. Declared twice, `vh` then `svh`, so an engine without `svh`
+keeps the first.
+
+Measured, bar + lede + gap + frame against the viewport height (the second row, with
+Reduce Motion so no reveal offset counts):
+
+| Viewport | Frame | Stack | Before |
+| --- | --- | --- | --- |
+| 1280x720 | 240 x 522 | 706 | 1019 |
+| 1440x900 | 318 x 692 | 876 | 1019 |
+| 1470x830 | 286 x 622 | 806 | 1019 |
+| 1512x860 | 300 x 652 | 836 | 1019 |
+| 1920x1080 | 384 x 835 (unchanged) | 1019 | 1019 |
+| 375x812 | 248 x 538 (unchanged) | 770 | 770 |
+
+**Phones keep 66vw.** Their height term budgets for the bar alone, `(100svh - 4.5rem)`,
+not 13rem: a phone's lede is 138px with the badge under the name, so name and frame never
+fit one screen there, and the 13rem term (in the first cut of this pass) shrank every
+common iPhone's frame by 3 to 14% for nothing, because Safari's `svh`, toolbars showing,
+is well under the screen (about 660px on a 393px iPhone, where a 393x852 test window
+says 852). Now only an SE in Safari, about 375 by 548, drops to the 240px floor. `sizes`
+still says 384px on wide screens; a narrower frame only ever gets the larger file from it,
+which is the safe direction, so the markup was left alone.
+
+**The corner is a share of the frame now**, `13.125% / 6.0369%`: 3.15rem on the 24rem frame,
+at every size. The old `clamp(1.9rem, 8.5vw, 3.15rem)` followed the window, so a frame the
+cap narrowed kept the big corner, and so did the 288px frames from 593 to 819px wide
+(50.4px on 288, 17.5%, against 13.1% on the 24rem frame). The vertical figure is the
+horizontal one times 1206/2622, which keeps each corner a circle.
+
+### The first app is on a laptop's first screen
+
+At 1440x900 the first screen ended on "Apps" and the hairline under it. The hero was 619px tall
+at any height, and Kiwido's lede began at 842px, under the reveal's fire line (90% of the
+height, 810px), so even the part on screen stayed blank until a scroll. Three changes:
+
+- **The hero follows the height as well as the width.** `--hero-pad-top` and the hero's bottom
+  padding take the smaller of their old width term and a height term that runs from the phone
+  floors (7.5rem / 3rem) at 800px of height to the old caps (12rem / 5.5rem) at 1040px.
+  `.work`'s top padding is `--space-section-lg` capped by the same ramp. Unchanged at 1040px of
+  height and over and on an upright phone; the mark, its size curve and the medley's centring on
+  it (0.02px) are untouched. The handoff is the same motion started higher: at 1440x900 the
+  mark reaches the bar at opacity 0.43 rather than 0.17, as a phone already does at 0.57. `vh`,
+  not `svh`: inside a custom property an `svh` the engine cannot parse zeroes the padding, with
+  no earlier line to fall back to.
+- **The first row has no rule.** A row's `border-top` separates an app from the one above it
+  (see "One rule closes the app list"), and the first row has none: its rule only underlined
+  "Apps", 24px under the heading and 64px over Kiwido. The chapter head's own 2.25rem margin
+  replaces those 89px. This leaves rows 2 to 6 alone; their bottom padding changed
+  separately (see "One line between two apps").
+- **On landing, the screen edge decides, not the fire line.** `main.js` observes every
+  `[data-reveal]` first at `rootMargin: 0px 0px -16px 0px`: what is on screen at load reveals,
+  and the rest is handed to the -10% observer, so scrolling behaves as before. Under 16px on
+  screen is still a sliver and waits (1440x780: 7px of frames), so the shelf's stagger is not
+  spent where nobody sees it. Frames that do show at load stagger at load, as on a phone.
+
+Measured at scroll 0 after load, in px; every lede and frame counted here is revealed:
+
+| Viewport | Hero | Lede | Frames on screen | Before |
+| --- | --- | --- | --- | --- |
+| 1280x720 | 507 | 645-717 | 0 | lede 835-907, off screen |
+| 1440x900 | 553 | 705-777 | 67 | lede 842-914, blank |
+| 1470x830 | 522 | 664-736 | 38 | lede 843-915, off screen |
+| 1512x860 | 537 | 683-755 | 49 | lede 844-916, blank |
+| 1920x1080 | 626 (unchanged) | 796-868 | 156 | lede 849-921, 103px of shelf blank |
+| 375x812 | 387 (unchanged) | 506-644 | 137 | lede 559-697, 84px of frames |
+
+At 1280x720 both paddings are on their phone floors and the lede ends 3px above the window's
+edge; a frame would need another 69px there, from below those floors or from the mark. Beyond
+spacing, two things look different: there is no rule under "Apps", and what is on screen at
+load plays its reveal there and then.
+
+### Two shelf labels described screens that are not there
+
+All thirty `aria-label`s were checked against their frames. Twenty-eight were right.
+Bountiful's slot 3 promised *nudges* over a frame showing the note, the time-of-day plot,
+the rhythm bars and Aim; slot 5 said *a Bountiful practice* over the library-wide Over time
+sheet (slot 4, the same sheet, reads "Practices 7"). Both now say what is on screen.
+
+### Ultra-wide screens keep the bleed; a strip that fits stops scrolling
+
+Rendered at 1920x1080, 2560x1440 and 3440x1440, both schemes. Each shelf starts on the
+column (x=448, 768, 1208) and its scrollport runs to the screen edge, so the margin on the
+left is empty paper. At 1920 and 2560 the frames on the right are cut; at 3440 all five fit,
+with 152px of paper after them.
+
+**1920 and 2560 are left alone.** The cut at the screen edge is the shelf's "there is more"
+signal (see the shelf's Rejected list): 200px of the fourth frame at 1920, 96px of the fifth
+at 2560. The empty left margin is the one every line of type on the page already has.
+
+**Rejected: ending the scrollport short of the screen edge.** Rendered with the bleed capped
+at 28rem, the 1920 figure, on both sides. The peek holds at 200px, but the cut lands 320px
+(2560) and 760px (3440) in from the edge, in open paper, and slices the frame and its shadow
+in a straight line: in light the shadow just under the frame is 190 on one side of the line
+and the paper 244 on the other. Scrolled, a second such edge appears on the left, and at
+3440 it hides a frame that fitted. At the screen edge, the screen is the line. Ending it on
+the column edge instead makes a boxed carousel: 2.5 frames in view at 1920 rather than 3.5,
+and a jump at whatever breakpoint keeps 1440 full-bleed.
+
+**Rejected: larger frames on large screens.** The captures are 768px, 2x at the 384px frame.
+
+**Fixed: at 3440 the shelf scrolled with nothing to show.** All five frames are whole at
+rest (1208 to 3288), yet the trailing inset made 1056px of scroll that only slid them off
+the column into the left margin, with a 783.5px thumb on the 1024px rail. `main.js` now
+marks the gallery `.is-whole` when its last frame ends inside the scrollport at rest, and
+the inset comes off: no scroll, no rail. Five frames fit once the window is ten frame widths
+less 44rem: 3136px with 384px frames (1043px of height and up), 1696px with frames at the
+15rem floor (729px and under), so shorter windows qualify too (1920x760, 2560x900). 1440
+and below never do. Hiding the rail moves nothing: it is out of flow on the next row's
+rule, so a row measures 80.5px from frame to rule with a rail or without, scripting on or
+off. **The tab stop goes too:** `sync()` sets the whole strip's `tabIndex` to -1, since
+the scrollport is focusable only so the arrow keys can move it, and six stops that ringed
+the frames and went nowhere were left behind. With scripting off the markup's 0 stands,
+and so do the inset and the scroll.
+
+Verified against the tree before: full-page renders pixel-identical at 320, 375, 820, 1024,
+1280, 1440, 1920x1080 and 2560x1440 in both schemes, with an explicit `data-theme` either
+way, and at 3440 with scripting off. Resizing below the threshold brings the inset, the
+rail and the tab stop back. Zero horizontal
+overflow and axe clean at all three wide sizes, forced colours included.
+
+### One line between two apps, with the rail on it
+
+The shelf's rail was a content-column line 60.5px above the next row's `border-top`. Two
+passes (2026-09-20, 2026-10-06) widened the gap and the pair still read as a doubled rule.
+Light had a third line: the scrollport clipped the frame shadow 48px under the frames, a
+straight edge 2.1 L* darker than the paper under every frame, across the whole screen on a
+phone.
+
+- **The rail is drawn on the rule.** `.work-rail` is out of flow, centred on the next
+  row's 1px border (`inset-block-end: calc(-0.75rem - 0.5px)` against `.work-row`, now
+  `position: relative`), its track clear at rest (`--rail-track`, the resting colour,
+  is gone). The 3px thumb sits on the 1px rule with one pixel above and one below,
+  checked at 1x, 2x and 3x at 375, 820, 1024 and 1440 on rows with fractional offsets.
+  On shelf hover, and with keyboard focus on the shelf, a 1px track darkens the rule
+  under that shelf: 1.23 to 1.53:1 on light paper, 1.23 to 1.91:1 on dark. It needs
+  `z-index: var(--z-rail)`: the next row is positioned and later in the tree, and
+  without it that row's border painted across the thumb's middle pixel.
+- **The scrollport holds the whole shadow.** `padding-block-end` is 72px, not 48, with
+  `margin-block-end: -1.5rem` so nothing after it moves. 48 came from 30 + 56/2 - 14;
+  a blur radius is two standard deviations and the tail runs about a whole radius
+  past the edge, so 30 + 56 - 14. Measured unclipped: 0.35 L* off the paper at 72px.
+  A matching `scroll-margin-block-end: -1.5rem` keeps the extra room out of focus
+  scrolling, which honours a negative scroll-margin (not a positive one): without it a
+  shelf taller than the screen came up 24px higher on Shift+Tab, its ring's top level
+  with the bar at 1366x657. The focused shelf's room below is 52.5px now, the row's
+  32px, the 12.5px of rail under the row and 8px, and Page Down on a shelf steps 672px.
+- **Rows' bottom padding is 32px.** The rule is 80.5px under the frames and 64px over
+  the next name, with scripting on or off, with the rail shown or hidden, because the
+  rail adds nothing to the layout and nothing shifts when `main.js` reveals it. A row is
+  965px at 1440x900 (1018.6 with scripting before, 981 without).
+- **Forced colours:** the thumb is `CanvasText` and the track is off. As Canvas, lying
+  on the rule, the thumb cut 680 of the rule's 1024px away at 1440.
+- **The last row** has no rule under it, so its thumb rides alone, 83.5px above the band
+  rule at 1440 (51.5 on a phone), and its track is off in every state: lit on hover or
+  focus it was a free hairline that far over the band rule, the doubled rule that "One
+  rule closes the app list" took out on 2026-09-20.
+- **`:has()` never shares a selector list.** The keyboard-focus states of the track and
+  thumb are rules of their own: a list that holds `:has()` is dropped whole where `:has()`
+  is unknown (Firefox before 121, Safari before 15.4), which took the hover and drag
+  states with it. The list closes 164px under the last frames at 1440
+  in every state, where it was 217.6 with scripting and 180 without; the band rule is
+  still 75px over the statement, so the air stays before it.
+
+| At the boundary | Frame to line | Line to next name | Lines |
+| --- | --- | --- | --- |
+| Before, scripting on | 73.6 (rail), 134.1 (rule) | 64 (rule) | 3 in light, 2 in dark |
+| Before, scripting off | 96.5 | 64 | 2 in light, 1 in dark |
+| After, any state | 80.5 | 64 | 1 |
+
+Rejected: dropping the next row's border with `:has()` while a rail shows. It draws the
+same picture but needs an `@supports` fallback that keeps the doubled rule, changes row
+heights when the script reveals the rail, and needs a forced-colours track of its own.
+Also rejected: a clear track over the old spacing, which still left a 680px accent line
+60px over a grey one at 1440, and the full doubled rule back on every shelf hover.
+
+### Support in the header, and a 404
+
+**Support** was a 12px footer link, 7,204px down the page at 1440. It is now
+`.header-link` in the bar's first track, which centring the mark had left empty: the
+label voice (`--text-label`, `--tracking-caps`, uppercase, 500) in secondary ink, the word
+on the column's left edge where the chapter titles start, a 44px overlay target, and the
+site's ring. The mark still centres at 720, 400, 187.5 and 160 at 1440, 800, 375 and 320,
+the bar is still 56.19px, and nothing overflows at 320, where the word ends 50px short of
+the mark. Sentence case at body size read as stray text in the bar; grouping it with the
+toggle in track 3 crowded the mark to 18px at 320 and unbalanced the centred bar. Three
+things came with it, each its own declaration in `styles.css`:
+
+- **The skip link lands on the word.** Focused, it now sits on the column's edge, centred
+  on the bar's row, so it covers Support exactly. At its old 20px corner it half-covered
+  the word between about 1245 and 1375px wide, which takes in 1280 and 1366.
+- **The toggle hangs 0.75rem into the gutter** on every page, so its icon box, not its
+  44px button, ends on the column's edge and the bar is symmetric about the mark.
+  `.legal-bar` had that first; it is one rule now.
+- **Without scripting the header is `position: absolute`** (and in the head's
+  `<noscript>`), because a fixed bar that never takes its paper carried the word over the
+  page's text. Its `saturate()` fallback is 0, not 1, like every other value `main.js`
+  drives there: with scripting off it was tinting the hero medley under the bar into a
+  hard-edged strip right under the word (a 9 to 10 level step at y=50).
+
+**`404.html`** is the policies' page with a title and one sentence: no page at this
+address, the apps on the home page, help on Support. GitHub Pages serves it at whatever
+address was asked for, so every URL in it is root-absolute, and it carries `noindex` and
+no canonical; it is not in `sitemap.xml`. It carries both share-card tags, with the
+current `?v=`, so `Scripts/make-studio-og-card.sh` finds them if it stamps this page too
+(the script lives outside this repo and was not run: check on the next card build that
+`404.html` is on its list). The toggle row is the Support page's; the footer is the home
+page's (all seven links, Support first, `aria-label="Support and privacy"`), since
+Support's own footer leaves itself out. The root's `scroll-padding-block` is 0.5rem on this
+page alone: barely taller than a short screen, Shift+Tab back to the top scrolled only
+until the toggle's box showed and left its ring 4.7px above the window (320x568). It is the one page shorter than a screen, so
+`body:has(.legal--notfound)` makes the body a column at least `100svh` tall and puts the
+footer on the bottom edge (it stopped at 406 of 900 at 1440). Checked at
+`/no/such/page/deep` through a server that answers like GitHub Pages: status 404, every
+asset resolves, the toggle works, axe 0 violations in both schemes at 375 and 1440.
+
+### Smaller
+
+- **Curly quotes on the policies and Support.** 73 lines, apostrophes and the one quoted
+  phrase only, text nodes only: `aria-label`s, `<head>` and markup untouched. The home page
+  had none to change.
+- **Dead CSS out:** `.chapter-dek` (both rules), `.work-shot-kicker/-title/-note` (the shot
+  labels came out on 2026-10-06), and the italic `Geist Fallback` face. The fallback comment
+  no longer says Geist comes from Google Fonts.
+- **Tokens were not pruned.** Ten are unused here: `--space-1`, `--space-7`,
+  `--space-gutter-y`, `--layout-measure-narrow`, `--z-base`, `--z-overlay`, `--z-menu`,
+  `--tracking-display`, `--tracking-caps-wide` (its last users were the shot labels above)
+  and `--font-weight-semibold` (`<strong>` gets 600 from the browser's `bolder`, clamped
+  by the 400 to 600 face). Most are the vocabulary shared with pf-portfolio (see the
+  header of `styles.css`), so pruning them is a two-site decision; `.section--emphasis`
+  stays for the same reason, as the one user of `--space-section-xl`.
+- **Focus reveals a lede or the closing band at once**, as it does a shelf:
+  `[data-reveal]:has(:focus-visible)`, with the shorter `--duration-slow` fade. Tabbed to
+  before its reveal had fired, an App Store badge or the address took its ring at opacity
+  0 and came up about 0.5s after the page stopped moving.
+- **Paper is light.** Every rule keyed to the dark scheme, the palette, the accent ramp
+  and the component rules (grain, medley, dye, the screenshots' light/dark swap, the
+  petals' blend), is `@media screen` or `screen and (prefers-color-scheme: dark)`, so a
+  print takes the light tokens and the light captures whatever the screen shows; a new
+  dark rule needs the same. The exception is a token that names an image with a file per
+  scheme (Kiwido's and Upkeeper's icons, the App Store badge): on paper it keeps the
+  screen's file, because the other has not been fetched when printing starts, and given
+  it Chromium printed an empty box where Kiwido's icon belongs. Printed in dark, a
+  policy was cream ink on white paper, backgrounds being off when browsers print: body
+  text 2.6:1, the mark 1.2:1, the section rules gone. Always so, but the policies' own
+  toggle put dark one press away on the pages people print.
+- **The header mark is out of the tab order in the markup** (`tabindex="-1"`). `main.js`
+  already set that at the top and 0 once the compact mark shows, but with scripting off
+  the link stayed focusable at opacity 0: a tab stop with nothing to see. And focused, it
+  shows whole (`.logo:focus-visible`): it joins the order at 0.55 of the handoff, still
+  fading and blurred, and Shift+Tab back from the first badge at 390x844 stopped the page
+  right there and gave it a 1.8:1 ring.
+- **The foot of every page keeps 0.5rem of focus room** (`html:has(.site-footer
+  :focus-visible)`): at 320x568 the last row of footer links was already inside the
+  window when focused, so nothing scrolled and the ring's bottom edge sat 3 to 5px below
+  it. Older than today; the 404's remedy.
+- **Left for a decision:** an engine without `color-mix()` (Safari before 16.2) still
+  loses the frames' border and shadow, the selection colour and the address's underline,
+  all `color-mix()` tokens failing at computed-value time. Older than today, and fixable
+  with rgba twins of those tokens in the header's `@supports not` block, light and dark;
+  not done here because it is a second copy of the palette to keep in step.
+- **Not fixable here:** the capture flaws on the shelf (a floating button over text in
+  Kiwido 2, Bilberry 1, Bountiful 3 and Notation 1; status-bar times from 5:02 to 5:16) belong
+  to the capture rig in `Scripts/`, and the next re-shoot is where they go.
+- **The hero's cost, measured headless** (no GPU, so raster is exaggerated): style
+  recalculation from the medley's registered properties is 16ms a second on desktop and
+  about 300ms a second at 6x CPU throttling on a phone viewport; the page draws at 6 to 7fps
+  at the top and 60fps once the hero is away. Not proof of a problem on real hardware, but
+  the place to look: profile on an older iPhone in Safari's Timelines before adding motion.

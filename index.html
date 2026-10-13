@@ -62,6 +62,10 @@
           opacity: 1;
           transform: none;
         }
+
+        .site-header {
+          position: absolute;
+        }
       </style>
     </noscript>
   </head>
@@ -81,7 +85,8 @@
 
     <header class="site-header">
       <div class="header-inner">
-        <a class="logo" href="/">
+        <a class="header-link" href="/support/">Support</a>
+        <a class="logo" href="/" tabindex="-1">
           <span class="visually-hidden">Studio Spreza</span>
           <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="#spreza-mark" /></svg>
         </a>
@@ -251,7 +256,7 @@
                     </span>
                   </span>
                   <span class="work-showcase-item">
-                    <span class="work-shot" role="img" aria-label="One Bountiful practice, with its rhythm and nudges.">
+                    <span class="work-shot" role="img" aria-label="One Bountiful practice, with the time of day of each log and its rhythm.">
                       <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-03-light.webp" srcset="assets/bountiful-h-scroll/bountiful-03-light-384.webp 384w, assets/bountiful-h-scroll/bountiful-03-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
                       <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-03-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-03-dark-384.webp 384w, assets/bountiful-h-scroll/bountiful-03-dark.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
                     </span>
@@ -263,7 +268,7 @@
                     </span>
                   </span>
                   <span class="work-showcase-item">
-                    <span class="work-shot" role="img" aria-label="When and on which days a Bountiful practice happens.">
+                    <span class="work-shot" role="img" aria-label="When the logs fall across all of Bountiful, by hour and by day of the week.">
                       <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-05-light.webp" srcset="assets/bountiful-h-scroll/bountiful-05-light-384.webp 384w, assets/bountiful-h-scroll/bountiful-05-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
                       <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-05-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-05-dark-384.webp 384w, assets/bountiful-h-scroll/bountiful-05-dark.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
                     </span>
@@ -447,6 +452,7 @@
       </div>
     </footer>
 
+    <script src="/theme.js" defer></script>
     <script src="main.js" defer></script>
   </body>
 </html>

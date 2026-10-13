@@ -52,12 +52,30 @@
 
     <main id="main">
       <article class="wrap legal">
-        <a class="legal-back" href="/">
-          <span class="visually-hidden">Studio Spreza</span>
-          <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
-        </a>
+        <div class="legal-bar">
+          <a class="legal-back" href="/">
+            <span class="visually-hidden">Studio Spreza</span>
+            <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
+          </a>
+          <button
+            class="theme-toggle"
+            type="button"
+            id="theme-toggle"
+            hidden
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle class="theme-glyph-disc" cx="12" cy="12" r="5" />
+                <path class="theme-glyph-rays" d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                <path class="theme-glyph-moon" d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z" />
+                <path class="theme-glyph-auto" d="M12 7a5 5 0 0 0 0 10Z" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+            <span class="theme-toggle-label" aria-live="polite"></span>
+          </button>
+        </div>
 
-        <h1 class="legal-title">Bilberry Privacy Policy</h1>
+        <h1 class="legal-title"><span class="legal-icon" data-app="bilberry" aria-hidden="true"></span>Bilberry Privacy Policy</h1>
         <p class="legal-meta">Last updated October 2, 2026. Developer: Studio Spreza.</p>
 
         <p class="legal-lede">
@@ -69,7 +87,7 @@
         <p>
           Bilberry is a journal. Everything you write is stored on your device and, if you use
           iCloud, in your own private iCloud account. Studio Spreza does not operate servers that hold
-          your data. The only services the app talks to are Apple's, and only for the things described
+          your data. The only services the app talks to are Apple’s, and only for the things described
           below.
         </p>
 
@@ -86,11 +104,11 @@
           </li>
           <li>
             <strong>Widgets.</strong> The widgets read a short summary the app keeps on your device,
-            such as the first line of today's latest entry. While Require Face ID is on, the summary
+            such as the first line of today’s latest entry. While Require Face ID is on, the summary
             holds no words from your journal.
           </li>
           <li>
-            <strong>Spotlight.</strong> Bilberry does not add your entries to your device's search
+            <strong>Spotlight.</strong> Bilberry does not add your entries to your device’s search
             index.
           </li>
         </ul>
@@ -101,28 +119,28 @@
           requested when the app opens. The first time you tap Add Place or Add Song, the system asks
           for permission; once you allow it, entries you write that day pick up their context as you
           write them. Context is never added to an entry you date in the past. Each piece can be
-          removed from an entry with one tap, and each kind can be turned off in the app's Settings.
+          removed from an entry with one tap, and each kind can be turned off in the app’s Settings.
         </p>
         <ul>
           <li>
             <strong>Place.</strong> With your permission, Bilberry reads your location once when an
-            entry is created. It keeps the coordinates and the name of the place, which Apple's maps
+            entry is created. It keeps the coordinates and the name of the place, which Apple’s maps
             service looks up from them.
           </li>
           <li>
             <strong>Weather.</strong> The current conditions where you are, from Apple Weather.
           </li>
           <li>
-            <strong>Music.</strong> With your permission, the song playing in Apple's Music app on
+            <strong>Music.</strong> With your permission, the song playing in Apple’s Music app on
             iPhone or iPad. Bilberry cannot see what other apps are playing.
           </li>
           <li>
-            <strong>Journaling Suggestions.</strong> On iPhone, you can pick a moment from Apple's
-            Journaling Suggestions. Apple's picker shows the suggestions; Bilberry receives only the
+            <strong>Journaling Suggestions.</strong> On iPhone, you can pick a moment from Apple’s
+            Journaling Suggestions. Apple’s picker shows the suggestions; Bilberry receives only the
             one you choose.
           </li>
           <li>
-            <strong>Photos.</strong> Adding a photo uses Apple's picker, which gives the app only the
+            <strong>Photos.</strong> Adding a photo uses Apple’s picker, which gives the app only the
             photos you choose. Bilberry has no access to your photo library.
           </li>
         </ul>
@@ -136,7 +154,7 @@
         <p>
           When sync is on, your journal is stored in your private iCloud database under your own Apple
           ID. The words of every entry, its place, its weather and its song are end-to-end encrypted
-          there. It is governed by Apple's privacy policy and terms. Studio Spreza has no access to
+          there. It is governed by Apple’s privacy policy and terms. Studio Spreza has no access to
           that database and cannot read your synced data. If iCloud is unavailable, the app continues
           to work on your device.
         </p>
@@ -144,7 +162,7 @@
         <h2>Require Face ID</h2>
         <p>
           You can require Face ID, Touch ID or your device passcode to open the journal. The check is
-          made by Apple's own system; Bilberry never receives your face, fingerprint or passcode. The
+          made by Apple’s own system; Bilberry never receives your face, fingerprint or passcode. The
           lock guards the journal on your devices. It does not add a separate password or encryption
           of its own.
         </p>
@@ -166,7 +184,7 @@
         <p>
           Bilberry has no analytics, no crash reporting, no advertising, and no third-party services
           embedded in it. The only requests it makes go to Apple: iCloud sync, Apple Weather for the
-          weather, Apple's maps service for a place name, and Apple Music for the song. Each of the last
+          weather, Apple’s maps service for a place name, and Apple Music for the song. Each of the last
           three happens only when you have turned that kind of context on.
         </p>
 
@@ -177,7 +195,7 @@
           <li>No analytics, no crash reporting, and no advertising SDKs in the app.</li>
           <li>No access to your contacts, calendar, reminders, health data or photo library.</li>
           <li>
-            No tracking. The app does not track you across other companies' apps or websites, and
+            No tracking. The app does not track you across other companies’ apps or websites, and
             does not use App Tracking Transparency for that purpose.
           </li>
           <li>We do not sell your personal information.</li>
@@ -190,7 +208,7 @@
         <h2>Your choices</h2>
         <ul>
           <li>
-            <strong>Place, weather and music.</strong> Turn each off in the app's Settings, or remove
+            <strong>Place, weather and music.</strong> Turn each off in the app’s Settings, or remove
             it from a single entry. You can also turn off location and Apple Music access for Bilberry
             in the Settings app.
           </li>
@@ -202,11 +220,11 @@
             <strong>Your journal.</strong> Export it at any time, as a full Bilberry Archive or as
             Markdown. Deleting an entry moves it to Recently Deleted for 30 days, and deleting the app
             removes its on-device data according to iOS behavior. If you used iCloud, you can also
-            remove Bilberry's data from your iCloud account in Settings.
+            remove Bilberry’s data from your iCloud account in Settings.
           </li>
         </ul>
 
-        <h2>Children's privacy</h2>
+        <h2>Children’s privacy</h2>
         <p>
           The app is not directed specifically at children under 13. If you believe information has
           been collected that should be removed, contact us at the address below.
@@ -220,7 +238,7 @@
 
         <h2>Questions</h2>
         <p>
-          For questions about this policy or the app's privacy practices, email
+          For questions about this policy or the app’s privacy practices, email
           <a href="mailto:hey@studiospreza.com">hey@studiospreza.com</a>.
         </p>
       </article>
@@ -247,5 +265,7 @@
         </nav>
       </div>
     </footer>
+
+    <script src="/theme.js" defer></script>
   </body>
 </html>

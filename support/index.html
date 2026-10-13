@@ -52,10 +52,28 @@
 
     <main id="main">
       <article class="wrap legal">
-        <a class="legal-back" href="/">
-          <span class="visually-hidden">Studio Spreza</span>
-          <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
-        </a>
+        <div class="legal-bar">
+          <a class="legal-back" href="/">
+            <span class="visually-hidden">Studio Spreza</span>
+            <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
+          </a>
+          <button
+            class="theme-toggle"
+            type="button"
+            id="theme-toggle"
+            hidden
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle class="theme-glyph-disc" cx="12" cy="12" r="5" />
+                <path class="theme-glyph-rays" d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                <path class="theme-glyph-moon" d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z" />
+                <path class="theme-glyph-auto" d="M12 7a5 5 0 0 0 0 10Z" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+            <span class="theme-toggle-label" aria-live="polite"></span>
+          </button>
+        </div>
 
         <h1 class="legal-title">Support</h1>
         <p class="legal-meta">Last updated October 2, 2026. Developer: Studio Spreza.</p>
@@ -71,7 +89,7 @@
         <p>These details make a reply faster:</p>
         <ul>
           <li>Which app, and whether it is on iPhone, iPad, Mac or Apple Watch.</li>
-          <li>The device's system version, from Settings under General, then About.</li>
+          <li>The device’s system version, from Settings under General, then About.</li>
           <li>What you did, what you expected, and what happened instead.</li>
           <li>A screenshot, if the problem is something you can see.</li>
         </ul>
@@ -93,12 +111,12 @@
           </li>
           <li>
             <strong>Where new items go.</strong> Tasks and events you create go to Apple Reminders
-            and Apple Calendar, not to a separate Kiwido database, so they appear in Apple's apps
+            and Apple Calendar, not to a separate Kiwido database, so they appear in Apple’s apps
             too. If your device has no calendar or list Kiwido can write to, the item is kept on
             the Kiwido board instead of being lost, and the app tells you where it went.
           </li>
           <li>
-            <strong>Alerts.</strong> Kiwido's alerts and morning summary are off until you turn
+            <strong>Alerts.</strong> Kiwido’s alerts and morning summary are off until you turn
             them on in the app. If they stop arriving, check that notifications are allowed for
             Kiwido in Settings and that Background App Refresh is on, which Kiwido uses to keep
             upcoming alerts queued.
@@ -110,7 +128,7 @@
           <li>
             <strong>iCloud sync.</strong> Upkeeper syncs your records across your own devices
             through your private iCloud account. It is on by default, and you can turn it off in
-            the app's Settings. If a change does not appear on another device, check that both
+            the app’s Settings. If a change does not appear on another device, check that both
             are signed in to the same Apple ID with iCloud turned on.
           </li>
           <li>
@@ -129,7 +147,7 @@
         <ul>
           <li>
             <strong>iCloud sync.</strong> Bountiful syncs across your own devices through your
-            private iCloud account. It is on by default, you can turn it off in the app's
+            private iCloud account. It is on by default, you can turn it off in the app’s
             Settings, and Settings shows which mode it is running in under Storage.
           </li>
           <li>
@@ -148,10 +166,10 @@
           <li>
             <strong>Place, weather and music.</strong> Bilberry asks for location the first time you
             tap Add Place, and for Apple Music the first time you tap Add Song. After that, entries
-            you write that day pick them up on their own. To stop one, turn it off in the app's
+            you write that day pick them up on their own. To stop one, turn it off in the app’s
             Settings under New Entries, or remove it from a single entry with a tap. If you said no
             to a permission and want it back, turn it on for Bilberry in the Settings app. The song
-            comes from Apple's Music app on iPhone and iPad only.
+            comes from Apple’s Music app on iPhone and iPad only.
           </li>
           <li>
             <strong>iCloud sync.</strong> Bilberry syncs your journal through your private iCloud
@@ -162,7 +180,7 @@
             <strong>Bringing in a journal.</strong> In Settings, under Import, you can bring in an
             export from Day One or Apple Journal, or Markdown files. Each import is listed there, and
             you can delete one whole import if it was not what you wanted; its entries go to
-            Recently Deleted for 30 days. If an import doesn't look right, delete it from the same
+            Recently Deleted for 30 days. If an import doesn’t look right, delete it from the same
             list and tell us at <a href="mailto:hey@studiospreza.com">hey@studiospreza.com</a>.
           </li>
           <li>
@@ -189,12 +207,12 @@
           </li>
           <li>
             <strong>iCloud sync and Spotlight.</strong> Turn Sync with iCloud and Show notes in
-            Spotlight on or off in the app's Settings. Locked notes never appear in Spotlight.
+            Spotlight on or off in the app’s Settings. Locked notes never appear in Spotlight.
           </li>
           <li>
             <strong>Bringing notes in, and taking them out.</strong> In Settings, under Import, you
             can bring in Markdown files, or notes exported from Bear, Obsidian or Notion. Each import
-            is listed there; if one doesn't look right, delete it from that list and tell us at
+            is listed there; if one doesn’t look right, delete it from that list and tell us at
             <a href="mailto:hey@studiospreza.com">hey@studiospreza.com</a>. Under Export, you can save every note as a folder of Markdown files or as a full Notation
             Archive. A single note can also be exported on its own.
           </li>
@@ -203,7 +221,7 @@
         <h2 id="homegrown">Homegrown</h2>
         <ul>
           <li>
-            <strong>Why it says "likely ready for a check".</strong> Homegrown never tells you to
+            <strong>Why it says “likely ready for a check”.</strong> Homegrown never tells you to
             water on a timer. When a plant is likely ready, check the soil and answer Watered, Still
             damp or Not now. Still damp moves the next check out, and over time your answers teach
             Homegrown how quickly each plant dries in your home.
@@ -239,10 +257,10 @@
         <ul>
           <li>
             <strong>Deleting an app</strong> removes its on-device data according to iOS behavior.
-            Deleting Kiwido leaves your events and reminders in Apple's apps.
+            Deleting Kiwido leaves your events and reminders in Apple’s apps.
           </li>
           <li>
-            <strong>Removing synced data.</strong> For any app but Kiwido, you can remove the app's
+            <strong>Removing synced data.</strong> For any app but Kiwido, you can remove the app’s
             data from iCloud in Settings, under your Apple ID, then iCloud storage.
           </li>
         </ul>
@@ -281,5 +299,7 @@
         </nav>
       </div>
     </footer>
+
+    <script src="/theme.js" defer></script>
   </body>
 </html>

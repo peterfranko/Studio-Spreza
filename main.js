@@ -64,122 +64,6 @@
     });
   });
 
-  /* Theme toggle.
-
-     Three states, cycling auto -> light -> dark. `auto` is the absence of a stored
-     choice, which is exactly what the colour tokens key off: bare :root for light,
-     html[data-theme] for an explicit choice, and prefers-color-scheme guarded by
-     :not([data-theme]) so an explicit light still wins on a dark machine. A
-     two-state toggle would have no way back to following the system.
-
-     The <head> carries a tiny synchronous copy of the read half of this, so a saved
-     choice is on the element before first paint. */
-  var THEME_KEY = "spreza-theme";
-  var THEME_ORDER = ["auto", "light", "dark"];
-  var THEME_NAME = { auto: "Automatic", light: "Light", dark: "Dark" };
-  var themeToggle = document.getElementById("theme-toggle");
-
-  function storedTheme() {
-    try {
-      var saved = localStorage.getItem(THEME_KEY);
-      return saved === "light" || saved === "dark" ? saved : "auto";
-    } catch (error) {
-      /* Private mode, or storage disabled. */
-      return "auto";
-    }
-  }
-
-  if (themeToggle) {
-    var themeMetas = Array.prototype.slice.call(
-      document.querySelectorAll('meta[name="theme-color"]')
-    );
-    /* The two tags are media-scoped, which is right while we follow the system and
-       wrong the moment there is a choice. Keep the originals so `auto` restores them. */
-    var themeMetaDefaults = themeMetas.map(function (meta) {
-      return meta.getAttribute("content");
-    });
-
-    function paintThemeColor(state) {
-      if (state === "auto") {
-        themeMetas.forEach(function (meta, i) {
-          meta.setAttribute("content", themeMetaDefaults[i]);
-        });
-        return;
-      }
-
-      /* The token, not the painted background. Reading backgroundColor here returns
-         whatever the cross-fade is part-way through, so the browser chrome got the
-         colour we were leaving rather than the one we were going to. Custom
-         properties do not animate, so the token is already the final value. */
-      var painted = window
-        .getComputedStyle(root)
-        .getPropertyValue("--color-surface-base")
-        .trim();
-      themeMetas.forEach(function (meta) {
-        meta.setAttribute("content", painted);
-      });
-    }
-
-    function applyTheme(state) {
-      if (state === "auto") {
-        root.removeAttribute("data-theme");
-      } else {
-        root.setAttribute("data-theme", state);
-      }
-
-      themeToggle.dataset.themeState = state;
-      themeToggle.setAttribute(
-        "aria-label",
-        "Theme: " +
-          THEME_NAME[state].toLowerCase() +
-          ". Switch to " +
-          THEME_NAME[THEME_ORDER[(THEME_ORDER.indexOf(state) + 1) % 3]].toLowerCase() +
-          "."
-      );
-
-      var label = themeToggle.querySelector(".theme-toggle-label");
-      if (label) {
-        label.textContent = THEME_NAME[state];
-      }
-
-      paintThemeColor(state);
-    }
-
-    var themingTimer = 0;
-    function setTheme(state) {
-      try {
-        if (state === "auto") {
-          localStorage.removeItem(THEME_KEY);
-        } else {
-          localStorage.setItem(THEME_KEY, state);
-        }
-      } catch (error) {
-        /* The choice still applies for this page view. */
-      }
-
-      /* Custom properties do not transition, so the swap is an instant cut without
-         this. The class goes on for one beat and comes off again: left standing, it
-         would put the same delay on every hover and focus ring on the page. */
-      if (!prefersReduced) {
-        root.classList.add("is-theming");
-        window.clearTimeout(themingTimer);
-        themingTimer = window.setTimeout(function () {
-          root.classList.remove("is-theming");
-        }, 420);
-      }
-
-      applyTheme(state);
-    }
-
-    applyTheme(storedTheme());
-    themeToggle.hidden = false;
-
-    themeToggle.addEventListener("click", function () {
-      var next = THEME_ORDER[(THEME_ORDER.indexOf(storedTheme()) + 1) % THEME_ORDER.length];
-      setTheme(next);
-    });
-  }
-
   /* Shelf rails.
 
      Each .work-shelf holds a horizontally scrolling .work-gallery and a
@@ -203,6 +87,27 @@
     var travel = 0;
 
     function sync() {
+      /* The whole strip already on screen at rest (3440 wide, say): drop the
+         trailing inset, so there is no scroll that only slides whole frames off
+         the column. Measured to the frame's own edge in scroll coordinates, so
+         neither the inset nor the current scroll position changes the answer.
+         Half a pixel of slack, like the rail's overflow <= 1 below: at 3135
+         wide the last frame ends at 3135.5.
+         The tab stop goes with the scroll: the scrollport is focusable only so
+         the arrow keys can move it, and a strip with nothing to move gave six
+         stops that ringed the frames and went nowhere. -1, not removing the
+         attribute, so a shelf that has focus through a resize keeps it; the
+         markup's 0 stands with scripting off, where the inset and the scroll
+         stay. */
+      var last = gallery.lastElementChild;
+      if (last) {
+        var origin = gallery.getBoundingClientRect().left - gallery.scrollLeft;
+        var end = last.getBoundingClientRect().right - origin;
+        var whole = end <= gallery.clientWidth + 0.5;
+        gallery.classList.toggle("is-whole", whole);
+        gallery.tabIndex = whole ? -1 : 0;
+      }
+
       var overflow = gallery.scrollWidth - gallery.clientWidth;
 
       /* Nothing to scroll: a rail that cannot move is a control that lies. */
@@ -340,8 +245,38 @@
         { rootMargin: "0px 0px -10% 0px", threshold: 0 }
       );
 
+      /* Landing (2026-10-13). The fire line above sits 10% up from the bottom
+         so that nothing reveals on a sliver while you scroll. On landing there
+         is no scroll to wait for, and the line was hiding what was already on
+         screen: at 1280x720 Kiwido's lede sits whole at 645-717px, but the
+         reveal's 14px drop puts its top at 659, under the line at 648px; at
+         1440x900 the top 67px of its frames stand under the line at 810px.
+         Both stayed blank until the first scroll. So the first look runs to
+         the bottom edge: what is on screen comes in now, and the rest goes to
+         the observer above, including anything above the screen after a
+         reload partway down, which reveals as it comes back, as before.
+         Less than 16px on screen still counts as a sliver and waits: a reveal
+         there plays where nobody sees it and spends the shelf's stagger, so
+         nothing arrives when you get to it (1440x780: 7px of frames).
+         Rejected: dropping the margin from the observer above (it is right
+         while scrolling), and adding is-visible before first paint (what is on
+         screen would skip the fade that everything after it gets). */
+      var landing = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            landing.unobserve(entry.target);
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+            } else {
+              io.observe(entry.target);
+            }
+          });
+        },
+        { rootMargin: "0px 0px -16px 0px", threshold: 0 }
+      );
+
       nodes.forEach(function (el) {
-        io.observe(el);
+        landing.observe(el);
       });
     }
   }

@@ -52,12 +52,30 @@
 
     <main id="main">
       <article class="wrap legal">
-        <a class="legal-back" href="/">
-          <span class="visually-hidden">Studio Spreza</span>
-          <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
-        </a>
+        <div class="legal-bar">
+          <a class="legal-back" href="/">
+            <span class="visually-hidden">Studio Spreza</span>
+            <svg class="brand-mark" viewBox="0 0 1510 1061" aria-hidden="true" focusable="false"><use href="/assets/spreza-mark.svg#spreza-mark" /></svg>
+          </a>
+          <button
+            class="theme-toggle"
+            type="button"
+            id="theme-toggle"
+            hidden
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle class="theme-glyph-disc" cx="12" cy="12" r="5" />
+                <path class="theme-glyph-rays" d="M12 2.5v2M12 19.5v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2.5 12h2M19.5 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                <path class="theme-glyph-moon" d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z" />
+                <path class="theme-glyph-auto" d="M12 7a5 5 0 0 0 0 10Z" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+            <span class="theme-toggle-label" aria-live="polite"></span>
+          </button>
+        </div>
 
-        <h1 class="legal-title">Notation Privacy Policy</h1>
+        <h1 class="legal-title"><span class="legal-icon" data-app="notation" aria-hidden="true"></span>Notation Privacy Policy</h1>
         <p class="legal-meta">Last updated September 27, 2026. Developer: Studio Spreza.</p>
 
         <p class="legal-lede">
@@ -80,7 +98,7 @@
             device.
           </li>
           <li>
-            <strong>Search.</strong> An index of your notes' titles and words is kept on your device so
+            <strong>Search.</strong> An index of your notes’ titles and words is kept on your device so
             search is fast. It never leaves the device.
           </li>
           <li>
@@ -93,8 +111,8 @@
             the app on your device. A locked note appears in both as its title only.
           </li>
           <li>
-            <strong>Spotlight.</strong> If you leave Show notes in Spotlight on, your notes' titles and
-            words are added to your device's own search index, so you can find a note from anywhere
+            <strong>Spotlight.</strong> If you leave Show notes in Spotlight on, your notes’ titles and
+            words are added to your device’s own search index, so you can find a note from anywhere
             on the device. Locked notes are never added. You can turn this off in the app.
           </li>
         </ul>
@@ -106,7 +124,7 @@
         </p>
         <p>
           When sync is on, your notes are stored in your private iCloud database under your own Apple
-          ID, and the text of every note is end-to-end encrypted there. It is governed by Apple's
+          ID, and the text of every note is end-to-end encrypted there. It is governed by Apple’s
           privacy policy and terms. Studio Spreza has no access to that database and cannot read your
           synced data. If you turn sync off, or if iCloud is unavailable, the app continues to work
           on-device.
@@ -115,7 +133,7 @@
         <h2>Locked notes</h2>
         <p>
           You can lock a note. Opening it asks for Face ID, Touch ID or your device passcode, through
-          Apple's own system; Notation never receives your face, fingerprint or passcode. A locked note
+          Apple’s own system; Notation never receives your face, fingerprint or passcode. A locked note
           shows only its title in the app, in widgets, in search and in the share sheet. The lock
           guards the note on your devices. It does not add a separate password or encryption of its
           own.
@@ -142,10 +160,10 @@
           <li>No analytics, no crash reporting, and no advertising SDKs in the app.</li>
           <li>
             No access to your location, contacts, calendar, reminders, health data or photo library.
-            Adding a picture uses Apple's picker, which gives the app only the pictures you choose.
+            Adding a picture uses Apple’s picker, which gives the app only the pictures you choose.
           </li>
           <li>
-            No tracking. The app does not track you across other companies' apps or websites, and
+            No tracking. The app does not track you across other companies’ apps or websites, and
             does not use App Tracking Transparency for that purpose.
           </li>
           <li>We do not sell your personal information.</li>
@@ -166,11 +184,11 @@
             <strong>Your notes.</strong> Export them at any time, as Markdown files or a full Notation
             Archive. Deleting a note moves it to Recently Deleted for 30 days, and deleting the app
             removes its on-device data according to iOS behavior. If you used iCloud sync, you can also
-            remove Notation's data from your iCloud account in Settings.
+            remove Notation’s data from your iCloud account in Settings.
           </li>
         </ul>
 
-        <h2>Children's privacy</h2>
+        <h2>Children’s privacy</h2>
         <p>
           The app is not directed specifically at children under 13. If you believe information has
           been collected that should be removed, contact us at the address below.
@@ -184,7 +202,7 @@
 
         <h2>Questions</h2>
         <p>
-          For questions about this policy or the app's privacy practices, email
+          For questions about this policy or the app’s privacy practices, email
           <a href="mailto:hey@studiospreza.com">hey@studiospreza.com</a>.
         </p>
       </article>
@@ -211,5 +229,7 @@
         </nav>
       </div>
     </footer>
+
+    <script src="/theme.js" defer></script>
   </body>
 </html>
