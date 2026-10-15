@@ -187,11 +187,15 @@
      width instead of the content column and was the loudest thing on the page.
      The rail is aria-hidden and pointer-only: it duplicates scrolling the
      scrollport already has, and the scrollport is focusable and arrow-scrollable
-     for anyone not using a pointer. */
+     for anyone not using a pointer.
+
+     A shelf can hold one gallery per device (2026-10-14), behind the device
+     tabs below. Only one is shown at a time and the one rail follows it. */
   var MIN_THUMB = 40;
 
   document.querySelectorAll(".work-shelf").forEach(function (shelf) {
-    var gallery = shelf.querySelector(".work-gallery");
+    var galleries = Array.prototype.slice.call(shelf.querySelectorAll(".work-gallery"));
+    var gallery = galleries[0];
     var rail = shelf.querySelector(".work-rail");
     var thumb = shelf.querySelector(".work-rail-thumb");
 
@@ -295,9 +299,83 @@
       });
     });
 
-    gallery.addEventListener("scroll", requestSync, { passive: true });
+    galleries.forEach(function (each) {
+      each.addEventListener("scroll", requestSync, { passive: true });
+    });
     window.addEventListener("resize", requestSync);
     sync();
+
+    /* Device tabs (Peter, 2026-10-14: "a toggle to jump between iPhone, iPad,
+       Mac, and Watch screenshots"). Only a shelf with frames for more than one
+       device carries them, and they ship hidden like the rail: without scripting
+       the reader gets the iPhone shelf and no control that does nothing.
+
+       The ARIA tabs pattern with automatic activation, since a switch is free:
+       one tab stop, arrows and Home/End move between devices. The panels are
+       regions in the markup and become tabpanels here, for the same reason. */
+    var tablist = shelf.querySelector(".work-devices");
+    if (!tablist) {
+      return;
+    }
+
+    var tabs = Array.prototype.slice.call(tablist.querySelectorAll("[role='tab']"));
+
+    function select(tab) {
+      tabs.forEach(function (each) {
+        var on = each === tab;
+        var panel = document.getElementById(each.getAttribute("aria-controls"));
+
+        each.setAttribute("aria-selected", on ? "true" : "false");
+        each.tabIndex = on ? 0 : -1;
+
+        if (panel) {
+          panel.hidden = !on;
+          if (on) {
+            gallery = panel;
+          }
+        }
+      });
+
+      /* Each device's shelf starts from its first frame, and its frames come up
+         in sequence as they do on the first reveal. Removing and re-adding the
+         class restarts the animation; the reflow between is what makes it. */
+      gallery.scrollLeft = 0;
+      gallery.classList.remove("is-arriving");
+      void gallery.offsetWidth;
+      gallery.classList.add("is-arriving");
+      sync();
+    }
+
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener("click", function () {
+        select(tab);
+      });
+
+      tab.addEventListener("keydown", function (event) {
+        var next = null;
+
+        if (event.key === "ArrowRight") {
+          next = tabs[(index + 1) % tabs.length];
+        } else if (event.key === "ArrowLeft") {
+          next = tabs[(index - 1 + tabs.length) % tabs.length];
+        } else if (event.key === "Home") {
+          next = tabs[0];
+        } else if (event.key === "End") {
+          next = tabs[tabs.length - 1];
+        }
+
+        if (next) {
+          event.preventDefault();
+          select(next);
+          next.focus();
+        }
+      });
+    });
+
+    galleries.forEach(function (each) {
+      each.setAttribute("role", "tabpanel");
+    });
+    tablist.hidden = false;
   });
 
   /* The hero medley drifts only while the hero is on screen: six blurred

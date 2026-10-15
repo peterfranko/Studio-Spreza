@@ -147,7 +147,13 @@
                 <a class="app-store-link" href="#" aria-label="Kiwido on the App Store"></a>
               </div>
               <div class="work-shelf" data-reveal>
-                <div class="work-gallery" role="region" aria-label="Kiwido screens" tabindex="0">
+                <div class="work-devices" role="tablist" aria-label="Kiwido screens" hidden>
+                  <button class="work-device" type="button" role="tab" id="kiwido-tab-iphone" aria-controls="kiwido-iphone" aria-selected="true">iPhone</button>
+                  <button class="work-device" type="button" role="tab" id="kiwido-tab-ipad" aria-controls="kiwido-ipad" aria-selected="false" tabindex="-1">iPad</button>
+                  <button class="work-device" type="button" role="tab" id="kiwido-tab-mac" aria-controls="kiwido-mac" aria-selected="false" tabindex="-1">Mac</button>
+                  <button class="work-device" type="button" role="tab" id="kiwido-tab-watch" aria-controls="kiwido-watch" aria-selected="false" tabindex="-1">Watch</button>
+                </div>
+                <div class="work-gallery" id="kiwido-iphone" data-device="iphone" role="region" aria-label="Kiwido on iPhone" tabindex="0">
                   <span class="work-showcase-item">
                     <span class="work-shot" role="img" aria-label="Kiwido's week board, with today's column in view.">
                       <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-01-light.webp" srcset="assets/kiwido-h-scroll/kiwido-01-light-384.webp 384w, assets/kiwido-h-scroll/kiwido-01-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
@@ -179,6 +185,69 @@
                     </span>
                   </span>
                 </div>
+                <div class="work-gallery" id="kiwido-ipad" data-device="ipad" role="region" aria-label="Kiwido on iPad" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's week board on iPad, the days side by side with today in view.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-ipad-01-light.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-01-light-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-01-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-ipad-01-dark.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-01-dark-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-01-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's month on iPad, each day's plans under its date.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-ipad-02-light.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-02-light-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-02-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-ipad-02-dark.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-02-dark-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-02-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's forecast on iPad, the next hours and the week's highs and lows.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-ipad-03-light.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-03-light-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-03-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-ipad-03-dark.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-03-dark-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-03-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's rank card on iPad, with the medal and the running total.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-ipad-04-light.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-04-light-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-04-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-ipad-04-dark.webp" srcset="assets/kiwido-h-scroll/kiwido-ipad-04-dark-736.webp 736w, assets/kiwido-h-scroll/kiwido-ipad-04-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="kiwido-mac" data-device="mac" role="region" aria-label="Kiwido on Mac" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's week board on the Mac, the whole week across one window.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-mac-01-light.webp" srcset="assets/kiwido-h-scroll/kiwido-mac-01-light-849.webp 849w, assets/kiwido-h-scroll/kiwido-mac-01-light.webp 1698w" sizes="(max-width: 575px) 88vw, (max-width: 819px) 509px, 849px" width="1698" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-mac-01-dark.webp" srcset="assets/kiwido-h-scroll/kiwido-mac-01-dark-849.webp 849w, assets/kiwido-h-scroll/kiwido-mac-01-dark.webp 1698w" sizes="(max-width: 575px) 88vw, (max-width: 819px) 509px, 849px" width="1698" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's month on the Mac, every day's plans in one grid.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-mac-02-light.webp" srcset="assets/kiwido-h-scroll/kiwido-mac-02-light-849.webp 849w, assets/kiwido-h-scroll/kiwido-mac-02-light.webp 1698w" sizes="(max-width: 575px) 88vw, (max-width: 819px) 509px, 849px" width="1698" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-mac-02-dark.webp" srcset="assets/kiwido-h-scroll/kiwido-mac-02-dark-849.webp 849w, assets/kiwido-h-scroll/kiwido-mac-02-dark.webp 1698w" sizes="(max-width: 575px) 88vw, (max-width: 819px) 509px, 849px" width="1698" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido on the Mac with Next up open beside the board.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/kiwido-h-scroll/kiwido-mac-03-light.webp" srcset="assets/kiwido-h-scroll/kiwido-mac-03-light-849.webp 849w, assets/kiwido-h-scroll/kiwido-mac-03-light.webp 1698w" sizes="(max-width: 575px) 88vw, (max-width: 819px) 509px, 849px" width="1698" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/kiwido-h-scroll/kiwido-mac-03-dark.webp" srcset="assets/kiwido-h-scroll/kiwido-mac-03-dark-849.webp 849w, assets/kiwido-h-scroll/kiwido-mac-03-dark.webp 1698w" sizes="(max-width: 575px) 88vw, (max-width: 819px) 509px, 849px" width="1698" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="kiwido-watch" data-device="watch" role="region" aria-label="Kiwido on Apple Watch" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's today list on Apple Watch, with tasks to tick off.">
+                      <img class="work-shot-image" src="assets/kiwido-h-scroll/kiwido-watch-01.webp" srcset="assets/kiwido-h-scroll/kiwido-watch-01-208.webp 208w, assets/kiwido-h-scroll/kiwido-watch-01.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Kiwido's quick add on Apple Watch, a task typed in plain words.">
+                      <img class="work-shot-image" src="assets/kiwido-h-scroll/kiwido-watch-02.webp" srcset="assets/kiwido-h-scroll/kiwido-watch-02-208.webp 208w, assets/kiwido-h-scroll/kiwido-watch-02.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="An event in Kiwido on Apple Watch, with its time and calendar.">
+                      <img class="work-shot-image" src="assets/kiwido-h-scroll/kiwido-watch-03.webp" srcset="assets/kiwido-h-scroll/kiwido-watch-03-208.webp 208w, assets/kiwido-h-scroll/kiwido-watch-03.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
                 <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
@@ -192,7 +261,13 @@
                 <a class="app-store-link" href="#" aria-label="Upkeeper on the App Store"></a>
               </div>
               <div class="work-shelf" data-reveal>
-                <div class="work-gallery" role="region" aria-label="Upkeeper screens" tabindex="0">
+                <div class="work-devices" role="tablist" aria-label="Upkeeper screens" hidden>
+                  <button class="work-device" type="button" role="tab" id="upkeeper-tab-iphone" aria-controls="upkeeper-iphone" aria-selected="true">iPhone</button>
+                  <button class="work-device" type="button" role="tab" id="upkeeper-tab-ipad" aria-controls="upkeeper-ipad" aria-selected="false" tabindex="-1">iPad</button>
+                  <button class="work-device" type="button" role="tab" id="upkeeper-tab-mac" aria-controls="upkeeper-mac" aria-selected="false" tabindex="-1">Mac</button>
+                  <button class="work-device" type="button" role="tab" id="upkeeper-tab-watch" aria-controls="upkeeper-watch" aria-selected="false" tabindex="-1">Watch</button>
+                </div>
+                <div class="work-gallery" id="upkeeper-iphone" data-device="iphone" role="region" aria-label="Upkeeper on iPhone" tabindex="0">
                   <span class="work-showcase-item">
                     <span class="work-shot" role="img" aria-label="Upkeeper's home, with what needs care at the top.">
                       <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-01-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-01-light-384.webp 384w, assets/upkeeper-h-scroll/upkeeper-01-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
@@ -224,6 +299,69 @@
                     </span>
                   </span>
                 </div>
+                <div class="work-gallery" id="upkeeper-ipad" data-device="ipad" role="region" aria-label="Upkeeper on iPad" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Upkeeper on iPad, what needs care beside the library's status.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-ipad-01-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-01-light-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-01-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-ipad-01-dark.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-01-dark-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-01-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Upkeeper's status on iPad, scrolled to the patterns it has noticed.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-ipad-02-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-02-light-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-02-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-ipad-02-dark.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-02-dark-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-02-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One Upkeeper action on iPad, with its learned rhythm and history.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-ipad-03-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-03-light-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-03-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-ipad-03-dark.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-03-dark-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-03-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Upkeeper's rank card on iPad, counted in calm weeks.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-ipad-04-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-04-light-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-04-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-ipad-04-dark.webp" srcset="assets/upkeeper-h-scroll/upkeeper-ipad-04-dark-736.webp 736w, assets/upkeeper-h-scroll/upkeeper-ipad-04-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="upkeeper-mac" data-device="mac" role="region" aria-label="Upkeeper on Mac" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Upkeeper on the Mac, what needs care beside the library's status.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-mac-01-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-mac-01-light-714.webp 714w, assets/upkeeper-h-scroll/upkeeper-mac-01-light.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-mac-01-dark.webp" srcset="assets/upkeeper-h-scroll/upkeeper-mac-01-dark-714.webp 714w, assets/upkeeper-h-scroll/upkeeper-mac-01-dark.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One Upkeeper action on the Mac, its rhythm and history in the pane.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-mac-02-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-mac-02-light-714.webp 714w, assets/upkeeper-h-scroll/upkeeper-mac-02-light.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-mac-02-dark.webp" srcset="assets/upkeeper-h-scroll/upkeeper-mac-02-dark-714.webp 714w, assets/upkeeper-h-scroll/upkeeper-mac-02-dark.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Upkeeper's status on the Mac, with its logging activity and noticed patterns.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/upkeeper-h-scroll/upkeeper-mac-03-light.webp" srcset="assets/upkeeper-h-scroll/upkeeper-mac-03-light-714.webp 714w, assets/upkeeper-h-scroll/upkeeper-mac-03-light.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/upkeeper-h-scroll/upkeeper-mac-03-dark.webp" srcset="assets/upkeeper-h-scroll/upkeeper-mac-03-dark-714.webp 714w, assets/upkeeper-h-scroll/upkeeper-mac-03-dark.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="upkeeper-watch" data-device="watch" role="region" aria-label="Upkeeper on Apple Watch" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Upkeeper on Apple Watch, the things ready for care today.">
+                      <img class="work-shot-image" src="assets/upkeeper-h-scroll/upkeeper-watch-01.webp" srcset="assets/upkeeper-h-scroll/upkeeper-watch-01-208.webp 208w, assets/upkeeper-h-scroll/upkeeper-watch-01.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One of Upkeeper's things on Apple Watch, logged with one tap.">
+                      <img class="work-shot-image" src="assets/upkeeper-h-scroll/upkeeper-watch-02.webp" srcset="assets/upkeeper-h-scroll/upkeeper-watch-02-208.webp 208w, assets/upkeeper-h-scroll/upkeeper-watch-02.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Upkeeper on Apple Watch once everything has been cared for.">
+                      <img class="work-shot-image" src="assets/upkeeper-h-scroll/upkeeper-watch-03.webp" srcset="assets/upkeeper-h-scroll/upkeeper-watch-03-208.webp 208w, assets/upkeeper-h-scroll/upkeeper-watch-03.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
                 <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
@@ -237,7 +375,13 @@
                 <a class="app-store-link" href="#" aria-label="Bountiful on the App Store"></a>
               </div>
               <div class="work-shelf" data-reveal>
-                <div class="work-gallery" role="region" aria-label="Bountiful screens" tabindex="0">
+                <div class="work-devices" role="tablist" aria-label="Bountiful screens" hidden>
+                  <button class="work-device" type="button" role="tab" id="bountiful-tab-iphone" aria-controls="bountiful-iphone" aria-selected="true">iPhone</button>
+                  <button class="work-device" type="button" role="tab" id="bountiful-tab-ipad" aria-controls="bountiful-ipad" aria-selected="false" tabindex="-1">iPad</button>
+                  <button class="work-device" type="button" role="tab" id="bountiful-tab-mac" aria-controls="bountiful-mac" aria-selected="false" tabindex="-1">Mac</button>
+                  <button class="work-device" type="button" role="tab" id="bountiful-tab-watch" aria-controls="bountiful-watch" aria-selected="false" tabindex="-1">Watch</button>
+                </div>
+                <div class="work-gallery" id="bountiful-iphone" data-device="iphone" role="region" aria-label="Bountiful on iPhone" tabindex="0">
                   <span class="work-showcase-item">
                     <span class="work-shot" role="img" aria-label="Bountiful's home, with the record card over the practices.">
                       <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-01-light.webp" srcset="assets/bountiful-h-scroll/bountiful-01-light-384.webp 384w, assets/bountiful-h-scroll/bountiful-01-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
@@ -269,6 +413,69 @@
                     </span>
                   </span>
                 </div>
+                <div class="work-gallery" id="bountiful-ipad" data-device="ipad" role="region" aria-label="Bountiful on iPad" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bountiful on iPad, the practices beside the record that only rises.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-ipad-01-light.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-01-light-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-01-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-ipad-01-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-01-dark-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-01-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bountiful on iPad, every practice on the same stretch of time.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-ipad-02-light.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-02-light-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-02-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-ipad-02-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-02-dark-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-02-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One Bountiful practice on iPad, with its rhythm and nudges.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-ipad-03-light.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-03-light-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-03-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-ipad-03-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-03-dark-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-03-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bountiful's rank card on iPad, counted in weeks kept.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-ipad-04-light.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-04-light-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-04-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-ipad-04-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-ipad-04-dark-736.webp 736w, assets/bountiful-h-scroll/bountiful-ipad-04-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="bountiful-mac" data-device="mac" role="region" aria-label="Bountiful on Mac" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bountiful on the Mac, the practices beside the record that only rises.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-mac-01-light.webp" srcset="assets/bountiful-h-scroll/bountiful-mac-01-light-714.webp 714w, assets/bountiful-h-scroll/bountiful-mac-01-light.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-mac-01-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-mac-01-dark-714.webp 714w, assets/bountiful-h-scroll/bountiful-mac-01-dark.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One Bountiful practice on the Mac, with the shape of its days and its rhythm.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-mac-02-light.webp" srcset="assets/bountiful-h-scroll/bountiful-mac-02-light-714.webp 714w, assets/bountiful-h-scroll/bountiful-mac-02-light.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-mac-02-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-mac-02-dark-714.webp 714w, assets/bountiful-h-scroll/bountiful-mac-02-dark.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Bountiful practice kept by volume on the Mac, counted in lengths swum.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bountiful-h-scroll/bountiful-mac-03-light.webp" srcset="assets/bountiful-h-scroll/bountiful-mac-03-light-714.webp 714w, assets/bountiful-h-scroll/bountiful-mac-03-light.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bountiful-h-scroll/bountiful-mac-03-dark.webp" srcset="assets/bountiful-h-scroll/bountiful-mac-03-dark-714.webp 714w, assets/bountiful-h-scroll/bountiful-mac-03-dark.webp 1429w" sizes="(max-width: 575px) 74vw, (max-width: 819px) 429px, 714px" width="1429" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="bountiful-watch" data-device="watch" role="region" aria-label="Bountiful on Apple Watch" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bountiful's practices on Apple Watch.">
+                      <img class="work-shot-image" src="assets/bountiful-h-scroll/bountiful-watch-01.webp" srcset="assets/bountiful-h-scroll/bountiful-watch-01-208.webp 208w, assets/bountiful-h-scroll/bountiful-watch-01.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One practice in Bountiful on Apple Watch, logged with one tap.">
+                      <img class="work-shot-image" src="assets/bountiful-h-scroll/bountiful-watch-02.webp" srcset="assets/bountiful-h-scroll/bountiful-watch-02-208.webp 208w, assets/bountiful-h-scroll/bountiful-watch-02.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bountiful on Apple Watch, a practice just logged.">
+                      <img class="work-shot-image" src="assets/bountiful-h-scroll/bountiful-watch-03.webp" srcset="assets/bountiful-h-scroll/bountiful-watch-03-208.webp 208w, assets/bountiful-h-scroll/bountiful-watch-03.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
                 <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
@@ -282,7 +489,13 @@
                 <a class="app-store-link" href="#" aria-label="Bilberry on the App Store"></a>
               </div>
               <div class="work-shelf" data-reveal>
-                <div class="work-gallery" role="region" aria-label="Bilberry screens" tabindex="0">
+                <div class="work-devices" role="tablist" aria-label="Bilberry screens" hidden>
+                  <button class="work-device" type="button" role="tab" id="bilberry-tab-iphone" aria-controls="bilberry-iphone" aria-selected="true">iPhone</button>
+                  <button class="work-device" type="button" role="tab" id="bilberry-tab-ipad" aria-controls="bilberry-ipad" aria-selected="false" tabindex="-1">iPad</button>
+                  <button class="work-device" type="button" role="tab" id="bilberry-tab-mac" aria-controls="bilberry-mac" aria-selected="false" tabindex="-1">Mac</button>
+                  <button class="work-device" type="button" role="tab" id="bilberry-tab-watch" aria-controls="bilberry-watch" aria-selected="false" tabindex="-1">Watch</button>
+                </div>
+                <div class="work-gallery" id="bilberry-iphone" data-device="iphone" role="region" aria-label="Bilberry on iPhone" tabindex="0">
                   <span class="work-showcase-item">
                     <span class="work-shot" role="img" aria-label="Bilberry's day page, with each entry's time, weather and place.">
                       <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-01-light.webp" srcset="assets/bilberry-h-scroll/bilberry-01-light-384.webp 384w, assets/bilberry-h-scroll/bilberry-01-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
@@ -314,6 +527,64 @@
                     </span>
                   </span>
                 </div>
+                <div class="work-gallery" id="bilberry-ipad" data-device="ipad" role="region" aria-label="Bilberry on iPad" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bilberry's day page on iPad, with the calendar alongside.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-ipad-01-light.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-01-light-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-01-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bilberry-h-scroll/bilberry-ipad-01-dark.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-01-dark-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-01-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bilberry's day page on iPad scrolled, down to the same day in earlier years.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-ipad-02-light.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-02-light-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-02-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bilberry-h-scroll/bilberry-ipad-02-dark.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-02-dark-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-02-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Bilberry entry being written on iPad, with its weather and place attached.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-ipad-03-light.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-03-light-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-03-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bilberry-h-scroll/bilberry-ipad-03-dark.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-03-dark-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-03-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bilberry's search on iPad, finding entries by place.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-ipad-04-light.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-04-light-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-04-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bilberry-h-scroll/bilberry-ipad-04-dark.webp" srcset="assets/bilberry-h-scroll/bilberry-ipad-04-dark-736.webp 736w, assets/bilberry-h-scroll/bilberry-ipad-04-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="bilberry-mac" data-device="mac" role="region" aria-label="Bilberry on Mac" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bilberry on the Mac, today's page beside the month.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-mac-01-light.webp" srcset="assets/bilberry-h-scroll/bilberry-mac-01-light-694.webp 694w, assets/bilberry-h-scroll/bilberry-mac-01-light.webp 1389w" sizes="(max-width: 575px) 72vw, (max-width: 819px) 417px, 694px" width="1389" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bilberry-h-scroll/bilberry-mac-01-dark.webp" srcset="assets/bilberry-h-scroll/bilberry-mac-01-dark-694.webp 694w, assets/bilberry-h-scroll/bilberry-mac-01-dark.webp 1389w" sizes="(max-width: 575px) 72vw, (max-width: 819px) 417px, 694px" width="1389" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Bilberry entry being written on the Mac, with its weather and place attached.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-mac-02-light.webp" srcset="assets/bilberry-h-scroll/bilberry-mac-02-light-694.webp 694w, assets/bilberry-h-scroll/bilberry-mac-02-light.webp 1389w" sizes="(max-width: 575px) 72vw, (max-width: 819px) 417px, 694px" width="1389" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bilberry-h-scroll/bilberry-mac-02-dark.webp" srcset="assets/bilberry-h-scroll/bilberry-mac-02-dark-694.webp 694w, assets/bilberry-h-scroll/bilberry-mac-02-dark.webp 1389w" sizes="(max-width: 575px) 72vw, (max-width: 819px) 417px, 694px" width="1389" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bilberry's search on the Mac, finding entries by place.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/bilberry-h-scroll/bilberry-mac-03-light.webp" srcset="assets/bilberry-h-scroll/bilberry-mac-03-light-694.webp 694w, assets/bilberry-h-scroll/bilberry-mac-03-light.webp 1389w" sizes="(max-width: 575px) 72vw, (max-width: 819px) 417px, 694px" width="1389" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/bilberry-h-scroll/bilberry-mac-03-dark.webp" srcset="assets/bilberry-h-scroll/bilberry-mac-03-dark-694.webp 694w, assets/bilberry-h-scroll/bilberry-mac-03-dark.webp 1389w" sizes="(max-width: 575px) 72vw, (max-width: 819px) 417px, 694px" width="1389" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="bilberry-watch" data-device="watch" role="region" aria-label="Bilberry on Apple Watch" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Bilberry on Apple Watch, ready to say a line to today's page.">
+                      <img class="work-shot-image" src="assets/bilberry-h-scroll/bilberry-watch-01.webp" srcset="assets/bilberry-h-scroll/bilberry-watch-01-208.webp 208w, assets/bilberry-h-scroll/bilberry-watch-01.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A line said on Apple Watch, waiting to reach Bilberry on iPhone.">
+                      <img class="work-shot-image" src="assets/bilberry-h-scroll/bilberry-watch-02.webp" srcset="assets/bilberry-h-scroll/bilberry-watch-02-208.webp 208w, assets/bilberry-h-scroll/bilberry-watch-02.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
                 <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
@@ -327,7 +598,13 @@
                 <a class="app-store-link" href="#" aria-label="Notation on the App Store"></a>
               </div>
               <div class="work-shelf" data-reveal>
-                <div class="work-gallery" role="region" aria-label="Notation screens" tabindex="0">
+                <div class="work-devices" role="tablist" aria-label="Notation screens" hidden>
+                  <button class="work-device" type="button" role="tab" id="notation-tab-iphone" aria-controls="notation-iphone" aria-selected="true">iPhone</button>
+                  <button class="work-device" type="button" role="tab" id="notation-tab-ipad" aria-controls="notation-ipad" aria-selected="false" tabindex="-1">iPad</button>
+                  <button class="work-device" type="button" role="tab" id="notation-tab-mac" aria-controls="notation-mac" aria-selected="false" tabindex="-1">Mac</button>
+                  <button class="work-device" type="button" role="tab" id="notation-tab-watch" aria-controls="notation-watch" aria-selected="false" tabindex="-1">Watch</button>
+                </div>
+                <div class="work-gallery" id="notation-iphone" data-device="iphone" role="region" aria-label="Notation on iPhone" tabindex="0">
                   <span class="work-showcase-item">
                     <span class="work-shot" role="img" aria-label="Notation's library, with pinned notes above the rest.">
                       <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-01-light.webp" srcset="assets/notation-h-scroll/notation-01-light-384.webp 384w, assets/notation-h-scroll/notation-01-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
@@ -359,6 +636,64 @@
                     </span>
                   </span>
                 </div>
+                <div class="work-gallery" id="notation-ipad" data-device="ipad" role="region" aria-label="Notation on iPad" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Notation's library on iPad, with a checklist open beside it.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-ipad-01-light.webp" srcset="assets/notation-h-scroll/notation-ipad-01-light-736.webp 736w, assets/notation-h-scroll/notation-ipad-01-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/notation-h-scroll/notation-ipad-01-dark.webp" srcset="assets/notation-h-scroll/notation-ipad-01-dark-736.webp 736w, assets/notation-h-scroll/notation-ipad-01-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Notation note on iPad with its Markdown marks showing.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-ipad-02-light.webp" srcset="assets/notation-h-scroll/notation-ipad-02-light-736.webp 736w, assets/notation-h-scroll/notation-ipad-02-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/notation-h-scroll/notation-ipad-02-dark.webp" srcset="assets/notation-h-scroll/notation-ipad-02-dark-736.webp 736w, assets/notation-h-scroll/notation-ipad-02-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="The same Notation note with its marks hidden. The text has not changed.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-ipad-03-light.webp" srcset="assets/notation-h-scroll/notation-ipad-03-light-736.webp 736w, assets/notation-h-scroll/notation-ipad-03-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/notation-h-scroll/notation-ipad-03-dark.webp" srcset="assets/notation-h-scroll/notation-ipad-03-dark-736.webp 736w, assets/notation-h-scroll/notation-ipad-03-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A locked Notation note on iPad: its title, and nothing else until it opens.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-ipad-04-light.webp" srcset="assets/notation-h-scroll/notation-ipad-04-light-736.webp 736w, assets/notation-h-scroll/notation-ipad-04-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/notation-h-scroll/notation-ipad-04-dark.webp" srcset="assets/notation-h-scroll/notation-ipad-04-dark-736.webp 736w, assets/notation-h-scroll/notation-ipad-04-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="notation-mac" data-device="mac" role="region" aria-label="Notation on Mac" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Notation's library on the Mac, with a checklist open beside it.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-mac-01-light.webp" srcset="assets/notation-h-scroll/notation-mac-01-light-677.webp 677w, assets/notation-h-scroll/notation-mac-01-light.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/notation-h-scroll/notation-mac-01-dark.webp" srcset="assets/notation-h-scroll/notation-mac-01-dark-677.webp 677w, assets/notation-h-scroll/notation-mac-01-dark.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Notation note on the Mac, its Markdown as typed.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-mac-02-light.webp" srcset="assets/notation-h-scroll/notation-mac-02-light-677.webp 677w, assets/notation-h-scroll/notation-mac-02-light.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/notation-h-scroll/notation-mac-02-dark.webp" srcset="assets/notation-h-scroll/notation-mac-02-dark-677.webp 677w, assets/notation-h-scroll/notation-mac-02-dark.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Notation's search on the Mac, the match marked in each note.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/notation-h-scroll/notation-mac-03-light.webp" srcset="assets/notation-h-scroll/notation-mac-03-light-677.webp 677w, assets/notation-h-scroll/notation-mac-03-light.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/notation-h-scroll/notation-mac-03-dark.webp" srcset="assets/notation-h-scroll/notation-mac-03-dark-677.webp 677w, assets/notation-h-scroll/notation-mac-03-dark.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="notation-watch" data-device="watch" role="region" aria-label="Notation on Apple Watch" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Notation on Apple Watch, ready to say a new note.">
+                      <img class="work-shot-image" src="assets/notation-h-scroll/notation-watch-01.webp" srcset="assets/notation-h-scroll/notation-watch-01-208.webp 208w, assets/notation-h-scroll/notation-watch-01.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A note said on Apple Watch, waiting to reach Notation on iPhone.">
+                      <img class="work-shot-image" src="assets/notation-h-scroll/notation-watch-02.webp" srcset="assets/notation-h-scroll/notation-watch-02-208.webp 208w, assets/notation-h-scroll/notation-watch-02.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
                 <div class="work-rail" aria-hidden="true" hidden><span class="work-rail-thumb"></span></div>
               </div>
             </li>
@@ -372,7 +707,13 @@
                 <a class="app-store-link" href="#" aria-label="Homegrown on the App Store"></a>
               </div>
               <div class="work-shelf" data-reveal>
-                <div class="work-gallery" role="region" aria-label="Homegrown screens" tabindex="0">
+                <div class="work-devices" role="tablist" aria-label="Homegrown screens" hidden>
+                  <button class="work-device" type="button" role="tab" id="homegrown-tab-iphone" aria-controls="homegrown-iphone" aria-selected="true">iPhone</button>
+                  <button class="work-device" type="button" role="tab" id="homegrown-tab-ipad" aria-controls="homegrown-ipad" aria-selected="false" tabindex="-1">iPad</button>
+                  <button class="work-device" type="button" role="tab" id="homegrown-tab-mac" aria-controls="homegrown-mac" aria-selected="false" tabindex="-1">Mac</button>
+                  <button class="work-device" type="button" role="tab" id="homegrown-tab-watch" aria-controls="homegrown-watch" aria-selected="false" tabindex="-1">Watch</button>
+                </div>
+                <div class="work-gallery" id="homegrown-iphone" data-device="iphone" role="region" aria-label="Homegrown on iPhone" tabindex="0">
                   <span class="work-showcase-item">
                     <span class="work-shot" role="img" aria-label="Homegrown's Care tab, with the plants worth a check today.">
                       <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-01-light.webp" srcset="assets/homegrown-h-scroll/homegrown-01-light-384.webp 384w, assets/homegrown-h-scroll/homegrown-01-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
@@ -401,6 +742,69 @@
                     <span class="work-shot" role="img" aria-label="A Homegrown check-in: how the plant looks, its height and its new growth.">
                       <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-05-light.webp" srcset="assets/homegrown-h-scroll/homegrown-05-light-384.webp 384w, assets/homegrown-h-scroll/homegrown-05-light.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
                       <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-05-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-05-dark-384.webp 384w, assets/homegrown-h-scroll/homegrown-05-dark.webp 768w" sizes="(max-width: 436px) 66vw, (max-width: 819px) 288px, 384px" width="768" height="1670" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="homegrown-ipad" data-device="ipad" role="region" aria-label="Homegrown on iPad" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Homegrown's Care tab on iPad, with the plants worth a check today.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-ipad-01-light.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-01-light-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-01-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-ipad-01-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-01-dark-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-01-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Homegrown round on iPad, asking one question per plant.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-ipad-02-light.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-02-light-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-02-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-ipad-02-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-02-dark-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-02-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One plant's page in Homegrown on iPad, with when it is likely ready for a check.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-ipad-03-light.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-03-light-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-03-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-ipad-03-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-03-dark-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-03-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Homegrown plant's height and health over the year on iPad, above its care history.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-ipad-04-light.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-04-light-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-04-light.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-ipad-04-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-ipad-04-dark-736.webp 736w, assets/homegrown-h-scroll/homegrown-ipad-04-dark.webp 1472w" sizes="(max-width: 545px) 88vw, (max-width: 819px) 480px, 736px" width="1472" height="1104" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="homegrown-mac" data-device="mac" role="region" aria-label="Homegrown on Mac" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Homegrown's Care on the Mac, with the plants likely ready for a check.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-mac-01-light.webp" srcset="assets/homegrown-h-scroll/homegrown-mac-01-light-677.webp 677w, assets/homegrown-h-scroll/homegrown-mac-01-light.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-mac-01-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-mac-01-dark-677.webp 677w, assets/homegrown-h-scroll/homegrown-mac-01-dark.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="One plant's page in Homegrown on the Mac, with when it is likely ready for a check.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-mac-02-light.webp" srcset="assets/homegrown-h-scroll/homegrown-mac-02-light-677.webp 677w, assets/homegrown-h-scroll/homegrown-mac-02-light.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-mac-02-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-mac-02-dark-677.webp 677w, assets/homegrown-h-scroll/homegrown-mac-02-dark.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A Homegrown plant's height and health over the year on the Mac, above its care history.">
+                      <img class="work-shot-image" data-scheme="light" src="assets/homegrown-h-scroll/homegrown-mac-03-light.webp" srcset="assets/homegrown-h-scroll/homegrown-mac-03-light-677.webp 677w, assets/homegrown-h-scroll/homegrown-mac-03-light.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                      <img class="work-shot-image" data-scheme="dark" src="assets/homegrown-h-scroll/homegrown-mac-03-dark.webp" srcset="assets/homegrown-h-scroll/homegrown-mac-03-dark-677.webp 677w, assets/homegrown-h-scroll/homegrown-mac-03-dark.webp 1354w" sizes="(max-width: 575px) 71vw, (max-width: 819px) 406px, 677px" width="1354" height="960" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                </div>
+                <div class="work-gallery" id="homegrown-watch" data-device="watch" role="region" aria-label="Homegrown on Apple Watch" tabindex="0" hidden>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Homegrown on Apple Watch, the plants to check today.">
+                      <img class="work-shot-image" src="assets/homegrown-h-scroll/homegrown-watch-01.webp" srcset="assets/homegrown-h-scroll/homegrown-watch-01-208.webp 208w, assets/homegrown-h-scroll/homegrown-watch-01.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="A plant on Apple Watch, with how to check it and one tap to log what you found.">
+                      <img class="work-shot-image" src="assets/homegrown-h-scroll/homegrown-watch-02.webp" srcset="assets/homegrown-h-scroll/homegrown-watch-02-208.webp 208w, assets/homegrown-h-scroll/homegrown-watch-02.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
+                    </span>
+                  </span>
+                  <span class="work-showcase-item">
+                    <span class="work-shot" role="img" aria-label="Homegrown on Apple Watch when nothing needs a check.">
+                      <img class="work-shot-image" src="assets/homegrown-h-scroll/homegrown-watch-03.webp" srcset="assets/homegrown-h-scroll/homegrown-watch-03-208.webp 208w, assets/homegrown-h-scroll/homegrown-watch-03.webp 416w" sizes="(max-width: 819px) 176px, 208px" width="416" height="496" loading="lazy" decoding="async" alt="" />
                     </span>
                   </span>
                 </div>

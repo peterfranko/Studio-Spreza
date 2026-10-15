@@ -737,6 +737,38 @@
     transition-delay: 0.2s;
   }
 
+  /* A device switch replays the same arrival (2026-10-14): the frames of the
+     shelf just chosen come up in sequence, 50ms apart, as they did on the first
+     reveal. An animation rather than the reveal's transition, because the shelf
+     is already visible and a transition has no "from" to run. The global
+     reduced-motion rule turns it into a cut. */
+  @keyframes shelf-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  .work-gallery.is-arriving .work-showcase-item {
+    animation: shelf-arrive var(--duration-slow) var(--ease-default) both;
+  }
+
+  .work-gallery.is-arriving .work-showcase-item:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+
+  .work-gallery.is-arriving .work-showcase-item:nth-child(3) {
+    animation-delay: 0.1s;
+  }
+
+  .work-gallery.is-arriving .work-showcase-item:nth-child(4) {
+    animation-delay: 0.15s;
+  }
+
+  .work-gallery.is-arriving .work-showcase-item:nth-child(5) {
+    animation-delay: 0.2s;
+  }
+
   /* The reveal hides content until main.js marks it visible, so without
      scripting everything below the hero stays at opacity 0. Paired with a
      <noscript> block in the head for engines that do not support this query. */
@@ -1529,11 +1561,16 @@
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--gallery-edge-inset);
-    /* Holds the frame shadow. --shadow-shot's widest layer is 0 30px 56px -14px,
-       which reaches 30 + 56/2 - 14 = 44px below the frame; the scrollport clips
-       both axes, because a box with overflow-x: auto computes overflow-y to auto
-       too, so anything shorter cuts the shadow off in a straight line. */
-    padding-block-end: calc(var(--space-12) + var(--space-3));
+    /* Holds the frame shadow. --shadow-shot's widest layer is 0 30px 56px -14px. A
+       box shadow's blur reaches its full radius past the shape, not half of it, so
+       the tail runs 30 - 14 + 56 = 72px below the frame. The scrollport clips both
+       axes (a box with overflow-x: auto computes overflow-y to auto too). The old
+       padding, sized as offset + spread + blur/2 (and 48px as computed, not the 44
+       its comment said), cut the tail off in a straight line: paper stepped 233 to
+       241 at the edge (2026-10-14). The negative margin hands the extra 24px back,
+       so the rail keeps its place, 61.6px under the frames. */
+    padding-block-end: 4.5rem;
+    margin-block-end: -1.5rem;
     /* The native bar is gone in favour of .work-rail. It ran the full viewport
        width rather than the content column: ::-webkit-scrollbar-track's
        margin-inline is ignored, and the thumb started at x=3 where the design
@@ -1544,6 +1581,12 @@
   }
 
   .work-gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* `display: flex` above outranks the UA's `[hidden] { display: none }`, so
+     without this every device's gallery shows at once, scripting or not. */
+  .work-gallery[hidden] {
     display: none;
   }
 
@@ -1640,6 +1683,74 @@
     inset-block-start: calc(50% - 2.5px);
   }
 
+  /* ─── Device tabs ──────────────────────────────────────────────────────────
+     iPhone, Watch, and later iPad and Mac (Peter, 2026-10-14). The label voice
+     (caps, tracked, 500), muted at rest, and the chosen device underlined by the
+     rail's own mark: a pill in the row's accent, so the tabs and the rail read as
+     one control set. Only shelves with more than one device carry them, and the
+     markup ships them hidden until main.js wires them up, as it does the rail. */
+  .work-devices {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .work-devices[hidden] {
+    display: none;
+  }
+
+  .work-device {
+    position: relative;
+    /* 44px tall: one tab stop that a thumb has to hit, so the touch size, not
+       the 24px WCAG floor the rail clears. The text is centred in it and the
+       mark sits 3.6px under the text; the rest is hit area above and below. */
+    min-block-size: 2.75rem;
+    padding: 0;
+    font: inherit;
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .work-device::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0.5rem;
+    block-size: 3px;
+    border-radius: var(--radius-pill);
+    background: var(--row-accent, var(--color-text-muted));
+    transform: scaleX(0);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  /* Pointer hover only: a touch screen applies :hover to the last element tapped and
+     keeps it there. */
+  @media (hover: hover) {
+    .work-device:hover {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .work-device[aria-selected='true'] {
+    color: var(--color-text-primary);
+  }
+
+  .work-device[aria-selected='true']::after {
+    transform: none;
+  }
+
+  .work-device:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
   /* Each app's accent hue, at one OKLCH lightness and chroma per scheme. */
   .work-row[data-app='kiwido'] {
     --row-accent: var(--accent-kiwido);
@@ -1701,6 +1812,95 @@
     background: var(--color-surface-elevated);
     box-shadow: var(--shadow-shot);
     isolation: isolate;
+  }
+
+  /* The Watch frame (2026-10-14): the 46mm screen, 416 x 496 at 2x, shown at its
+     own point size, 208pt, so the iPhone and Watch shelves sit at nearly one scale
+     (the phone frame is 384 for a 402pt screen). Never larger: the source is 416px
+     and the publisher never upscales. One image, not a light and dark pair,
+     because watchOS has one appearance. The corner is 20% of the width, round
+     (20% of 416 over 496 is 16.77% of the height). */
+  .work-gallery[data-device='watch'] .work-showcase-item {
+    inline-size: 13rem;
+  }
+
+  @media (max-width: 819px) {
+    .work-gallery[data-device='watch'] .work-showcase-item {
+      inline-size: 11rem;
+    }
+  }
+
+  .work-gallery[data-device='watch'] .work-shot {
+    aspect-ratio: 416 / 496;
+    border-radius: 20% / 16.77%;
+    background: #000;
+  }
+
+  /* The iPad frame (2026-10-14): iPad Pro 13-inch in landscape, 2752 x 2064 (4:3),
+     shown at 736px, a little over half its 1376pt width, so its type sits near the
+     phone's scale and the shelf still shows that there is a next frame. Light and dark
+     stack like the phone's. The corner is the screen's: about 30pt of 1376, which is
+     2.2% of the width and 2.93% of the height. */
+  .work-gallery[data-device='ipad'] .work-showcase-item {
+    inline-size: min(46rem, 88vw);
+  }
+
+  @media (max-width: 819px) {
+    .work-gallery[data-device='ipad'] .work-showcase-item {
+      inline-size: min(30rem, 88vw);
+    }
+  }
+
+  .work-gallery[data-device='ipad'] .work-shot {
+    aspect-ratio: 2752 / 2064;
+    border-radius: 2.2% / 2.93%;
+  }
+
+  /* The Mac frame (2026-10-14): a window, not a screen, so there is no bezel to
+     draw. The capture keeps the window's own rounded, transparent corners; the frame
+     drops its border, ground and box shadow, and a drop shadow follows the window's
+     alpha instead. Windows differ in shape per app (Kiwido is wide, Upkeeper is a
+     column), so the shelf is set by height and each frame's width follows its
+     `width` and `height` attributes. The publisher puts every slot of an app on one
+     canvas, so one app's frames are one size. The light frame stays in flow to give
+     the slot its size; the dark one lies over it. `max-inline-size` keeps a wide
+     window inside a phone's viewport; `object-fit: contain` keeps it in shape there,
+     and the box around it is transparent. */
+  .work-gallery[data-device='mac'] .work-showcase-item {
+    inline-size: auto;
+  }
+
+  .work-gallery[data-device='mac'] .work-shot {
+    inline-size: auto;
+    aspect-ratio: auto;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .work-gallery[data-device='mac'] .work-shot-image {
+    inline-size: auto;
+    block-size: 30rem;
+    max-inline-size: 88vw;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 24px rgb(0 0 0 / 0.16)) drop-shadow(0 2px 4px rgb(0 0 0 / 0.12));
+  }
+
+  .work-gallery[data-device='mac'] .work-shot-image[data-scheme='light'] {
+    position: relative;
+  }
+
+  .work-gallery[data-device='mac'] .work-shot-image[data-scheme='dark'] {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  @media (max-width: 819px) {
+    .work-gallery[data-device='mac'] .work-shot-image {
+      block-size: min(18rem, 50vw);
+    }
   }
 
   .work-shot-image {

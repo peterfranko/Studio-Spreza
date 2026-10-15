@@ -218,8 +218,14 @@ drew literally nothing.
 
 **The scrollport clips the shadow.** A box with `overflow-x: auto` computes
 `overflow-y` to `auto` as well, so `.work-gallery` clips both axes. Its
-`padding-block-end` is sized from the widest shadow layer (30 + 56/2 − 14 = 44px);
-anything shorter cuts the shadow off in a straight line under every frame.
+`padding-block-end` is sized from the widest shadow layer, `0 30px 56px -14px`, whose
+tail runs offset + spread + the full blur: 30 − 14 + 56 = 72px. A box shadow's blur
+reaches its whole radius past the shape, not half of it. The old figure counted half
+(and computed to 48px, not the 44 the formula gave), so the paper stepped 233 to 241
+in a straight line at the gallery's edge (2026-10-14). Now `padding-block-end: 4.5rem`,
+with `margin-block-end: -1.5rem` handing the extra 24px back, so the rail stays 61.6px
+under the frames. Measured after: the paper changes at most 1.5 levels row to row
+across the edge, at 1024 and 375, on the iPhone, iPad, Mac and Watch shelves.
 
 ### The native scrollbar is gone
 
@@ -936,3 +942,75 @@ the Home Screen icon swaps its top glow for the medley in the dark hex at 0.5, c
 S at 0.8 tile widths per unit, from `MEDLEY` in `Scripts/make-studio-favicons.py`. The card
 holds its own copy of the geometry: **move a shape here and move it there**, then rerun the
 card script. The icon reads the medley from `styles.css` itself (since 2026-10-06), so it follows on its next run. The tab icons are unchanged (checked by sha), and an icon rerun is byte-identical.
+
+## Device tabs on the shelf (2026-10-14)
+
+Peter: *"each app showcase should have a toggle to jump between iPhone, iPad, Mac, and Watch
+screenshots."* A shelf now holds one `.work-gallery` per device, each with `data-device` and an
+id (`kiwido-iphone`, `kiwido-watch`), behind a `.work-devices` tablist. The one rail follows the
+gallery on show.
+
+**Live since the evening of 2026-10-14: all four devices on all six apps.** iPhone (five slots),
+iPad (four), Mac (three) and Watch (three; two for Bilberry and Notation). Every iPad and Mac slot
+is a light and dark pair shot the same evening (`Assets/Showcase/<App>/2026-10-14-ipad`,
+`-mac`); the Watch sets are `2026-10-13-watch` for the first three and `2026-10-14-watch` for the
+other three. A shelf with one device would carry no tabs, because one tab is a control that does
+nothing; none is left.
+
+- **The ARIA tabs pattern, automatic activation.** One tab stop; arrows, Home and End move and
+  select. The panels are `role="region"` in the markup and `main.js` makes them `tabpanel`.
+- **Ships `hidden`, like the rail.** Without scripting the reader gets the iPhone shelf and no
+  tabs. **`.work-gallery[hidden]` needs its own `display: none`**: the gallery's `display: flex`
+  outranks the UA rule, and without it every device showed at once.
+- **The chosen tab is underlined by the rail's mark**, a 3px pill in the row accent. Tabs are
+  44px tall, the touch size, not the 24px floor. The label is centred in the 44px and the
+  mark sits 3.6px under it. **Hover is `@media (hover: hover)` only** (2026-10-14), so a
+  touch screen never paints a tab in the hover ink. In iOS Safari (iPhone 17 Pro, iOS 27)
+  the sticky state never showed on an unselected tab even unguarded: hover moves to the
+  next tab tapped, and a tapped tab is the selected one. The guard is prevention, not a
+  fix of something seen.
+- **A switch replays the arrival** (`.is-arriving`, the reveal's 50ms stagger as an animation,
+  since the shelf is already visible) and starts the new shelf at its first frame.
+- **The Watch frame is shown at its point size**, 208pt (176 under 820px), so phone and wrist
+  sit at nearly one scale. One image per slot, no light and dark pair: watchOS has one
+  appearance. Corner 20% of the width, round.
+- **The iPad frame is the 13-inch screen in landscape**, 2752 x 2064 (4:3), shown at 736px
+  (`min(30rem, 88vw)` under 820px), a little over half its 1376pt width. Light and dark stack
+  like the phone's. Corner `2.2% / 2.93%`, about 30pt.
+- **The Mac frame is a window, not a screen.** The capture keeps the window's own transparent
+  rounded corners, so the frame drops its border, ground and box shadow, and a `drop-shadow`
+  follows the window's alpha. The shelf is set by height, 30rem (`min(18rem, 50vw)` under
+  820px), and each frame's width follows its `width`/`height` attributes, so Kiwido's wide
+  window and Upkeeper's split sit on one shelf height. The light image stays in flow to size the
+  slot; the dark one lies over it. `max-inline-size: 88vw` with `object-fit: contain` keeps a
+  wide window inside a phone.
+- **Publish**: `SHOWCASE_DEVICE=<watch|ipad|mac> Scripts/publish-showcase-to-site.sh [apps]`.
+  Watch writes `<app>-watch-0N.webp` at the source's 416px and a `-208` twin, and skips the
+  light-equals-dark check. iPad writes `<app>-ipad-0N-<scheme>.webp` at 1472px and a `-736`
+  twin. Mac puts an app's slots on one canvas (its largest window, smaller ones centred at the
+  same scale) and writes `<app>-mac-0N-<scheme>.webp` 960px tall plus a half twin, alpha kept.
+  Slot stems are `WATCH_SELECTION`, `IPAD_SELECTION` and `MAC_SELECTION`; read the frame, not the
+  stem. **Panes repeat on iPad**: Upkeeper's Status and Bountiful's Over time are home's right
+  pane, Bilberry's month is its sidebar and Notation's library opens on Groceries, so those
+  stems repeat `01` and the publisher refuses them. The tables say which stem stands in.
+- **The `aria-label`s and the markup** were generated from one list; a new slot copies the
+  neighbouring one's shape. `Scripts/showcase-review-sheet.py` draws one row per app and device.
+- **Capture recipe (2026-10-14).** iPad: `capture-showcase.sh --app <App> --device
+  Triad-iPadPro13 --landscape` (that sim is full screen, not Windowed Apps). Kiwido's test has no
+  landscape path; it runs `Scripts/triad/spec-kiwido-ipad-showcase.json` through
+  `capture-triad.sh spec ipad-pro` with `TRIAD_APPEARANCES=light|dark`, minus the composer steps
+  (its `+` tap fails today). Mac: `capture-mac.sh` with a `CAPTURE_TABLE`; Upkeeper and Bountiful
+  need `-UpkeeperMacDebugWindowSize 1280x860` / `-bountiful.debug.windowSize 1280x860` for their
+  split. Every shot's launch log (`logs/` in the set) carries the argv, and Kiwido's says
+  `KIWIDO-DEMO-MODE active=YES`: read it before the frame. A Simulator booting mid-run can take
+  focus and photograph the window inactive (grey traffic lights, grey tinted buttons): reshoot.
+  Watch: `capture-wrist.sh` on the 46mm at default size; on a phoneless sim, Bilberry's and
+  Notation's `sent` row and Homegrown's `answered` row say "Not connected to iPhone." with a
+  warning glyph, so the shelf uses the waiting row instead.
+- **Capture note:** the hidden Browser pane freezes the document timeline (it advanced 0ms in
+  500ms), so transitions and the arrival sit at their first frame. For a still, inject
+  `transition: none` and `finish()` the animations; that is the pane, not the page.
+
+**A re-shoot** is: a new dated `-ipad`/`-mac`/`-watch` set, the publisher, then the review sheet.
+The markup names stable files, so a re-shoot with the same slot count needs no HTML. A new
+Mac canvas size does: update that gallery's `width`, `height` and `sizes`.
