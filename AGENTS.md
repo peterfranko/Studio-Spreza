@@ -944,6 +944,34 @@ S at 0.8 tile widths per unit, from `MEDLEY` in `Scripts/make-studio-favicons.py
 holds its own copy of the geometry: **move a shape here and move it there**, then rerun the
 card script. The icon reads the medley from `styles.css` itself (since 2026-10-06), so it follows on its next run. The tab icons are unchanged (checked by sha), and an icon rerun is byte-identical.
 
+**It leans** (Peter, 2026-10-15: *"responsive to mouse positioning? and/or phone gyro on
+mobile"*). `main.js` writes `--lean-x` and `--lean-y`, each -1 to 1, onto both medleys, so the
+dye stays in step with the colour behind it; each shape adds `0.068 / w` mark widths of it to
+its drift (the leaf 0.2, the pomegranate 0.09; vertical at 0.7 of that), so small orbs slide
+across big ones and the mix changes, not only its place.
+
+- **Mouse:** aims from the mark's centre, half a screen either way for the full lean, and eases
+  after it on a 0.6s time constant, so it trails like something wet. It settles back when the
+  pointer leaves the window. Touch pointers are ignored.
+- **Tilt:** the colour runs toward the edge that dips, 20 degrees for the full lean. The level
+  it measures from follows the phone over about 4s, so any grip comes to rest centred, and it
+  keeps following while the hero is off screen, so scrolling back after a change of grip does
+  not slosh. It resets when the screen rotates. Only where `(hover: none)`, and not within 2s
+  of a mouse move.
+- **iPhone asks first.** Safari sends no tilt until the page calls `requestPermission()` from a
+  tap, so the first tap on the hero (no links there) asks, once. Chrome has the method too but
+  sends tilt anyway, so nothing asks where tilt is already arriving. **Peter kept the silent
+  tap** (same day) over dropping iPhone tilt or adding an iPhone-only hint line: no new copy,
+  and the prompt only follows a deliberate tap on the art.
+- **Off by construction** under Reduce Motion (the lean only lives in the `no-preference`
+  block), and input is ignored while `.hero.is-offscreen`. The rest pose, the card and the
+  icon are untouched: `make-studio-favicons.py` reads only the per-app blocks.
+- **Verified** in the pane with synthetic pointer and orientation events (rAF shimmed: a hidden
+  pane never fires it): aims, ease, settle, dye in step, off screen ignored, no slosh on
+  return, one ask from two taps. Stills at 800 and 375 with the loops stopped show the lean
+  and no horizontal overflow. **Not verified:** a real gyro, the iOS prompt, or the feel.
+  Tuning knobs: the 0.068 in `styles.css`, `LEAN_EASE`, `TILT_FULL`, `TILT_SETTLE` in `main.js`.
+
 ## Device tabs on the shelf (2026-10-14)
 
 Peter: *"each app showcase should have a toggle to jump between iPhone, iPad, Mac, and Watch

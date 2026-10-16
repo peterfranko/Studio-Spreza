@@ -1258,6 +1258,24 @@
     }
   }
 
+  /* The lean (Peter, 2026-10-15: "responsive to mouse positioning? and/or
+     phone gyro on mobile"). main.js writes --lean-x and --lean-y, each -1 to
+     1, onto both medleys: toward a mouse, or toward the edge a phone dips.
+     Each shape adds its share to its drift, and small shapes lean furthest
+     (0.068 / w: the leaf a fifth of a mark width, the pomegranate under a
+     tenth), so neighbours slide across each other and the mix changes, not
+     only its place. The dye gets the same values as the medley behind it, so
+     the colour in the ink stays in step. Unset, the lean is 0 and this is the
+     drift alone, which is also all Reduce Motion ever gets. */
+  @media (prefers-reduced-motion: no-preference) {
+    .medley-shape {
+      --lean-reach: calc(var(--hero-mark-w) * 0.068 / var(--w));
+      translate:
+        calc(-50% + var(--medley-dx) + var(--lean-x, 0) * var(--lean-reach))
+        calc(-50% + var(--medley-dy) + var(--lean-y, 0) * var(--lean-reach) * 0.7);
+    }
+  }
+
   .hero-content {
     position: relative;
     z-index: var(--z-raised);

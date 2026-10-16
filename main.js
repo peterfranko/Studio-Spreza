@@ -388,6 +388,216 @@
     }).observe(hero);
   }
 
+  /* The lean (Peter, 2026-10-15: "responsive to mouse positioning? and/or
+     phone gyro on mobile"). The medley leans toward a mouse or pen, and on a
+     phone it runs toward whichever edge dips, as colour would in a dish. Both
+     set one aim, -1 to 1 on each axis. The lean eases after it over 0.6s, so
+     it trails like something wet rather than tracking like a cursor, and is
+     written onto both medleys, the one behind the mark and the dye in it, so
+     they stay in step. styles.css turns it into each shape's share. The loop
+     stops once it has caught up, input is ignored while the hero is off
+     screen, and Reduce Motion gets none of it. */
+  var medleys = document.querySelectorAll(".hero-medley, .hero-dye-medley");
+  var heroMark = document.querySelector(".hero-title .brand-mark");
+
+  if (hero && heroMark && medleys.length && !prefersReduced) {
+    var LEAN_EASE = 0.6;
+    var aimX = 0;
+    var aimY = 0;
+    var leanX = 0;
+    var leanY = 0;
+    var leanFrame = 0;
+    var leanTime = 0;
+
+    function stepLean(now) {
+      var dt = leanTime ? Math.min((now - leanTime) / 1000, 0.1) : 1 / 60;
+      var follow = 1 - Math.exp(-dt / LEAN_EASE);
+
+      leanX += (aimX - leanX) * follow;
+      leanY += (aimY - leanY) * follow;
+
+      var settled = Math.abs(aimX - leanX) < 0.002 && Math.abs(aimY - leanY) < 0.002;
+      if (settled) {
+        leanX = aimX;
+        leanY = aimY;
+      }
+
+      medleys.forEach(function (medley) {
+        medley.style.setProperty("--lean-x", leanX.toFixed(4));
+        medley.style.setProperty("--lean-y", leanY.toFixed(4));
+      });
+
+      leanTime = settled ? 0 : now;
+      leanFrame = settled ? 0 : window.requestAnimationFrame(stepLean);
+    }
+
+    function aim(x, y) {
+      aimX = clamp(x, -1, 1);
+      aimY = clamp(y, -1, 1);
+
+      if (!leanFrame) {
+        leanFrame = window.requestAnimationFrame(stepLean);
+      }
+    }
+
+    /* A mouse aims from the mark's centre, half a screen either way for the
+       full lean. The centre is measured on load and resize rather than per
+       move, so moving the mouse never forces a layout. Leaving the window
+       lets the colour settle back. */
+    var markX = 0;
+    var markY = 0;
+    var pointerX = null;
+    var pointerY = 0;
+    var mouseTime = -Infinity;
+
+    function measureMark() {
+      var box = heroMark.getBoundingClientRect();
+      markX = box.left + box.width / 2 + window.scrollX;
+      markY = box.top + box.height / 2 + window.scrollY;
+    }
+
+    function aimAtPointer() {
+      if (pointerX === null || hero.classList.contains("is-offscreen")) {
+        return;
+      }
+
+      aim(
+        (pointerX - markX + window.scrollX) / (window.innerWidth / 2),
+        (pointerY - markY + window.scrollY) / (window.innerHeight / 2)
+      );
+    }
+
+    function settleLean() {
+      pointerX = null;
+      aim(0, 0);
+    }
+
+    measureMark();
+    window.addEventListener("load", measureMark);
+    window.addEventListener("resize", measureMark);
+    window.addEventListener("scroll", aimAtPointer, { passive: true });
+    window.addEventListener("blur", settleLean);
+
+    document.addEventListener(
+      "pointermove",
+      function (event) {
+        if (event.pointerType === "touch") {
+          return;
+        }
+
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        mouseTime = event.timeStamp;
+        aimAtPointer();
+      },
+      { passive: true }
+    );
+
+    document.addEventListener("pointerout", function (event) {
+      if (!event.relatedTarget && event.pointerType !== "touch") {
+        settleLean();
+      }
+    });
+
+    /* A phone aims by tilt: 20 degrees for the full lean. The level it
+       measures from follows the phone over a few seconds, so however it is
+       held the colour comes to rest centred, and only a change of tilt moves
+       it. gamma tips the device's sides and beta its top and bottom, so a
+       phone held sideways swaps and flips them onto the screen's axes. Only
+       on a screen with no hover, so a laptop's motion sensor never fights its
+       trackpad, and not within two seconds of a mouse moving. */
+    var TILT_FULL = 20;
+    var TILT_SETTLE = 4;
+    var levelX = 0;
+    var levelY = 0;
+    var levelTurn = null;
+    var tiltTime = 0;
+    var tiltSeen = false;
+
+    function onTilt(event) {
+      if (event.beta === null || event.gamma === null) {
+        return;
+      }
+
+      tiltSeen = true;
+
+      var turn =
+        window.screen.orientation && typeof window.screen.orientation.angle === "number"
+          ? window.screen.orientation.angle
+          : window.orientation || 0;
+      var x = event.gamma;
+      var y = event.beta;
+
+      if (turn === 90) {
+        x = event.beta;
+        y = -event.gamma;
+      } else if (turn === 270 || turn === -90) {
+        x = -event.beta;
+        y = event.gamma;
+      } else if (turn === 180) {
+        x = -event.gamma;
+        y = -event.beta;
+      }
+
+      /* A new grip starts level: the first reading, and the first after the
+         screen turns, since the axes have just changed under it. */
+      if (turn !== levelTurn) {
+        levelTurn = turn;
+        levelX = x;
+        levelY = y;
+        tiltTime = event.timeStamp;
+      }
+
+      var settle = 1 - Math.exp(-Math.min((event.timeStamp - tiltTime) / 1000, 1) / TILT_SETTLE);
+      tiltTime = event.timeStamp;
+      levelX += (x - levelX) * settle;
+      levelY += (y - levelY) * settle;
+
+      /* The level keeps up while the hero is away or a mouse is moving, so
+         neither hands back a lurch when it ends. */
+      if (hero.classList.contains("is-offscreen") || event.timeStamp - mouseTime < 2000) {
+        return;
+      }
+
+      aim((x - levelX) / TILT_FULL, (y - levelY) / TILT_FULL);
+    }
+
+    var Orientation = window.DeviceOrientationEvent;
+    var noHover = window.matchMedia && window.matchMedia("(hover: none)").matches;
+
+    if (Orientation && noHover) {
+      window.addEventListener("deviceorientation", onTilt);
+
+      /* Safari on iPhone and iPad sends no tilt until the page asks, and it
+         may ask only from a tap. A tap on the hero is that tap: it is the
+         colour's own ground and holds no links. It asks once, and not at all
+         where tilt is already arriving, as it does on Android, where Chrome
+         also has the method. It listens again after a grant, in case Safari
+         starts the sensor only for a listener added once access is given. */
+      if (typeof Orientation.requestPermission === "function") {
+        hero.addEventListener("click", function askForTilt() {
+          hero.removeEventListener("click", askForTilt);
+
+          if (tiltSeen) {
+            return;
+          }
+
+          Orientation.requestPermission().then(
+            function (state) {
+              if (state === "granted") {
+                window.removeEventListener("deviceorientation", onTilt);
+                window.addEventListener("deviceorientation", onTilt);
+              }
+            },
+            function () {
+              /* Refused or unavailable: the medley keeps its drift. */
+            }
+          );
+        });
+      }
+    }
+  }
+
   /* Scroll reveals */
   var nodes = document.querySelectorAll("[data-reveal]");
   if (!nodes.length || !("IntersectionObserver" in window)) {
