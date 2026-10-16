@@ -536,8 +536,9 @@ section carries the site.
 
 **Order is launch priority**: Kiwido, Upkeeper, Bountiful, Bilberry, Notation, Homegrown.
 **Taglines are the in-app shelf lines** (`DOC-SETTINGS-DESIGN-SYSTEM.md` S1a), word for
-word. **Every badge is the same non-live placeholder**, and no copy may say any app is
-available. Homegrown's frames show the pilot catalogue's wide, provisional estimates, so
+word. **A badge shows only once its app is live** (Peter, 2026-10-15): a placeholder
+(`href="#"`) draws nothing (`styles.css`), so an app's launch day is one edit, its `href`.
+Until then no copy may say any app is available. Homegrown's frames show the pilot catalogue's wide, provisional estimates, so
 no line here may claim care coverage or a plant count.
 
 ### Accents

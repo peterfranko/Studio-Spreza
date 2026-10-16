@@ -2092,6 +2092,12 @@
     background-size: contain;
   }
 
+  /* Live apps only (Peter, 2026-10-15). A badge without its App Store link draws nothing,
+     so an app's launch day is one edit: its href. Dead badges beside a live one read as broken. */
+  .app-store-link[href='#'] {
+    display: none;
+  }
+
   /* ─── Studio note / contact ─── */
   /* The note and the address are one closing thought, so they are one band. They
      used to be two, separated by a rule and 112px, which made the foot of the page
