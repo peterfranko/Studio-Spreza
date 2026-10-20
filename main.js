@@ -57,13 +57,6 @@
   window.addEventListener("scroll", requestBrandProgress, { passive: true });
   window.addEventListener("resize", requestBrandProgress);
 
-  var appStorePlaceholders = document.querySelectorAll(".app-store-link[href='#']");
-  appStorePlaceholders.forEach(function (link) {
-    link.addEventListener("click", function (event) {
-      event.preventDefault();
-    });
-  });
-
   /* Theme toggle.
 
      Three states, cycling auto -> light -> dark. `auto` is the absence of a stored

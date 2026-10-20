@@ -1,64 +1,5 @@
 @layer tokens, base, layout, components;
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   DESIGN SYSTEM — shared with pf-portfolio
-
-   This token vocabulary (color, type, space, motion) mirrors the canonical
-   Studio Spreza family system defined in pf-portfolio/style.css. Studio Spreza
-   and Peter Franko's site share one design language; only content differs.
-   If a token name changes here, mirror it in pf-portfolio/style.css.
-
-   Deliberate divergence (2026-08-11): the type system is now single-family
-   Geist, driven by weight, size and case. pf-portfolio still runs Cormorant
-   Garamond + JetBrains Mono. These token names no longer exist there:
-     --font-serif, --font-mono            -> --font-sans
-     --font-weight-light/regular/medium   -> --font-weight-regular/medium/semibold
-     --text-sm                            -> --text-label
-     --tracking-label/eyebrow/wide/caps   -> --tracking-caps, --tracking-caps-wide
-     --tracking-lede                      -> --tracking-snug
-   Do not "resync" by copying either direction. The two sites now share colour,
-   space and motion but not type; porting Geist across is its own decision and
-   its own pass, and the size steps below are tuned to Geist's x-height, so
-   they would be wrong under a serif.
-
-   Deliberate divergence (2026-08-10): --color-text-muted was retuned for
-   contrast (3.2:1 -> 5.0:1 light, 3.4:1 -> 5.0:1 dark) so 11px mono labels
-   clear WCAG AA. pf-portfolio still carries the old failing values. Do not
-   "resync" by reverting these. Porting the fix there needs its own pass:
-   that file also feeds --color-text-muted into color-mix() gradients, so a
-   straight value swap would shift more than label colour.
-
-   Layers: tokens → base → layout → components (override order).
-   Reveal hook: [data-reveal] → .is-visible (set by main.js).
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   GEIST, SELF-HOSTED  (2026-09-21)
-
-   The family used to arrive from fonts.googleapis.com. That stylesheet is
-   render-blocking (the browser reports it as such) and it costs two origins
-   before a glyph is drawn: a DNS and TLS handshake to googleapis for the CSS,
-   then another to gstatic for the file. preconnect hides some of it and cannot
-   remove it.
-
-   Two subsets, both variable across the weights this site actually sets:
-   latin (29KB) and latin-ext (16KB). The other three Google serves, cyrillic,
-   cyrillic-ext and vietnamese, are not downloaded and not declared. The italic
-   axis was dropped in an earlier pass; nothing here sets font-style: italic.
-
-   unicode-range is copied verbatim from the Google stylesheet so the split
-   between the two files behaves exactly as it did.
-
-   The metric-matched Arial fallback below is now belt and braces rather than
-   load-bearing: index.html preloads the latin file, so the swap window is a few
-   milliseconds on a warm connection instead of two handshakes. It stays because
-   it still covers a cold cache, a slow link and a failed font fetch, and it
-   costs nothing.
-
-   Licence: SIL Open Font License 1.1, assets/fonts/OFL.txt, kept next to the
-   files because redistributing them requires it.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
 @font-face {
   font-family: 'Geist';
   font-style: normal;
@@ -76,57 +17,6 @@
   src: url('assets/fonts/geist-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   METRIC-MATCHED FALLBACK  (2026-08-11)
-
-   Geist arrives from Google Fonts with display=swap, so every first visit
-   paints in a system sans and then swaps. These faces reshape local Arial to
-   occupy Geist's exact box — same line box, same advance widths — so the swap
-   changes glyphs and nothing else. Nothing is downloaded; local() only ever
-   matches an already-installed font.
-
-   What this actually buys, measured rather than assumed. Sweeping every body
-   paragraph across viewport widths 320-760px (315 combinations), the number
-   that wrap to a different line count than Geist:
-
-     unmatched system stack / plain Arial ....  25  (7.9%)
-     metric-matched fallback ................    3  (1.0%)
-
-   Every one of those rewraps is a whole line of shift that cascades down the
-   page, and they cluster at 320-360px: phone widths, where the measure is
-   narrowest and paragraphs sit closest to a wrap boundary. This is a mobile
-   fix far more than a desktop one.
-
-   The vertical half of the override earns nothing on this site today, because
-   every text rule sets an explicit unitless line-height, so the line box comes
-   from font-size x ratio and never from the font's own ascent and descent. It
-   is still correct to declare: it costs nothing and it covers any element that
-   later inherits a normal line-height.
-
-   Deliberately one face per weight. size-adjust runs 102.81% at 400 to
-   107.63% at 600 (a 4.82pt spread), because Geist gets wider as it gets
-   heavier while the Arial standing in for it does not. A single shared
-   fallback would leave headings measurably wrong.
-
-   size-adjust is measured in the browser against this site's own copy, not
-   derived from OS/2 tables. The offline frequency-weighted estimate came out
-   ~3% wide on every face: it averages lowercase only, and the real mix of
-   capitals, digits and punctuation moves the ratio. Vertical overrides do
-   come from the font tables (Geist sets USE_TYPO_METRICS, so its OS/2 typo
-   ascent 1.005 / descent 0.295 / lineGap 0 are what browsers read) divided
-   by the measured size-adjust.
-
-   src stays Arial Regular on every face on purpose. The font-weight
-   descriptor tells the browser this face *is* that weight, so it will not
-   synthesise bold, and each size-adjust above was measured against Arial
-   Regular's advance widths. Fallback text looks slightly light for the swap
-   interval and occupies the right box, which is the trade we want.
-
-   REGENERATE after any change to the family, the weights used, or the
-   fallback stack — the numbers are specific to Geist v5 vs Arial:
-     .font-lab/metrics.py  (needs fonttools + brotli)
-   ═══════════════════════════════════════════════════════════════════════════ */
 
 @font-face {
   font-family: 'Geist Fallback';
@@ -172,10 +62,6 @@
   size-adjust: 100.94%;
 }
 
-/* The medley's drift offsets (2026-10-06). Registered so they interpolate: an
-   unregistered custom property animates by flipping at the halfway point, and
-   the shapes would jump instead of drift. Two of them, not one translate, so
-   each axis can run on its own period. */
 @property --medley-dx {
   syntax: '<length>';
   inherits: false;
@@ -190,59 +76,25 @@
 
 @layer tokens {
   :root {
-    /* ─── Color (semantic) ─── */
+
     --color-surface-base: #f4f0e8;
     --color-surface-elevated: #faf8f3;
     --color-text-primary: #161410;
     --color-text-secondary: #454038;
-    /* Tertiary step: holds ~5:1 on the paper ground so 11px labels clear WCAG AA. */
+
     --color-text-muted: #6d6559;
     --color-accent: #5c5344;
     --color-border-subtle: rgba(22, 20, 16, 0.1);
     --color-border-strong: rgba(22, 20, 16, 0.18);
-    /* Alpha raised from 0.45: the ring blended to ~2.05:1 on paper, under the
-       3:1 WCAG 1.4.11 floor for non-text indicators. */
+
     --color-focus-ring: rgba(92, 83, 68, 0.8);
 
-    /* ─── Typography ───────────────────────────────────────────────────────
-       One family, Geist, doing every job. The old system leaned on family
-       contrast: Cormorant Garamond for headings, JetBrains Mono for labels.
-       Both are gone. Hierarchy is now built from three levers only, so if a
-       distinction cannot be made with weight, size, or case, it does not
-       belong in the system.
-
-         WEIGHT  400 body · 500 headings and labels · 600 <strong>
-                 (the wordmark left the type system on 2026-10-05: it is
-                 a traced brush mark now, see "Brand mark" below)
-         SIZE    one label step, two body steps, three heading steps
-         CASE    uppercase + positive tracking is the label voice; it does
-                 the job the monospace used to do
-
-       Headings sit at 500, not 600. At 600 the display line reads as a
-       product landing page; the guardrail here is calm surfaces and useful
-       restraint, and at 70px the size already establishes the hierarchy
-       without the extra weight. Weight is the smallest of the three levers
-       on purpose.
-
-       Sizes came down roughly 12–15% from the Cormorant values across the
-       heading steps. Geist has a much larger x-height, so it renders visibly
-       bigger and heavier at an identical font-size; keeping the old numbers
-       made every headline shout. */
-    /* 'Geist Fallback' must sit directly behind Geist: it is the metric-matched
-       stand-in declared above, and everything after it is an unmatched last
-       resort for platforms with no Arial-compatible face installed. */
     --font-sans: 'Geist', 'Geist Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-    /* Renamed from --font-weight-light/regular/medium, which mapped to
-       400/500/600 and so described every weight one step lighter than it was.
-       pf-portfolio still carries the old names; see the divergence note above. */
     --font-weight-regular: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
 
-    /* Six steps. --text-sm became --text-label: the step exists only for
-       uppercase labels, and naming it by size invited it into body contexts
-       where 12px is too small to read. */
     --text-label: 0.75rem;
     --text-body: clamp(1rem, 1.02vw, 1.0625rem);
     --text-body-lg: clamp(1.125rem, 1.25vw, 1.3rem);
@@ -250,28 +102,19 @@
     --text-chapter: clamp(1.75rem, 3.9vw, 2.8rem);
     --text-display: clamp(2.15rem, 6vw, 4.4rem);
 
-    /* Loosened a little at the top. Cormorant's small x-height let display
-       lines sit at 1.02 without touching; Geist's ascenders and descenders
-       collide there, and the hero stacks three lines. */
     --leading-none: 1.05;
     --leading-tight: 1.12;
     --leading-snug: 1.3;
     --leading-body: 1.55;
     --leading-relaxed: 1.6;
 
-    /* Two uppercase steps, not four. --tracking-label/eyebrow/wide/caps sat at
-       0.12/0.18/0.15/0.08em doing one job between them. Values also came down:
-       those numbers were tuned for a monospace, whose uniform advance widths
-       need extra tracking to look airy. Geist is proportional and does not. */
     --tracking-caps: 0.1em;
     --tracking-caps-wide: 0.15em;
 
-    /* Three negative steps, biggest type tightest. */
     --tracking-display: -0.034em;
     --tracking-tight: -0.022em;
     --tracking-snug: -0.01em;
 
-    /* ─── Space scale ─── */
     --space-1: 0.2rem;
     --space-2: 0.35rem;
     --space-3: 0.5rem;
@@ -286,28 +129,20 @@
     --space-12: 2.5rem;
     --space-gutter-x: clamp(1.25rem, 5vw, 2.75rem);
     --space-gutter-y: clamp(1.75rem, 4vw, 2.75rem);
-    /* --xl is the emphasis step. It stays close to --lg on purpose: the
-       emphasised sections carry the least content, so a large gap between the
-       two reads as emptiness rather than weight. */
+
     --space-section-lg: clamp(3.25rem, 6vw, 5.25rem);
     --space-section-xl: clamp(4rem, 7vw, 6.25rem);
 
-    /* ─── Layout ─── */
     --layout-measure: 42rem;
     --layout-measure-wide: 64rem;
     --layout-measure-narrow: 36rem;
 
-    /* One page grid, shared by every wide section. Secondary content always
-       lands in track 3, so the right column starts on the same line down the
-       whole page instead of drifting a few px per section. */
     --grid-columns: 9rem minmax(0, 1.05fr) minmax(0, 1fr);
     --grid-gap: clamp(1.5rem, 3vw, 2.5rem);
 
-    /* ─── Radius ─── */
     --radius-xs: 2px;
     --radius-pill: 999px;
 
-    /* ─── Motion ─── */
     --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
     --duration-fast: 0.3s;
@@ -316,7 +151,6 @@
     --duration-slower: 0.8s;
     --duration-reveal: 0.9s;
 
-    /* ─── Z-index ─── */
     --z-base: 0;
     --z-raised: 1;
     --z-overlay: 2;
@@ -326,19 +160,6 @@
     --z-menu: 20;
     --z-skip: 100;
 
-
-    /* ─── Shelf ────────────────────────────────────────────────────────────
-       The app screens are near-white and the paper is #f4f0e8: measured, 1 L*
-       apart. With only a hairline between them a frame read as a window cut into
-       the page rather than a device resting on it. The shadow supplies the
-       separation the colours cannot, and it is mixed from --color-accent rather
-       than black so it stays in the paper world instead of going cool and grey.
-
-       The six app accents share a single OKLCH lightness and chroma per scheme
-       so the set reads as one ramp rather than six intensities. Only H differs,
-       and H is each app's own accent (SDS-D008: where the icon's hue and the
-       app's accent disagree, the accent wins): Kiwido 129.5, Upkeeper 92.3,
-       Bountiful 355, Bilberry 263, Notation 51, Homegrown 145. */
     --shadow-shot:
       0 1px 3px color-mix(in oklab, var(--color-accent) 22%, transparent),
       0 10px 20px -4px color-mix(in oklab, var(--color-accent) 20%, transparent),
@@ -347,24 +168,19 @@
     --rail-track: color-mix(in oklab, var(--color-text-primary) 5%, transparent);
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 11%, transparent);
     --accent-kiwido: #5f8136;
-    --accent-upkeeper: #8b7210;
-    --accent-bountiful: #a65778;
-    --accent-bilberry: #5273b5;
-    --accent-notation: #a76033;
-    --accent-homegrown: #47854a;
+    --accent-upcoming-1: #8b7210;
+    --accent-upcoming-2: #a65778;
+    --accent-upcoming-5: #5273b5;
+    --accent-upcoming-4: #a76033;
+    --accent-upcoming-3: #47854a;
 
-    /* App icons: 144px transparent exports from the shared appicon masters.
-       Bountiful ships one universal mark rather than a light/dark pair: it has a
-       single master, so both schemes point at the same file. */
     --app-icon-kiwido: url('assets/kiwido-icon-light.png');
-    --app-icon-upkeeper: url('assets/upkeeper-icon-light.png');
-    --app-icon-bountiful: url('assets/bountiful-icon.png');
-    --app-icon-bilberry: url('assets/bilberry-icon.png');
-    --app-icon-notation: url('assets/notation-icon.png');
-    --app-icon-homegrown: url('assets/homegrown-icon.png');
-    /* Was <picture> with a media source. That can only see prefers-color-scheme, so
-       an explicit data-theme showed the wrong badge: the same reason the showcase
-       shelves are stacked images rather than <picture>. */
+    --app-icon-upcoming-1: url('assets/veiled/1b01aee6b2388c24.webp');
+    --app-icon-upcoming-2: url('assets/veiled/84777f7690495585.webp');
+    --app-icon-upcoming-5: url('assets/veiled/c0b77c8ebab697e3.webp');
+    --app-icon-upcoming-4: url('assets/veiled/f870e8cc8b7630ba.webp');
+    --app-icon-upcoming-3: url('assets/veiled/68285b7e0e80ef4d.webp');
+
     --appstore-badge: url('assets/appstore-light.svg');
 
     color-scheme: light;
@@ -380,12 +196,7 @@
     --color-border-subtle: rgba(242, 235, 224, 0.09);
     --color-border-strong: rgba(242, 235, 224, 0.16);
     --color-focus-ring: rgba(201, 188, 168, 0.7);
-    /* A shadow cast on #141210 is very nearly invisible: rendered side by side at
-       four strengths, every dark variant looked the same and only the border weight
-       changed anything. So the dark scheme separates with the edge (26% against
-       light's 15%) and keeps the shadow only for where the frame meets a lighter
-       surface. An inset top rim was tried and dropped: .work-shot clips to the image,
-       which paints over any inset shadow, so it drew nothing at all. */
+
     --shadow-shot:
       0 1px 3px rgba(0, 0, 0, 0.6),
       0 10px 22px -4px rgba(0, 0, 0, 0.55),
@@ -394,17 +205,17 @@
     --rail-track: color-mix(in oklab, var(--color-text-primary) 7%, transparent);
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
     --accent-kiwido: #6c8c46;
-    --accent-upkeeper: #967e2a;
-    --accent-bountiful: #b16483;
-    --accent-bilberry: #5f7fbf;
-    --accent-notation: #b26d43;
-    --accent-homegrown: #569158;
+    --accent-upcoming-1: #967e2a;
+    --accent-upcoming-2: #b16483;
+    --accent-upcoming-5: #5f7fbf;
+    --accent-upcoming-4: #b26d43;
+    --accent-upcoming-3: #569158;
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
-    --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
-    --app-icon-bountiful: url('assets/bountiful-icon.png');
-    --app-icon-bilberry: url('assets/bilberry-icon.png');
-    --app-icon-notation: url('assets/notation-icon.png');
-    --app-icon-homegrown: url('assets/homegrown-icon.png');
+    --app-icon-upcoming-1: url('assets/veiled/1b01aee6b2388c24.webp');
+    --app-icon-upcoming-2: url('assets/veiled/84777f7690495585.webp');
+    --app-icon-upcoming-5: url('assets/veiled/c0b77c8ebab697e3.webp');
+    --app-icon-upcoming-4: url('assets/veiled/f870e8cc8b7630ba.webp');
+    --app-icon-upcoming-3: url('assets/veiled/68285b7e0e80ef4d.webp');
     --appstore-badge: url('assets/appstore-dark.svg');
     color-scheme: dark;
   }
@@ -420,12 +231,7 @@
       --color-border-subtle: rgba(242, 235, 224, 0.09);
       --color-border-strong: rgba(242, 235, 224, 0.16);
       --color-focus-ring: rgba(201, 188, 168, 0.7);
-      /* A shadow cast on #141210 is very nearly invisible: rendered side by side at
-       four strengths, every dark variant looked the same and only the border weight
-       changed anything. So the dark scheme separates with the edge (26% against
-       light's 15%) and keeps the shadow only for where the frame meets a lighter
-       surface. An inset top rim was tried and dropped: .work-shot clips to the image,
-       which paints over any inset shadow, so it drew nothing at all. */
+
     --shadow-shot:
       0 1px 3px rgba(0, 0, 0, 0.6),
       0 10px 22px -4px rgba(0, 0, 0, 0.55),
@@ -434,71 +240,50 @@
     --rail-track: color-mix(in oklab, var(--color-text-primary) 7%, transparent);
     --rail-track-hover: color-mix(in oklab, var(--color-text-primary) 15%, transparent);
     --accent-kiwido: #6c8c46;
-    --accent-upkeeper: #967e2a;
-    --accent-bountiful: #b16483;
-    --accent-bilberry: #5f7fbf;
-    --accent-notation: #b26d43;
-    --accent-homegrown: #569158;
+    --accent-upcoming-1: #967e2a;
+    --accent-upcoming-2: #b16483;
+    --accent-upcoming-5: #5f7fbf;
+    --accent-upcoming-4: #b26d43;
+    --accent-upcoming-3: #569158;
     --app-icon-kiwido: url('assets/kiwido-icon-dark.png');
-      --app-icon-upkeeper: url('assets/upkeeper-icon-dark.png');
-      --app-icon-bountiful: url('assets/bountiful-icon.png');
-      --app-icon-bilberry: url('assets/bilberry-icon.png');
-      --app-icon-notation: url('assets/notation-icon.png');
-      --app-icon-homegrown: url('assets/homegrown-icon.png');
-      /* SDS-D009, fixed 2026-09-22. This line was in html[data-theme='dark'] and not
-         here, so a visitor whose OS is dark but who had never touched the site's own
-         toggle got the LIGHT badge on a dark ground. The icons beside it were already
-         defined in both places, which is what made the gap invisible: the row looked
-         right until the one asset that is a pure black-on-white lockup. Both blocks
-         define it now, and the site chapter's checker should hold them together. */
+      --app-icon-upcoming-1: url('assets/veiled/1b01aee6b2388c24.webp');
+      --app-icon-upcoming-2: url('assets/veiled/84777f7690495585.webp');
+      --app-icon-upcoming-5: url('assets/veiled/c0b77c8ebab697e3.webp');
+      --app-icon-upcoming-4: url('assets/veiled/f870e8cc8b7630ba.webp');
+      --app-icon-upcoming-3: url('assets/veiled/68285b7e0e80ef4d.webp');
+
       --appstore-badge: url('assets/appstore-dark.svg');
       color-scheme: dark;
     }
   }
 
-  /* ─── Accent ramp, in OKLCH where it parses ──────────────────────────────
-     The six app hues are meant to share one lightness and chroma, which only
-     OKLCH says out loud; the hex above is exactly what each one resolves to.
-
-     It has to be declared this way round rather than `oklch()` with a var()
-     fallback. A declaration that references a custom property holding an
-     unparseable value is invalid at computed-value time, and IACVT resets the
-     property to its initial value: it does NOT fall back to an earlier
-     declaration, and `var(--row-accent, ...)`'s fallback only fires when the
-     property is unset, never when it is invalid. Measured: with the accent made
-     unparseable, .work-rail-thumb's background computed to rgba(0, 0, 0, 0) and
-     the rail became a control you could not see.
-
-     Every other modern-colour feature here degrades to something visible when it
-     is unsupported (a failed color-mix() border falls back to currentColor), so
-     this is the one place the pattern needed guarding. */
   @supports (color: oklch(0.5 0.1 100)) {
     :root {
       --accent-kiwido: oklch(0.56 0.11 129.5);
-      --accent-upkeeper: oklch(0.56 0.11 92.3);
-      --accent-bountiful: oklch(0.56 0.11 355);
-      --accent-bilberry: oklch(0.56 0.11 263);
-      --accent-notation: oklch(0.56 0.11 51);
-      --accent-homegrown: oklch(0.56 0.11 145);
+      --accent-upcoming-1: oklch(0.56 0.11 92.3);
+      --accent-upcoming-2: oklch(0.56 0.11 355);
+      --accent-upcoming-5: oklch(0.56 0.11 263);
+      --accent-upcoming-4: oklch(0.56 0.11 51);
+      --accent-upcoming-3: oklch(0.56 0.11 145);
     }
 
     html[data-theme='dark'] {
       --accent-kiwido: oklch(0.6 0.105 129.5);
-      --accent-upkeeper: oklch(0.6 0.105 92.3);
-      --accent-bountiful: oklch(0.6 0.105 355);
-      --accent-bilberry: oklch(0.6 0.105 263);
-      --accent-notation: oklch(0.6 0.105 51);
-      --accent-homegrown: oklch(0.6 0.105 145);
+      --accent-upcoming-1: oklch(0.6 0.105 92.3);
+      --accent-upcoming-2: oklch(0.6 0.105 355);
+      --accent-upcoming-5: oklch(0.6 0.105 263);
+      --accent-upcoming-4: oklch(0.6 0.105 51);
+      --accent-upcoming-3: oklch(0.6 0.105 145);
     }
 
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
         --accent-kiwido: oklch(0.6 0.105 129.5);
-        --accent-upkeeper: oklch(0.6 0.105 92.3);
-        --accent-bountiful: oklch(0.6 0.105 355);
-        --accent-bilberry: oklch(0.6 0.105 263);
-        --accent-notation: oklch(0.6 0.105 51);
-        --accent-homegrown: oklch(0.6 0.105 145);
+        --accent-upcoming-1: oklch(0.6 0.105 92.3);
+        --accent-upcoming-2: oklch(0.6 0.105 355);
+        --accent-upcoming-5: oklch(0.6 0.105 263);
+        --accent-upcoming-4: oklch(0.6 0.105 51);
+        --accent-upcoming-3: oklch(0.6 0.105 145);
       }
     }
   }
@@ -525,8 +310,7 @@
     font-weight: var(--font-weight-regular);
     font-size: var(--text-body);
     line-height: var(--leading-relaxed);
-    /* 'onum' dropped with Cormorant. Geist is a grotesque with lining figures;
-       oldstyle numerals were a serif-era setting and have nothing to select. */
+
     font-feature-settings: 'kern' 1, 'liga' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -589,7 +373,6 @@
     }
   }
 
-  /* Text for assistive tech only. Carries the name beside a decorative mark. */
   .visually-hidden {
     position: absolute;
     inline-size: 1px;
@@ -599,8 +382,6 @@
     white-space: nowrap;
   }
 
-  /* Holds the <symbol> the brand marks draw from. Zero-size rather than
-     display: none, which some engines treat as "do not render the symbol". */
   .sprite {
     position: absolute;
     inline-size: 0;
@@ -646,17 +427,12 @@
     padding-inline: var(--space-gutter-x);
   }
 
-  /* The inline-size container the full-bleed shelf measures itself against. 100cqw
-     is main's content width, which excludes the classic scrollbar that 100vw counts;
-     see the note on .work-gallery. */
   main#main {
     position: relative;
     z-index: var(--z-raised);
     container-type: inline-size;
   }
 
-  /* Clears the sticky header on anchor jumps. Section padding used to absorb
-     the overlap by accident; it no longer has the depth to spare. */
   .section,
   main#main {
     scroll-margin-top: 5rem;
@@ -676,7 +452,7 @@
 }
 
 @layer components {
-  /* ─── Reveal ─── */
+
   [data-reveal] {
     opacity: 0;
     transform: translateY(14px);
@@ -690,19 +466,6 @@
     transform: none;
   }
 
-  /* The shelf reveals its frames rather than itself.
-
-     Measured at 1440x900: a .work-row is 1175px tall, and observing it as one unit
-     fired the reveal 1085px before its shelf reached the screen. The animation was
-     always finished long before the frames arrived, so the only thing that ever
-     visibly revealed was the app's name. The row is no longer a reveal unit at all;
-     .work-lede and .work-shelf are.
-
-     The scrollport itself stays put and the frames come up in sequence. That is the
-     one piece of motion here that explains something rather than decorating: a strip
-     whose contents arrive one after another reads as a strip you can keep going
-     along. The stagger is capped by there being five frames, and the last one is in
-     at 0.65s. */
   .work-shelf[data-reveal] {
     opacity: 1;
     transform: none;
@@ -737,11 +500,6 @@
     transition-delay: 0.2s;
   }
 
-  /* A device switch replays the same arrival (2026-10-14): the frames of the
-     shelf just chosen come up in sequence, 50ms apart, as they did on the first
-     reveal. An animation rather than the reveal's transition, because the shelf
-     is already visible and a transition has no "from" to run. The global
-     reduced-motion rule turns it into a cut. */
   @keyframes shelf-arrive {
     from {
       opacity: 0;
@@ -769,9 +527,6 @@
     animation-delay: 0.2s;
   }
 
-  /* The reveal hides content until main.js marks it visible, so without
-     scripting everything below the hero stays at opacity 0. Paired with a
-     <noscript> block in the head for engines that do not support this query. */
   @media (scripting: none) {
     [data-reveal],
     .work-shelf[data-reveal] .work-showcase-item {
@@ -780,7 +535,6 @@
     }
   }
 
-  /* ─── Site header ─── */
   .site-header {
     position: fixed;
     top: 0;
@@ -791,8 +545,7 @@
       var(--color-surface-base) var(--header-surface-alpha, 0%),
       transparent
     );
-    /* The saturation comes in with the scroll, like the blur: at the top it
-       would tint the hero medley under the bar into a hard-edged strip. */
+
     backdrop-filter: saturate(calc(1 + 0.4 * var(--brand-progress, 1))) blur(var(--header-blur, 0px));
     -webkit-backdrop-filter: saturate(calc(1 + 0.4 * var(--brand-progress, 1))) blur(var(--header-blur, 0px));
     border-bottom: 1px solid color-mix(
@@ -802,12 +555,6 @@
     );
   }
 
-  /* Three columns so the mark sits on the same axis as the hero mark it takes
-     over from on scroll (2026-10-05). With the hero flush left the two shared
-     the column's left edge; once the hero was centred they were 486px apart at
-     1440 and the handoff read as two marks rather than one settling into the
-     bar. The equal outer tracks keep the middle one on the axis whatever the
-     toggle's width, including while it is still hidden. */
   .header-inner {
     max-width: calc(var(--layout-measure-wide) + 2 * var(--space-gutter-x));
     margin-inline: auto;
@@ -818,14 +565,6 @@
     gap: var(--space-5);
   }
 
-  /* ─── Theme toggle ────────────────────────────────────────────────────────
-     Three states, cycling auto -> light -> dark. Two would be simpler, and would
-     throw away the third state the colour tokens were built around: a reader whose
-     machine turns dark at sunset can keep that behaviour, and can get back to it
-     after trying the others.
-
-     Ships `hidden` and main.js reveals it, like .work-rail. Without scripting it
-     would be a control that changes nothing. */
   .theme-toggle {
     grid-column: 3;
     justify-self: end;
@@ -857,10 +596,6 @@
     block-size: 1.25rem;
   }
 
-  /* One glyph, three readings. Each state shows the mark for the state it is IN,
-     not the one a press would move to: a control that displays its own value is
-     readable at a glance, one that displays its next value has to be reasoned
-     about. The label names it for anyone who would rather read. */
   .theme-glyph-rays,
   .theme-glyph-moon,
   .theme-glyph-auto {
@@ -889,12 +624,6 @@
     white-space: nowrap;
   }
 
-  /* ─── Theme change ────────────────────────────────────────────────────────
-     Custom properties do not transition, so swapping data-theme is an instant cut
-     on every surface at once. The class is added for one beat around the swap and
-     removed after, rather than left on: a standing transition on every colour would
-     make hovers and focus rings lag by the same amount. The global
-     prefers-reduced-motion rule already turns the whole thing back into a cut. */
   html.is-theming,
   html.is-theming *,
   html.is-theming *::before,
@@ -907,12 +636,6 @@
       outline-color var(--duration-medium) var(--ease-out) !important;
   }
 
-  /* ─── Brand mark ──────────────────────────────────────────────────────────
-     Peter's brush lettering, traced to one path and drawn from the sprite at
-     the top of index.html. Not type: it replaced the Geist 600 wordmark on
-     2026-10-05. The viewBox is cropped to the ink, so the box is the mark and
-     its left edge is the stroke, flush to the column like the text it sits on.
-     Shown raw, as on the Peter Franko site: the dry-brush fray is the trace. */
   .brand-mark {
     display: block;
     block-size: auto;
@@ -937,9 +660,6 @@
     pointer-events: auto;
   }
 
-  /* Taller than the text line it replaced, so it borrows the bar's padding
-     rather than growing the bar, the same way the theme toggle does. The
-     margin sits on the link, not the mark, so the focus ring wraps the ink. */
   .logo {
     grid-column: 2;
     margin-block: -0.45rem;
@@ -949,11 +669,6 @@
     inline-size: 3.25rem;
   }
 
-  /* ─── Hero ─── */
-  /* The mark's width and the hero's top padding, shared so the medley can be
-     sized and centred off the mark rather than off the hero box, which is wide
-     on a desktop and nearly square on a phone. 5.5 display steps, floored for
-     phones (see .brand-mark below). */
   .hero {
     --hero-mark-w: max(calc(5.5 * var(--text-display)), 13.5rem);
     --hero-pad-top: clamp(7.5rem, 15vw, 12rem);
@@ -963,9 +678,6 @@
     isolation: isolate;
   }
 
-  /* The bottom fade is for the medley's swings: an orb at the top of its
-     swell, drift and blur would otherwise reach the hero's bottom edge on a
-     phone, and overflow: hidden would cut it as a hard line. */
   .hero-atmosphere {
     position: absolute;
     inset: 0;
@@ -975,30 +687,6 @@
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
   }
 
-  /* ─── The medley (2026-10-06) ─────────────────────────────────────────────
-     Six shapes in the six app accents, blurred together behind the mark. It
-     replaced a single glow mixed from --color-accent (Peter: the monochrome
-     spotlight should become the apps' colours). Each shape nods to its app's
-     codename: a kiwi slice, a lemon, a pomegranate, a berry, a note card, a
-     leaf. Blurred this far they read as colour, not as icons.
-
-     They sit on a wide, flattened diamond (Peter, same day: spread out, a
-     squished rounded diamond): the berry at the left tip, the lemon at the
-     right, the pomegranate on top and the kiwi below, the note card and the
-     leaf on the two edges between. The tips are a mark width either side of
-     the axis, clamped to the screen on a phone, where they run off its edges.
-
-     Neighbours are hue neighbours, clockwise round the diamond: blueberry,
-     plum, husk, lemon, kiwi, fern, back to blueberry. Where two blurs meet they
-     mix, and an analogous pair mixes to a third colour where a complementary
-     one (plum on kiwi) mixes to grey. That is the mush the six-seed favicon
-     sketches hit. Overlaps add as light at night (screen) and darken as ink
-     does on paper (multiply).
-
-     The box is centred on the mark (the top padding plus half the mark's
-     height, which is 1061/1510 of its width) and every length is a multiple of
-     the mark's width, so the arrangement keeps its shape at every size. Each
-     shape carries its own blur, so each can soften and sharpen on its own. */
   .hero-medley {
     position: absolute;
     left: 50%;
@@ -1023,15 +711,8 @@
     mix-blend-mode: multiply;
   }
 
-  /* Per shape: where it sits and its rest outline, then its motion. Drift is
-     how far it wanders either way, in mark widths; blur runs between two
-     strengths; grow is a swell that also fades it a little at the large end;
-     stretch is a squash between two axis pairs; spin is its tilt either side
-     of rest; shape-b is the outline it morphs to. Periods and lags are in the
-     order of the animation names further down. Small shapes swell most, so the
-     size order keeps changing. */
-  .medley-shape[data-app='bilberry'] {
-    --tint: var(--accent-bilberry);
+  .medley-shape[data-app='upcoming-5'] {
+    --tint: var(--accent-upcoming-5);
     --x: 9%;
     --y: 50%;
     --w: 0.5;
@@ -1049,8 +730,8 @@
     --lags: -4.1s, -2.3s, -1.9s, -6.6s, -3.2s, -5.1s, -0.7s;
   }
 
-  .medley-shape[data-app='bountiful'] {
-    --tint: var(--accent-bountiful);
+  .medley-shape[data-app='upcoming-2'] {
+    --tint: var(--accent-upcoming-2);
     --x: 44%;
     --y: 10%;
     --w: 0.74;
@@ -1071,8 +752,8 @@
     --lags: -9.3s, -6.1s, -1.2s, -2.8s, -12.4s, -3.5s, -7.9s;
   }
 
-  .medley-shape[data-app='notation'] {
-    --tint: var(--accent-notation);
+  .medley-shape[data-app='upcoming-4'] {
+    --tint: var(--accent-upcoming-4);
     --x: 72%;
     --y: 26%;
     --w: 0.38;
@@ -1093,8 +774,8 @@
     --lags: -2.4s, -9.7s, -3.6s, -6.4s, -1.1s, -4.8s, -2.9s;
   }
 
-  .medley-shape[data-app='upkeeper'] {
-    --tint: var(--accent-upkeeper);
+  .medley-shape[data-app='upcoming-1'] {
+    --tint: var(--accent-upcoming-1);
     --x: 91%;
     --y: 50%;
     --w: 0.68;
@@ -1133,8 +814,8 @@
     --lags: -5.6s, -8.8s, -2.1s, -4.3s, -10.5s, -1.4s, -6.3s;
   }
 
-  .medley-shape[data-app='homegrown'] {
-    --tint: var(--accent-homegrown);
+  .medley-shape[data-app='upcoming-3'] {
+    --tint: var(--accent-upcoming-3);
     --x: 27%;
     --y: 74%;
     --w: 0.34;
@@ -1172,10 +853,6 @@
     }
   }
 
-  /* The colour comes up with the ink: it rises while the mark writes itself
-     in. Most of the rise is early (ease-out), so the colour is there before
-     the last letter lands. The whole diamond then sways and breathes, slower
-     than anything in it. */
   @keyframes medley-up {
     from { opacity: 0; }
   }
@@ -1193,20 +870,6 @@
     }
   }
 
-  /* The drift (Peter, 2026-10-06; quicker and wilder the same evening: "make
-     this feel dynamic and hypnotizing"). Each shape runs seven loops at once:
-     it wanders on two axes, softens and sharpens, squashes, tilts, changes
-     its outline within its own family (the kiwi wobbles, the leaf keeps two
-     points), and swells and shrinks. Every loop has its own period per shape,
-     4.4 to 18.8 seconds and no two alike on a shape, so the whole never
-     visibly repeats; the negative lags start each one partway through, so a
-     load does not open with every shape at the same end of its swing. Each
-     loop runs there and back on a sine ease, so nothing stops or turns sharply.
-
-     The swell is transform, not scale: the individual scale property is the
-     squash, and transform composes after it, so the two multiply. Reduce
-     Motion gets the still diamond. main.js pauses the loops while the hero is
-     off screen. */
   @keyframes medley-dx {
     from { --medley-dx: calc(var(--hero-mark-w) * var(--drift-x) * -1); }
     to { --medley-dx: calc(var(--hero-mark-w) * var(--drift-x)); }
@@ -1258,15 +921,6 @@
     }
   }
 
-  /* The lean (Peter, 2026-10-15: "responsive to mouse positioning? and/or
-     phone gyro on mobile"). main.js writes --lean-x and --lean-y, each -1 to
-     1, onto both medleys: toward a mouse, or toward the edge a phone dips.
-     Each shape adds its share to its drift, and small shapes lean furthest
-     (0.068 / w: the leaf a fifth of a mark width, the pomegranate under a
-     tenth), so neighbours slide across each other and the mix changes, not
-     only its place. The dye gets the same values as the medley behind it, so
-     the colour in the ink stays in step. Unset, the lean is 0 and this is the
-     drift alone, which is also all Reduce Motion ever gets. */
   @media (prefers-reduced-motion: no-preference) {
     .medley-shape {
       --lean-reach: calc(var(--hero-mark-w) * 0.068 / var(--w));
@@ -1281,17 +935,12 @@
     z-index: var(--z-raised);
   }
 
-  /* Centred on the column at Peter's request (2026-10-05), the day the
-     wordmark became the brush mark. Only the hero: every section below it
-     stays flush left. */
   .hero-copy {
     max-width: 56rem;
     margin-inline: auto;
     text-align: center;
   }
 
-  /* The mark is sized in em off the display step it replaced, so it keeps that
-     step's responsive curve without a second clamp to tune. */
   .hero-title {
     font-size: var(--text-display);
     line-height: var(--leading-none);
@@ -1307,31 +956,6 @@
       transform var(--duration-medium) var(--ease-default);
   }
 
-  /* ─── The dye (2026-10-06) ───────────────────────────────────────────────
-     The medley shows through the ink (Peter: "some color let through, in
-     both light and dark"). A second copy of the medley sits over the mark,
-     masked to the letterforms. At night it is hard-light, which lets the
-     colour drive the ink while the cream stays bright: the letters go pastel
-     pink, yellow or green. On paper it lies over the ink as it is, like
-     colour showing through translucent ink: dusky plum, olive, slate.
-     Hard-light on paper was too faint, because near-black ink only rises in
-     a channel where the dye passes mid-grey, and these accents barely do.
-     Where no orb is over a letter, the dye is clear and the ink is its own
-     colour.
-
-     Blending the mark with the medley behind it was tried first and dropped:
-     a blend can only borrow as much colour as is there, the medley is soft by
-     design, and the tint measured 10 to 34 chroma levels. The dye runs at
-     full strength instead, in the same box, shapes and loops as the medley,
-     started on the same frame, so it stays in step with what is behind. Its
-     blur is 0.55 of theirs (--blur-scale): at the medley's own blur the
-     colour over a letter was too thin to read at night.
-
-     The mask is a plain copy of the mark (assets/spreza-mark-mask.svg, from
-     Assets/studiospreza-script.svg: refresh it after a retrace). It is the
-     finished mark, so the dye fades in once the pen is done (the ink lands at
-     1.89s); before that it would colour letters not yet written. It lives in
-     the h1, so the scroll handoff fades and blurs it with the mark. */
   .hero-title {
     position: relative;
   }
@@ -1392,27 +1016,11 @@
     }
   }
 
-  /* The floor is for phones, where the display step bottoms out and the mark
-     came in at 189px: narrower than the one-line subtitle under it. */
   .hero-title .brand-mark {
     inline-size: var(--hero-mark-w);
     margin-inline: auto;
   }
 
-  /* ─── Pen write-on (2026-10-06) ───────────────────────────────────────────
-     The hero mark writes itself in once, on load: each letter is uncovered
-     along its own centre-line, in reading order, the pen moving at one speed.
-     Scripts/pen-wordmark.py writes the masks and the per-stroke timings (--t
-     start, --d duration, --end when a letter's last stroke lands); this block
-     is only the motion.
-
-     The resting state is the finished mark. Pen lines carry no dash until this
-     block gives them one, so with reduced motion, or CSS that never arrives,
-     every mask is fully drawn. The dash is 1 and the gap 1.2 so the offset can
-     start past the path's beginning: a dash that ends exactly at the start
-     still paints its round cap, and every letter would show a dot before its
-     pen arrived. .pen-rest covers the letter whole once its strokes are done,
-     so fray a centre-line never reached fills in rather than staying missing. */
   @media (prefers-reduced-motion: no-preference) {
     .brand-mark--pen .pen {
       stroke-dasharray: 1 1.2;
@@ -1434,8 +1042,6 @@
     }
   }
 
-  /* Balanced so a narrow phone breaks it into two even lines instead of
-     leaving "NYC." alone on the second (measured at 320px). */
   .hero-subtitle {
     max-width: 26rem;
     margin-top: var(--space-6);
@@ -1447,7 +1053,6 @@
     color: var(--color-text-secondary);
   }
 
-  /* ─── Chapter heads ─── */
   .chapter-head {
     max-width: var(--layout-measure);
     margin-bottom: var(--space-11);
@@ -1497,26 +1102,16 @@
     margin-bottom: var(--space-8);
   }
 
-  /* ─── Work catalog (editorial rows) ─── */
   .work-list {
     display: flex;
     flex-direction: column;
   }
 
-  /* No :last-child border-bottom. Each row's border-top separates it from the row
-     above; closing the list is the section band rule's job, and carrying both left
-     two hairlines 85px apart with nothing between them. Dropping the row's rule also
-     puts the air before the band rule rather than after it, so the rule groups with
-     the statement it introduces. */
   .work-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: calc(var(--space-5) * 2);
-    /* Bottom padding raised from --space-9. The rail sits at the foot of the row and
-       its track is a content-column hairline; at 28px it landed 25px from the next
-       row's border-top and the two read as a doubled rule.
-       Both ends up 8px on 2026-10-06 (56/40 to 64/48), once the shot labels came
-       out and the rows got 30px shorter: the rule now has more air on both sides. */
+
     padding-block: calc(var(--space-10) * 2) calc(var(--space-8) * 2);
     border-top: 1px solid var(--color-border-subtle);
   }
@@ -1534,39 +1129,20 @@
       grid-row: 1;
     }
 
-    /* The shelf breaks the 3-track grid and spans the full content width: an
-       h-scroll needs the room, and the strip reads as its own band under the
-       name and copy, the way a store listing does. The gallery inside it then
-       breaks out further, to the viewport edges. */
     .work-shelf {
       grid-column: 1 / -1;
       grid-row: 2;
     }
   }
 
-  /* Gallery and its rail. They are wrapped rather than made two more tracks of
-     .work-row, because the row's 56px row-gap is right between the name and the
-     shelf and far too much between the shelf and its own scrollbar. */
   .work-shelf {
     display: grid;
-    /* Explicitly one bounded column. Left to its own devices the implicit column
-       is auto-sized to max-content, and the gallery inside is deliberately wider
-       than the page (100cqw with a negative start margin), so the track grew to
-       the viewport edge and dragged the rail out past the content column with it.
-       Measured: the rail ran to 1425 where the column ends at 1224. */
+
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-4);
     min-inline-size: 0;
   }
 
-  /* Horizontal showcase strip. The scrollport reaches the viewport edges while
-     edge margins preserve the first screen's content-column start position.
-
-     cqw, not vw. 100vw counts the classic scrollbar and the content column does not,
-     so the vw version overhung the layout viewport by exactly the scrollbar width
-     (measured: 7px at 1440 in Chromium) and body needed overflow-x: hidden to hide
-     it. 100cqw resolves against main#main's content box, which is what the column is
-     centred in, so the two edges agree and the clip is no longer needed. */
   .work-gallery {
     --gallery-edge-inset: max(var(--space-gutter-x), calc((100cqw - var(--layout-measure-wide)) / 2));
 
@@ -1579,22 +1155,10 @@
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--gallery-edge-inset);
-    /* Holds the frame shadow. --shadow-shot's widest layer is 0 30px 56px -14px. A
-       box shadow's blur reaches its full radius past the shape, not half of it, so
-       the tail runs 30 - 14 + 56 = 72px below the frame. The scrollport clips both
-       axes (a box with overflow-x: auto computes overflow-y to auto too). The old
-       padding, sized as offset + spread + blur/2 (and 48px as computed, not the 44
-       its comment said), cut the tail off in a straight line: paper stepped 233 to
-       241 at the edge (2026-10-14). The negative margin hands the extra 24px back,
-       so the rail keeps its place, 61.6px under the frames. */
+
     padding-block-end: 4.5rem;
     margin-block-end: -1.5rem;
-    /* The native bar is gone in favour of .work-rail. It ran the full viewport
-       width rather than the content column: ::-webkit-scrollbar-track's
-       margin-inline is ignored, and the thumb started at x=3 where the design
-       called for 208. It was also the loudest element on the page, and on Safari's
-       overlay scrollbars it may never appear at all, so the only affordance the
-       shelf had was browser-dependent. */
+
     scrollbar-width: none;
   }
 
@@ -1602,51 +1166,29 @@
     display: none;
   }
 
-  /* `display: flex` above outranks the UA's `[hidden] { display: none }`, so
-     without this every device's gallery shows at once, scripting or not. */
   .work-gallery[hidden] {
     display: none;
   }
 
-  /* outline-offset was +4px on an element as wide as the viewport, which drew the
-     left and right edges of the ring off-screen: keyboard focus showed as two
-     stray horizontal lines. Negative offset puts the whole ring inside the
-     scrollport. */
   .work-gallery:focus-visible {
     outline: 2px solid var(--color-focus-ring);
     outline-offset: -3px;
     border-radius: var(--radius-xs);
   }
 
-  /* Snap fights a rail drag: every scrollLeft assignment is re-snapped, so the
-     thumb jumps away from the pointer. main.js drops snap for the duration of a
-     drag and restores it on release, which re-snaps by itself. */
   .work-gallery.is-railing {
     scroll-snap-type: none;
   }
 
-  /* ─── Shelf rail ───────────────────────────────────────────────────────────
-     A scrollbar substitute, sized to the content column and inked in the row's own
-     app accent. aria-hidden and pointer-only on purpose: it duplicates scrolling
-     the gallery already has, and the scrollport itself is focusable and
-     arrow-scrollable for anyone not using a pointer. */
   .work-rail {
     position: relative;
-    /* 24px, the WCAG 2.2 target minimum. It was 1.25rem, which measured 350x20 and
-       missed the floor the footer links were raised to clear in the same pass. */
+
     block-size: 1.5rem;
     cursor: pointer;
-    /* pan-y, not none. `none` handed the element every gesture including vertical
-       panning, so a swipe begun anywhere on this strip would not scroll the page.
-       `pan-y` leaves vertical panning with the browser and keeps the horizontal
-       drag, which is the only gesture the rail wants. */
+
     touch-action: pan-y;
   }
 
-  /* On a touch primary the rail is an indicator, not a control: dragging a 24px
-     strip with a thumb is hostile, the track's hover reveal can never fire on
-     `hover: none`, and the shelf already answers a direct swipe. It still tracks
-     position, which is worth having on the narrowest screen. */
   @media (pointer: coarse) {
     .work-rail {
       pointer-events: none;
@@ -1654,9 +1196,6 @@
     }
   }
 
-  /* The markup ships it hidden and main.js reveals it in sync(). With scripting
-     off, or if the script fails, a rail would otherwise render as a static bar at
-     the CSS fallback width that cannot be dragged: a control that lies. */
   .work-rail[hidden] {
     display: none;
   }
@@ -1672,10 +1211,6 @@
     transition: background-color var(--duration-fast) var(--ease-out);
   }
 
-  /* At rest the track is a hint at 1.1:1, because a full-strength one is a
-     content-column hairline sitting 40px from the next row's border-top and the
-     two read as a doubled rule. It comes up when the pointer is anywhere on the
-     shelf, which is the only time its job is to say "this is draggable". */
   .work-shelf:hover .work-rail::before,
   .work-rail.is-dragging::before {
     background: var(--rail-track-hover);
@@ -1701,12 +1236,6 @@
     inset-block-start: calc(50% - 2.5px);
   }
 
-  /* ─── Device tabs ──────────────────────────────────────────────────────────
-     iPhone, Watch, and later iPad and Mac (Peter, 2026-10-14). The label voice
-     (caps, tracked, 500), muted at rest, and the chosen device underlined by the
-     rail's own mark: a pill in the row's accent, so the tabs and the rail read as
-     one control set. Only shelves with more than one device carry them, and the
-     markup ships them hidden until main.js wires them up, as it does the rail. */
   .work-devices {
     display: flex;
     gap: var(--space-6);
@@ -1718,9 +1247,7 @@
 
   .work-device {
     position: relative;
-    /* 44px tall: one tab stop that a thumb has to hit, so the touch size, not
-       the 24px WCAG floor the rail clears. The text is centred in it and the
-       mark sits 3.6px under the text; the rest is hit area above and below. */
+
     min-block-size: 2.75rem;
     padding: 0;
     font: inherit;
@@ -1747,8 +1274,6 @@
     transition: transform var(--duration-fast) var(--ease-out);
   }
 
-  /* Pointer hover only: a touch screen applies :hover to the last element tapped and
-     keeps it there. */
   @media (hover: hover) {
     .work-device:hover {
       color: var(--color-text-secondary);
@@ -1769,29 +1294,28 @@
     border-radius: var(--radius-xs);
   }
 
-  /* Each app's accent hue, at one OKLCH lightness and chroma per scheme. */
   .work-row[data-app='kiwido'] {
     --row-accent: var(--accent-kiwido);
   }
 
-  .work-row[data-app='upkeeper'] {
-    --row-accent: var(--accent-upkeeper);
+  .work-row[data-app='upcoming-1'] {
+    --row-accent: var(--accent-upcoming-1);
   }
 
-  .work-row[data-app='bountiful'] {
-    --row-accent: var(--accent-bountiful);
+  .work-row[data-app='upcoming-2'] {
+    --row-accent: var(--accent-upcoming-2);
   }
 
-  .work-row[data-app='bilberry'] {
-    --row-accent: var(--accent-bilberry);
+  .work-row[data-app='upcoming-5'] {
+    --row-accent: var(--accent-upcoming-5);
   }
 
-  .work-row[data-app='notation'] {
-    --row-accent: var(--accent-notation);
+  .work-row[data-app='upcoming-4'] {
+    --row-accent: var(--accent-upcoming-4);
   }
 
-  .work-row[data-app='homegrown'] {
-    --row-accent: var(--accent-homegrown);
+  .work-row[data-app='upcoming-3'] {
+    --row-accent: var(--accent-upcoming-3);
   }
 
   .work-showcase-item {
@@ -1800,9 +1324,6 @@
     scroll-snap-align: start;
   }
 
-  /* At phone widths, 88vw makes the 1206:2622 frames almost a full viewport
-     tall. Scale them to 75% of their former width while preserving the source
-     aspect ratio, so a complete screen is comfortably visible on an iPhone. */
   @media (max-width: 819px) {
     .work-showcase-item {
       inline-size: min(18rem, 66vw);
@@ -1817,8 +1338,6 @@
     margin-inline-end: var(--gallery-edge-inset);
   }
 
-  /* Horizontal showcase media. Frames use the iPhone 17 Pro display ratio
-     (1206 x 2622), so future rectangular exports inherit the same screen mask. */
   .work-shot {
     display: block;
     inline-size: 100%;
@@ -1832,12 +1351,6 @@
     isolation: isolate;
   }
 
-  /* The Watch frame (2026-10-14): the 46mm screen, 416 x 496 at 2x, shown at its
-     own point size, 208pt, so the iPhone and Watch shelves sit at nearly one scale
-     (the phone frame is 384 for a 402pt screen). Never larger: the source is 416px
-     and the publisher never upscales. One image, not a light and dark pair,
-     because watchOS has one appearance. The corner is 20% of the width, round
-     (20% of 416 over 496 is 16.77% of the height). */
   .work-gallery[data-device='watch'] .work-showcase-item {
     inline-size: 13rem;
   }
@@ -1854,11 +1367,6 @@
     background: #000;
   }
 
-  /* The iPad frame (2026-10-14): iPad Pro 13-inch in landscape, 2752 x 2064 (4:3),
-     shown at 736px, a little over half its 1376pt width, so its type sits near the
-     phone's scale and the shelf still shows that there is a next frame. Light and dark
-     stack like the phone's. The corner is the screen's: about 30pt of 1376, which is
-     2.2% of the width and 2.93% of the height. */
   .work-gallery[data-device='ipad'] .work-showcase-item {
     inline-size: min(46rem, 88vw);
   }
@@ -1874,16 +1382,6 @@
     border-radius: 2.2% / 2.93%;
   }
 
-  /* The Mac frame (2026-10-14): a window, not a screen, so there is no bezel to
-     draw. The capture keeps the window's own rounded, transparent corners; the frame
-     drops its border, ground and box shadow, and a drop shadow follows the window's
-     alpha instead. Windows differ in shape per app (Kiwido is wide, Upkeeper is a
-     column), so the shelf is set by height and each frame's width follows its
-     `width` and `height` attributes. The publisher puts every slot of an app on one
-     canvas, so one app's frames are one size. The light frame stays in flow to give
-     the slot its size; the dark one lies over it. `max-inline-size` keeps a wide
-     window inside a phone's viewport; `object-fit: contain` keeps it in shape there,
-     and the box around it is transparent. */
   .work-gallery[data-device='mac'] .work-showcase-item {
     inline-size: auto;
   }
@@ -1929,20 +1427,6 @@
     background: transparent;
   }
 
-  /* Light and dark captures of the same screen, stacked and cross-faded.
-     The shot shows the app in the scheme the reader is already in.
-
-     Two stacked <img> rather than <picture> with a media source, because the
-     site carries an explicit `data-theme` attribute and <picture> can only see
-     `prefers-color-scheme`. Stacked images also fade; a <picture> swap cuts.
-
-     Both frames are lazy-loaded, so a slot costs two requests. That is the
-     price of the effect and it is why the exports are WebP at 768px: about
-     45KB each rather than 260KB as PNG. See Scripts/publish-showcase-to-site.sh.
-
-     The global prefers-reduced-motion rule below already kills every
-     transition, so the swap becomes an instant cut for anyone who asked for
-     less motion. Nothing extra is needed here. */
   .work-shot-image[data-scheme] {
     position: absolute;
     inset: 0;
@@ -1965,8 +1449,6 @@
     opacity: 1;
   }
 
-  /* `:not([data-theme])` so an explicit light choice still wins on a machine
-     whose system is dark. Same three-state shape as the colour tokens. */
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) .work-shot-image[data-scheme='light'] {
       opacity: 0;
@@ -1996,12 +1478,6 @@
     color: var(--color-text-secondary);
   }
 
-  /* `center`, not `flex-start`, and at every width.
-     The icon is 4.5rem and the two-line name-and-tagline block is about 3.4rem,
-     so top-aligning them hung the icon 8.5px below the text's centre — visible
-     on all three rows, and the reason the shelf looked off. The wide layout had
-     always centred; only the narrow one did not, so this is the narrow case
-     catching up rather than a new decision. */
   .work-lede {
     display: grid;
     grid-template-columns: 4.5rem minmax(0, 1fr);
@@ -2016,7 +1492,6 @@
     }
   }
 
-  /* 72px is exactly 2x the 144px source, so it stays crisp without new exports. */
   .work-icon {
     inline-size: 4.5rem;
     block-size: 4.5rem;
@@ -2030,24 +1505,24 @@
     background-image: var(--app-icon-kiwido);
   }
 
-  .work-icon[data-app='upkeeper'] {
-    background-image: var(--app-icon-upkeeper);
+  .work-icon[data-app='upcoming-1'] {
+    background-image: var(--app-icon-upcoming-1);
   }
 
-  .work-icon[data-app='bountiful'] {
-    background-image: var(--app-icon-bountiful);
+  .work-icon[data-app='upcoming-2'] {
+    background-image: var(--app-icon-upcoming-2);
   }
 
-  .work-icon[data-app='bilberry'] {
-    background-image: var(--app-icon-bilberry);
+  .work-icon[data-app='upcoming-5'] {
+    background-image: var(--app-icon-upcoming-5);
   }
 
-  .work-icon[data-app='notation'] {
-    background-image: var(--app-icon-notation);
+  .work-icon[data-app='upcoming-4'] {
+    background-image: var(--app-icon-upcoming-4);
   }
 
-  .work-icon[data-app='homegrown'] {
-    background-image: var(--app-icon-homegrown);
+  .work-icon[data-app='upcoming-3'] {
+    background-image: var(--app-icon-upcoming-3);
   }
 
   .work-row-body {
@@ -2110,22 +1585,95 @@
     background-size: contain;
   }
 
-  /* Live apps only (Peter, 2026-10-15). A badge without its App Store link draws nothing,
-     so an app's launch day is one edit: its href. Dead badges beside a live one read as broken. */
-  .app-store-link[href='#'] {
-    display: none;
+  .app-store-soon {
+    grid-column: 2;
+    inline-size: 7.5rem;
+    block-size: 2.5rem;
+    margin-top: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 7px;
+    box-shadow: inset 0 0 0 1px var(--color-border-strong);
+    color: var(--color-text-secondary);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
-  /* ─── Studio note / contact ─── */
-  /* The note and the address are one closing thought, so they are one band. They
-     used to be two, separated by a rule and 112px, which made the foot of the page
-     read as two thin sections rather than a sign-off. */
+  .app-store-soon::before {
+    content: '';
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-radius: 50%;
+    background: var(--row-accent, currentColor);
+  }
+
+  @media (min-width: 820px) {
+    .app-store-soon {
+      grid-column: 3;
+      margin-top: 0;
+      justify-self: end;
+    }
+  }
+
+  .work-title--veiled {
+    display: flex;
+    align-items: center;
+    block-size: calc(var(--leading-none) * 1em);
+  }
+
+  .veil-scribble {
+    display: block;
+    flex: none;
+    overflow: visible;
+    color: var(--color-text-primary);
+    opacity: 0.56;
+    filter: blur(var(--veil-blur, 0.06em));
+  }
+
+  .work-line--veiled .veil-scribble {
+    color: var(--color-text-secondary);
+  }
+
+  .veil-scribble path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.5s var(--ease-out) 0.2s;
+  }
+
+  .veil-scribble .veil-scribble-bar {
+    transition-duration: 0.35s;
+    transition-delay: 1.45s;
+  }
+
+  .is-visible .veil-scribble path {
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .veil-scribble path {
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+  }
+
   .studio-note {
     padding-block: clamp(2.75rem, 5vw, 4.5rem) 0;
   }
 
-  /* The note, the address and the footer below them are centred on one axis
-     (2026-10-06, Peter), so the page closes on the same line the petals turn on. */
   .studio-note p {
     max-width: var(--layout-measure);
     margin-inline: auto;
@@ -2154,10 +1702,7 @@
   .contact-email {
     position: relative;
     display: inline-block;
-    /* Was serif italic. Geist's italic is a near-upright grotesque slant, and
-       on an address it reads as a rendering fault rather than a flourish. The
-       animated underline was always the affordance here; weight carries the
-       rest. */
+
     font-weight: var(--font-weight-medium);
     font-size: var(--text-work-title);
     line-height: var(--leading-tight);
@@ -2179,13 +1724,12 @@
     background-size:
       100% 1px,
       0% 2px;
-    /* Centred with the address, so the hover underline grows out from the middle. */
+
     background-position:
       50% calc(100% - 0.06em),
       50% calc(100% - 0.06em);
     background-repeat: no-repeat;
-    /* No letter-spacing here: animating it relayouts the text on every hover,
-       and the underline's background-size then chases a moving width. */
+
     transition:
       background-size var(--duration-slow) var(--ease-default),
       transform var(--duration-medium) var(--ease-default);
@@ -2199,24 +1743,11 @@
     transform: translateY(-0.06em);
   }
 
-  /* ─── Footer ─── */
   .site-footer {
     border-top: 1px solid var(--color-border-subtle);
     padding-block: var(--space-9);
   }
 
-  /* ─── Petals (2026-10-06) ─────────────────────────────────────────────────
-     Six discs in the six accents, each passing through the centre, so
-     neighbours overlap and mix where they cross: multiply on paper, screen at
-     night, the hero medley's rule. Hue order runs clockwise from Bountiful at
-     the top, the medley's neighbours, so the page opens with the six blurred
-     together and closes with them in focus. Peter's pick from ten sketches:
-     Petals crossed with Taking turns.
-
-     The whole flower turns once a minute and each petal swells in turn, 1.5s
-     apart, so one app at a time leans forward. The swell scales a petal about
-     its own centre (fill-box); the turn rotates the svg's own CSS box, whose
-     centre is the flower's. Still under Reduce Motion. Decorative: aria-hidden. */
   .footer-petals {
     display: block;
     inline-size: 2.75rem;
@@ -2242,12 +1773,12 @@
     }
   }
 
-  .petal-bountiful { fill: var(--accent-bountiful); }
-  .petal-notation { fill: var(--accent-notation); }
-  .petal-upkeeper { fill: var(--accent-upkeeper); }
+  .petal-upcoming-2 { fill: var(--accent-upcoming-2); }
+  .petal-upcoming-4 { fill: var(--accent-upcoming-4); }
+  .petal-upcoming-1 { fill: var(--accent-upcoming-1); }
   .petal-kiwido { fill: var(--accent-kiwido); }
-  .petal-homegrown { fill: var(--accent-homegrown); }
-  .petal-bilberry { fill: var(--accent-bilberry); }
+  .petal-upcoming-3 { fill: var(--accent-upcoming-3); }
+  .petal-upcoming-5 { fill: var(--accent-upcoming-5); }
 
   @media (prefers-reduced-motion: no-preference) {
     .footer-petals {
@@ -2258,11 +1789,11 @@
       animation: petal-swell 9s ease-in-out infinite;
     }
 
-    .petal-notation { animation-delay: 1.5s; }
-    .petal-upkeeper { animation-delay: 3s; }
+    .petal-upcoming-4 { animation-delay: 1.5s; }
+    .petal-upcoming-1 { animation-delay: 3s; }
     .petal-kiwido { animation-delay: 4.5s; }
-    .petal-homegrown { animation-delay: 6s; }
-    .petal-bilberry { animation-delay: 7.5s; }
+    .petal-upcoming-3 { animation-delay: 6s; }
+    .petal-upcoming-5 { animation-delay: 7.5s; }
   }
 
   @keyframes petals-turn {
@@ -2291,13 +1822,6 @@
     color: var(--color-text-muted);
   }
 
-  /* Under the brand at every width, centred. Inline blocks rather than a flex
-     wrap so text-wrap: balance can even out the rows: the flex wrap left
-     Homegrown privacy alone on a third row at 800px (2026-10-06). Each link
-     carries half the old gap on every side and the nav takes the outer half
-     back, so the spacing between links and rows is the old gap. The nav's
-     zero font size removes the 3px space character the markup puts between
-     links, which would otherwise widen every gap. */
   .footer-links {
     display: block;
     text-align: center;
@@ -2317,9 +1841,6 @@
     border-bottom: 1px solid transparent;
   }
 
-  /* 20px of type, 39px of target. An overlay rather than padding: padding would carry
-     the hover underline down with it. 0.3rem each side keeps 4px of clearance from the
-     row above when the footer wraps at phone widths. */
   .footer-links a::after {
     content: '';
     position: absolute;
@@ -2333,7 +1854,6 @@
     border-bottom-color: currentColor;
   }
 
-  /* ─── Reduced motion ─── */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -2342,8 +1862,6 @@
       transition: none !important;
     }
 
-    /* Killing transitions left scroll-behavior: smooth intact, so nav clicks
-       still animated for users who asked for less motion. */
     html {
       scroll-behavior: auto;
     }
@@ -2355,18 +1873,11 @@
     }
   }
 
-  /* ─── Legal pages (/privacy/*) ─── */
-  /* Deliberately not using [data-reveal]: a policy has to be readable with
-     JavaScript off, and these pages do not load main.js. */
   .legal {
     max-width: var(--layout-measure);
     padding-block: var(--space-section-lg);
   }
 
-  /* The brush mark, the header's size, drawn from assets/spreza-mark.svg rather
-     than an inline sprite: seven pages share one cached file. line-height: 0
-     keeps the link box on the ink, so the focus ring wraps the mark. Colour comes
-     from `.legal a` below: primary ink, muted on hover, like every link here. */
   .legal-back {
     display: inline-block;
     margin-block-end: var(--space-10);
@@ -2405,8 +1916,7 @@
     margin-block: var(--space-12) var(--space-5);
     padding-block-start: var(--space-10);
     border-top: 1px solid var(--color-border-subtle);
-    /* Support's sections carry ids since 2026-10-02, one address per app for App Store
-       Connect's support URL. A jump lands the rule a little below the top edge, not on it. */
+
     scroll-margin-top: var(--space-6);
   }
 
@@ -2424,8 +1934,6 @@
     margin-block-start: var(--space-5);
   }
 
-  /* The base reset strips list markers site-wide, which is right for the nav
-     and card lists but wrong here: these are read as lists, not as layout. */
   .legal ul {
     margin-block-start: var(--space-5);
     padding-inline-start: var(--space-6);
@@ -2446,10 +1954,6 @@
     text-decoration-thickness: 1px;
   }
 
-  /* Links in the prose are underlined. The offset and thickness above were always meant for
-     an underline, but the global `a` reset removed it, so every policy's links read as plain
-     text (found 2026-10-02, adding Support's per-app links). Scoped to p and li so the caps
-     back link keeps its own treatment. */
   .legal :is(p, li) a {
     text-decoration-line: underline;
   }
