@@ -1342,16 +1342,27 @@
   }
 
   .work-shot {
+    --shot-ground: var(--color-surface-elevated);
+
     display: block;
     inline-size: 100%;
     aspect-ratio: 1206 / 2622;
     position: relative;
-    overflow: hidden;
-    border: 1px solid var(--border-shot);
     border-radius: clamp(1.9rem, 8.5vw, 3.15rem);
-    background: var(--color-surface-elevated);
+    background: var(--shot-ground);
     box-shadow: var(--shadow-shot);
     isolation: isolate;
+  }
+
+  .work-shot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      inset 0 0 0 1px var(--border-shot),
+      inset 0 0 0 1px var(--shot-ground);
+    pointer-events: none;
   }
 
   .work-gallery[data-device='watch'] .work-showcase-item {
@@ -1365,9 +1376,10 @@
   }
 
   .work-gallery[data-device='watch'] .work-shot {
+    --shot-ground: #000;
+
     aspect-ratio: 416 / 496;
     border-radius: 20% / 16.77%;
-    background: #000;
   }
 
   .work-gallery[data-device='ipad'] .work-showcase-item {
@@ -1392,11 +1404,13 @@
   .work-gallery[data-device='mac'] .work-shot {
     inline-size: auto;
     aspect-ratio: auto;
-    overflow: visible;
-    border: 0;
     border-radius: 0;
     background: none;
     box-shadow: none;
+  }
+
+  .work-gallery[data-device='mac'] .work-shot::after {
+    content: none;
   }
 
   .work-gallery[data-device='mac'] .work-shot-image {
@@ -1427,6 +1441,7 @@
     block-size: 100%;
     display: block;
     object-fit: cover;
+    border-radius: inherit;
     background: transparent;
   }
 
